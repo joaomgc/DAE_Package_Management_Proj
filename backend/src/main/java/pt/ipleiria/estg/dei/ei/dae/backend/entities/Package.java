@@ -10,13 +10,29 @@ public class Package {
     private LinkedList<Product> products;
     private LinkedList<Sensor> sensors;
 
-    // Constructor
+
     public Package(Long id, String packageId, String packageType, LinkedList<Product> products, LinkedList<Sensor> sensors) {
         this.id = id;
         this.packageId = packageId;
         this.packageType = packageType;
-        this.products = products;
-        this.sensors = sensors;
+        this.products = new LinkedList<>();
+        this.sensors = new LinkedList<>();
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    public void addSensor(Sensor sensor) {
+        sensors.add(sensor);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
+    }
+
+    public void removeSensor(Sensor sensor) {
+        sensors.remove(sensor);
     }
 
     public Long getId() {
