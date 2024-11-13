@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.backend.entities;
+package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
 public class User {
 

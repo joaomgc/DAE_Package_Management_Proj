@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.backend;
+package pt.ipleiria.estg.dei.ei.dae.monitor;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

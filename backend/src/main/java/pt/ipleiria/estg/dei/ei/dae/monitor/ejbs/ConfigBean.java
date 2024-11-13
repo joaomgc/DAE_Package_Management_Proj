@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.backend.ejbs;
+package pt.ipleiria.estg.dei.ei.dae.monitor.ejbs;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
