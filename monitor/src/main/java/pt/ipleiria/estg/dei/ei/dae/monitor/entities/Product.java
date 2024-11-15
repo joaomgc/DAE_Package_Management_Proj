@@ -13,8 +13,6 @@ import jakarta.persistence.*;
 
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private Long productId;
     private String productName;
     private String productType;
@@ -24,19 +22,12 @@ public class Product {
     }
 
     public Product(Long productId, String productName, String productType) {
-
         this.productId = productId;
         this.productName = productName;
         this.productType = productType;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getProductId() {
         return productId;

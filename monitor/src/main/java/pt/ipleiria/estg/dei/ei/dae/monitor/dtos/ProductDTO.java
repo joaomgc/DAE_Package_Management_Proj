@@ -8,15 +8,15 @@ import java.util.List;
 public class ProductDTO implements Serializable {
     private Long id;
     private String name;
-    private String category;
+    private String type;
 
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String name, String category) {
+    public ProductDTO(Long id, String name, String type) {
         this.id = id;
         this.name = name;
-        this.category = category;
+        this.type = type;
     }
 
     public Long getId() {
@@ -35,12 +35,12 @@ public class ProductDTO implements Serializable {
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
+    public String getType() {
+        return type;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public static ProductDTO from(Product product) {

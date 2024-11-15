@@ -18,15 +18,11 @@ import java.util.List;
 })
 public class Package implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotNull
     private String packageId;
     @NotNull
     private String packageType;
     @OneToMany(fetch = FetchType.EAGER) @NotNull
     private List<Product> products;
-
 
     public Package() {
         this.products = new LinkedList<>();
@@ -47,13 +43,7 @@ public class Package implements Serializable {
         this.products = products;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getPackageId() {
         return packageId;

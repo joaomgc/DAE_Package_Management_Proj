@@ -15,7 +15,7 @@ public class ProductBean {
     private EntityManager entityManager;
 
     public void create( Long productId, String productName, String productType) {
-        var product = new Product(productId, productName, productType);
+        Product product = new Product(productId, productName, productType);
         entityManager.persist(product);
     }
 
