@@ -1,12 +1,18 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+@Entity
 public class Product {
-
+    @Id
     private Long id;
     private String productId;
     private String productName;
     private String productType;
 
+
+    public Product() {
+    }
 
     public Product(Long id, String productId, String productName, String productType) {
         this.id = id;

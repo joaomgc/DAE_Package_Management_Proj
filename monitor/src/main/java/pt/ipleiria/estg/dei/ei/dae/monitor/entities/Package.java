@@ -1,19 +1,28 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-public class Package {
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllPackages",
+                query = "SELECT p FROM Package p ORDER BY p.id" // JPQL
+        )
+})
+public class Package implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String packageId;
+    @NotNull
     private String packageType;
-    private List<Product> products;
-    private List<Sensor> sensors;
 
 
     public Package() {
@@ -23,25 +32,8 @@ public class Package {
 
         this.packageId = packageId;
         this.packageType = packageType;
-        this.products = new LinkedList<>();
-        this.sensors = new LinkedList<>();
     }
 
-    public void addProduct(Product product) {
-        products.add(product);
-    }
-
-    public void addSensor(Sensor sensor) {
-        sensors.add(sensor);
-    }
-
-    public void removeProduct(Product product) {
-        products.remove(product);
-    }
-
-    public void removeSensor(Sensor sensor) {
-        sensors.remove(sensor);
-    }
 
     public Long getId() {
         return id;
@@ -67,19 +59,4 @@ public class Package {
         this.packageType = packageType;
     }
 
-    public LinkedList<Product> getProducts() {
-        return new LinkedList<>(products);
-    }
-
-    public void setProducts(LinkedList<Product> products) {
-        this.products = products;
-    }
-
-    public LinkedList<Sensor> getSensors() {
-        return new LinkedList<>(sensors);
-    }
-
-    public void setSensors(LinkedList<Sensor> sensors) {
-        this.sensors = sensors;
-    }
 }

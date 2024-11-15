@@ -1,9 +1,12 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.util.LinkedList;
-
+@Entity
 public class Sensor {
-
+    @Id
     private Long id;
     private String sensorId;
     private String sensorType;
