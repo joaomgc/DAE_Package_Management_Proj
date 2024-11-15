@@ -25,7 +25,7 @@ public class ConfigBean {
             productBean.create(1L, "Samsung TV", "Technology");
             productBean.create(2L, "Apple iPhone", "Technology");
 
-            packageBean.create("1", "Package 1", List.of(1L, 2L));
+            packageBean.create("1", "Package 1");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error populating database", e);
             throw e; // Rethrow the exception to ensure the deployment fails

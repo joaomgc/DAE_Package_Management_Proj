@@ -1,10 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.ws;
 
 import jakarta.ejb.EJB;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.PackageDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.PackageBean;
@@ -23,5 +20,14 @@ public class PackageService {
     @Path("/all")
     public List<PackageDTO> getAllPackages() {
         return PackageDTO.from(packageBean.findAll());
+    }
+
+    @POST
+    @Path("/")
+    public void createNewPackage(PackageDTO packageDTO) {
+        packageBean.create(
+                packageDTO.getPackageId(),
+                packageDTO.getPackageType()
+        );
     }
 }

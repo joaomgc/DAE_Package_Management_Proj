@@ -1,46 +1,48 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.dtos;
 
+import jakarta.persistence.Id;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Product;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class ProductDTO implements Serializable {
-    private Long id;
-    private String name;
-    private String type;
+    @Id
+    private Long productId;
+    private String productName;
+    private String productType;
 
     public ProductDTO() {
     }
 
     public ProductDTO(Long id, String name, String type) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
+        this.productId = id;
+        this.productName = name;
+        this.productType = type;
     }
 
-    public Long getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getType() {
-        return type;
+    public String getProductType() {
+        return productType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 
     public static ProductDTO from(Product product) {

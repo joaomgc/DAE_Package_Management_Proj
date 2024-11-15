@@ -1,8 +1,28 @@
-### Create a new Product
+### Get All Products
 GET http://localhost:8080/monitor/api/products/all
 Accept: application/json
 
-### Create a new Product
+### Get All Packages
 GET http://localhost:8080/monitor/api/packages/all
 Accept: application/json
+
+### Create a new Product
+POST http://localhost:8080/monitor/api/packages/
+Content-Type: application/json
+
+{
+  "packageId": "pkgaatessssst",
+  "packageType": "Electronics"
+}
+
+### Create a new Package
+POST http://localhost:8080/monitor/api/products/
+Content-Type: application/json
+
+{
+  "productId": 2311,
+  "productName": "Testadeee Product",
+  "productType": "Elecctraaonics"
+}
+
 

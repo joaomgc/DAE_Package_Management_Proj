@@ -19,10 +19,9 @@ public class PackageBean {
     @EJB
     private ProductBean productBean;
 
-    public void create( String packageId, String packageType, List<Long> productIds) {
+    public void create( String packageId, String packageType) {
         var pck = new Package(packageId, packageType);
-        List<Product> products = productIds.stream().map(productBean::find).toList();
-        pck.setProducts(products);
+
         entityManager.persist(pck);
     }
     public List<Package> findAll() {
