@@ -1,10 +1,19 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 @Entity
+@Table(name = "products")
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllProducts",
+                query = "SELECT p FROM Product p ORDER BY p.productName"
+        )
+})
+
 public class Product {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String productId;
     private String productName;
@@ -14,8 +23,8 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long id, String productId, String productName, String productType) {
-        this.id = id;
+    public Product(String productId, String productName, String productType) {
+
         this.productId = productId;
         this.productName = productName;
         this.productType = productType;

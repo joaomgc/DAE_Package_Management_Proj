@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
+@Table(name = "packages")
 @NamedQueries({
         @NamedQuery(
                 name = "getAllPackages",
@@ -23,17 +24,28 @@ public class Package implements Serializable {
     private String packageId;
     @NotNull
     private String packageType;
+    @OneToMany @NotNull
+    private List<Product> products;
 
 
     public Package() {
+        this.products = new LinkedList<>();
     }
 
     public Package(String packageId, String packageType) {
 
         this.packageId = packageId;
         this.packageType = packageType;
+        this.products = new LinkedList<>();
     }
 
+    public List<Product> getProducts() {
+        return new LinkedList<>(products);
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
     public Long getId() {
         return id;

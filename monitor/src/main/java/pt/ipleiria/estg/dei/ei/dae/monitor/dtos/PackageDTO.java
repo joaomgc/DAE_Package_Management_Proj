@@ -9,13 +9,23 @@ import java.util.stream.Collectors;
 public class PackageDTO implements Serializable {
     private String packageId;
     private String packageType;
+    private List<ProductDTO> products;
 
     public PackageDTO() {
     }
 
-    public PackageDTO(String packageId, String packageType) {
+    public PackageDTO(String packageId, String packageType, List<ProductDTO> products) {
         this.packageId = packageId;
         this.packageType = packageType;
+        this.products = products;
+    }
+
+    public List<ProductDTO> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductDTO> products) {
+        this.products = products;
     }
 
     public String getPackageId() {
@@ -35,9 +45,11 @@ public class PackageDTO implements Serializable {
     }
 
     public static PackageDTO from(Package pck) {
+        List<ProductDTO> productsDTOs = pck.getProducts().stream().map(ProductDTO::from).toList();
         return new PackageDTO(
                 pck.getPackageId(),
-                pck.getPackageType()
+                pck.getPackageType(),
+                productsDTOs
         );
     }
 

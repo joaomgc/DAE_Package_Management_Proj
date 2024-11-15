@@ -2,16 +2,23 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 import java.util.LinkedList;
 @Entity
+@Table(name = "sensors")
 public class Sensor {
     @Id
     private Long id;
     private String sensorId;
     private String sensorType;
+    @OneToMany
     private LinkedList<SensorReading> sensorReadings;
 
+
+    public Sensor() {
+    }
 
     public Sensor(Long id, String sensorId, String sensorType, LinkedList<SensorReading> sensorReadings) {
         this.id = id;
