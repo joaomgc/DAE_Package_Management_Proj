@@ -6,24 +6,24 @@ import java.io.Serializable;
 import java.util.List;
 
 public class ProductDTO implements Serializable {
-    private String id;
+    private Long id;
     private String name;
     private String category;
 
     public ProductDTO() {
     }
 
-    public ProductDTO(String id, String name, String category) {
+    public ProductDTO(Long id, String name, String category) {
         this.id = id;
         this.name = name;
         this.category = category;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

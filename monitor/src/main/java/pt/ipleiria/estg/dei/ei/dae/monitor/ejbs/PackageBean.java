@@ -19,7 +19,7 @@ public class PackageBean {
     @EJB
     private ProductBean productBean;
 
-    public void create( String packageId, String packageType, List<String> productIds) {
+    public void create( String packageId, String packageType, List<Long> productIds) {
         var pck = new Package(packageId, packageType);
         List<Product> products = productIds.stream().map(productBean::find).toList();
         pck.setProducts(products);

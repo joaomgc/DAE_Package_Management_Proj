@@ -24,7 +24,7 @@ public class Package implements Serializable {
     private String packageId;
     @NotNull
     private String packageType;
-    @OneToMany @NotNull
+    @OneToMany(fetch = FetchType.EAGER) @NotNull
     private List<Product> products;
 
 

@@ -1,0 +1,8 @@
+### Create a new Product
+GET http://localhost:8080/monitor/api/products/all
+Accept: application/json
+
+### Create a new Product
+GET http://localhost:8080/monitor/api/packages/all
+Accept: application/json
+

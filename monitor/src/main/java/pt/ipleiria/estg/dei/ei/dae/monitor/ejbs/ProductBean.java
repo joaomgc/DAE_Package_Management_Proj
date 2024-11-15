@@ -14,7 +14,7 @@ public class ProductBean {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void create( String productId, String productName, String productType) {
+    public void create( Long productId, String productName, String productType) {
         var product = new Product(productId, productName, productType);
         entityManager.persist(product);
     }
@@ -23,7 +23,7 @@ public class ProductBean {
         return entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
     }
 
-    public Product find(String productId) {
+    public Product find(Long productId) {
         return entityManager.find(Product.class, productId);
     }
 

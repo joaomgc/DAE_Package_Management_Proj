@@ -22,10 +22,10 @@ public class ConfigBean {
     @PostConstruct
     public void populateDB() {
         try {
-            productBean.create("1", "Samsung TV", "Technology");
-            productBean.create("2", "Apple iPhone", "Technology");
+            productBean.create(1L, "Samsung TV", "Technology");
+            productBean.create(2L, "Apple iPhone", "Technology");
 
-            packageBean.create("1", "Package 1", List.of("1", "2"));
+            packageBean.create("1", "Package 1", List.of(1L, 2L));
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error populating database", e);
             throw e; // Rethrow the exception to ensure the deployment fails
