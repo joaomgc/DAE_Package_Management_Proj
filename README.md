@@ -24,7 +24,7 @@ src/
 │   │   ├── META-INF/               # Persistence configuration
 ├── test/
 │   ├── java/                       # Test cases for the application
-
+```
 
 ## Technologies Used
 
