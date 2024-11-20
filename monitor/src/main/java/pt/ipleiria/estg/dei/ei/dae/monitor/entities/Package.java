@@ -23,9 +23,12 @@ public class Package implements Serializable {
     private String packageType;
     @OneToMany(fetch = FetchType.EAGER) @NotNull
     private List<Product> products;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Volume> volumes;
 
     public Package() {
         this.products = new LinkedList<>();
+        this.volumes = new LinkedList<>();
     }
 
     public Package(String packageId, String packageType) {
@@ -33,6 +36,7 @@ public class Package implements Serializable {
         this.packageId = packageId;
         this.packageType = packageType;
         this.products = new LinkedList<>();
+        this.volumes = new LinkedList<>();
     }
 
     public List<Product> getProducts() {
@@ -43,6 +47,13 @@ public class Package implements Serializable {
         this.products = products;
     }
 
+    public List<Volume> getVolumes() {
+        return new LinkedList<>(volumes);
+    }
+
+    public void setVolumes(List<Volume> volumes) {
+        this.volumes = volumes;
+    }
 
 
     public String getPackageId() {

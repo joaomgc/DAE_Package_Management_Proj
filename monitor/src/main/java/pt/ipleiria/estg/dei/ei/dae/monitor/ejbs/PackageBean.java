@@ -28,4 +28,19 @@ public class PackageBean {
         return entityManager.createNamedQuery("getAllPackages", Package.class).getResultList();
     }
 
+    public Package find(String packageId) {
+        return entityManager.find(Package.class, packageId);
+    }
+
+    public void update(Package pck) {
+        entityManager.merge(pck);
+    }
+
+    public void delete(String id) {
+        Package pck = find(id);
+        if (pck != null) {
+            entityManager.remove(pck);
+        }
+    }
+
 }

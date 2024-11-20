@@ -48,7 +48,7 @@ public class PackageDTO implements Serializable {
     }
 
     public static PackageDTO from(Package pck) {
-        List<ProductDTO> productsDTOs = pck.getProducts().stream().map(ProductDTO::from).toList();
+        //List<ProductDTO> productsDTOs = pck.getProducts().stream().map(ProductDTO::from).toList();
         return new PackageDTO(
                 pck.getPackageId(),
                 pck.getPackageType()

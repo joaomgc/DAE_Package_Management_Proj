@@ -27,5 +27,15 @@ public class ProductBean {
         return entityManager.find(Product.class, productId);
     }
 
+    public void update(Product product) {
+        entityManager.merge(product);
+    }
+
+    public void delete(Long id) {
+        Product product = find(id);
+        if (product != null) {
+            entityManager.remove(product);
+        }
+    }
 
 }

@@ -6,7 +6,7 @@ Accept: application/json
 GET http://localhost:8080/monitor/api/packages/all
 Accept: application/json
 
-### Create a new Product
+### Create a new package
 POST http://localhost:8080/monitor/api/packages/
 Content-Type: application/json
 
@@ -15,14 +15,49 @@ Content-Type: application/json
   "packageType": "Electronics"
 }
 
-### Create a new Package
+### Create a new product
 POST http://localhost:8080/monitor/api/products/
 Content-Type: application/json
 
 {
-  "productId": 2311,
+  "productId": 23311,
   "productName": "Testadeee Product",
   "productType": "Elecctraaonics"
 }
 
+### Get product by id
 
+GET http://localhost:8080/monitor/api/products/{id}
+Accept: application/json
+
+### update product by id
+
+PUT http://localhost:8080/monitor/api/products/1
+Content-Type: application/json
+
+{
+  "productName": "Updated Product Name",
+  "productType": "Updated Product Type"
+}
+
+
+### delete product by id
+
+DELETE http://localhost:8080/monitor/api/products/2
+
+GET http://localhost:8080/monitor/api/packages/{id}
+Accept: application/json
+
+### update package by id
+
+PUT http://localhost:8080/monitor/api/packages/1
+Content-Type: application/json
+
+{
+  "packageType": "Updated Package Type"
+}
+
+### delete package by id
+
+
+DELETE http://localhost:8080/monitor/api/packages/pkgaatessssst

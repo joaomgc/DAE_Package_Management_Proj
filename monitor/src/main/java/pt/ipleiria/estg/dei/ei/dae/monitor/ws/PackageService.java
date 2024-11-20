@@ -30,4 +30,24 @@ public class PackageService {
                 packageDTO.getPackageType()
         );
     }
+
+    @PUT
+    @Path("/{id}")
+    public void updatePackage(@PathParam("id") String id, PackageDTO packageDTO) {
+        var pck = packageBean.find(id);
+        pck.setPackageType(packageDTO.getPackageType());
+        packageBean.update(pck);
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public void deletePackage(@PathParam("id") String id) {
+        packageBean.delete(id);
+    }
+
+    @GET
+    @Path("/{id}")
+    public PackageDTO getPackage(@PathParam("id") String id) {
+        return PackageDTO.from(packageBean.find(id));
+    }
 }
