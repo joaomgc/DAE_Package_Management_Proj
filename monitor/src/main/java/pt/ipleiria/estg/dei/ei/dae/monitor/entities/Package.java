@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
+@Table(name = "packages")
 @NamedQueries({
         @NamedQuery(
                 name = "getAllPackages",
@@ -17,31 +18,43 @@ import java.util.List;
 })
 public class Package implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotNull
     private String packageId;
     @NotNull
     private String packageType;
-
+    @OneToMany(fetch = FetchType.EAGER) @NotNull
+    private List<Product> products;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Volume> volumes;
 
     public Package() {
+        this.products = new LinkedList<>();
+        this.volumes = new LinkedList<>();
     }
 
     public Package(String packageId, String packageType) {
 
         this.packageId = packageId;
         this.packageType = packageType;
+        this.products = new LinkedList<>();
+        this.volumes = new LinkedList<>();
     }
 
-
-    public Long getId() {
-        return id;
+    public List<Product> getProducts() {
+        return new LinkedList<>(products);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
+
+    public List<Volume> getVolumes() {
+        return new LinkedList<>(volumes);
+    }
+
+    public void setVolumes(List<Volume> volumes) {
+        this.volumes = volumes;
+    }
+
 
     public String getPackageId() {
         return packageId;

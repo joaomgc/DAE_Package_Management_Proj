@@ -1,14 +1,24 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "sensor_readings")
 public class SensorReading {
-
+    @Id
     private Long id;
+    @ManyToOne
     private Sensor sensor;
     private LocalDateTime timestamp;
     private double value;
 
+    public SensorReading() {
+    }
     public SensorReading(Long id, Sensor sensor, LocalDateTime timestamp, double value) {
         this.id = id;
         this.sensor = sensor;
