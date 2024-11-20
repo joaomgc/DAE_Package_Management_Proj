@@ -11,6 +11,7 @@ A Java-based project designed to manage and monitor smart packages and related c
 
 ## Project Structure
 
+```plaintext
 src/
 ├── main/
 │   ├── java/
@@ -22,7 +23,7 @@ src/
 │   ├── resources/
 │   │   ├── META-INF/               # Persistence configuration
 ├── test/
-    ├── java/                       # Test cases for the application
+│   ├── java/                       # Test cases for the application
 
 
 ## Technologies Used
