@@ -1,27 +1,25 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "users")
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllUsers",
-                query = "SELECT u FROM User u ORDER BY u.id" // JPQL
-        )
-})
 public class User {
-    @Id
+
+    private Long id;
     private String username;
     private String password;
     private String email;
 
-    public User() {
-    }
-    public User(String username, String password, String email) {
+    public User(Long id, String username, String password, String email) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
