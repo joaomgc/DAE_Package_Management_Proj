@@ -19,9 +19,9 @@ public class Volume implements Serializable {
     @NotNull
     private String volumeName;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "package_id")
     private Package pack;
-
 
     public Volume() {
     }
@@ -29,15 +29,6 @@ public class Volume implements Serializable {
     public Volume(Long id, String volumeName, Package pack) {
         this.id = id;
         this.volumeName = volumeName;
-        this.pack = pack;
-
-    }
-
-    public Package getPack() {
-        return pack;
-    }
-
-    public void setPack(Package pack) {
         this.pack = pack;
     }
 
@@ -57,4 +48,11 @@ public class Volume implements Serializable {
         this.volumeName = volumeName;
     }
 
+    public Package getPack() {
+        return pack;
+    }
+
+    public void setPack(Package pack) {
+        this.pack = pack;
+    }
 }

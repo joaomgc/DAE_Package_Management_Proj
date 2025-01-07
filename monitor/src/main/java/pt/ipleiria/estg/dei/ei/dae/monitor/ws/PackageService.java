@@ -11,7 +11,6 @@ import java.util.List;
 @Path("/packages")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
-
 public class PackageService {
     @EJB
     private PackageBean packageBean;
@@ -49,5 +48,11 @@ public class PackageService {
     @Path("/{id}")
     public PackageDTO getPackage(@PathParam("id") String id) {
         return PackageDTO.from(packageBean.find(id));
+    }
+
+    @POST
+    @Path("/{packageId}/products/{productId}")
+    public void addProductToPackage(@PathParam("packageId") String packageId, @PathParam("productId") Long productId) {
+        packageBean.addProduct(packageId, productId);
     }
 }

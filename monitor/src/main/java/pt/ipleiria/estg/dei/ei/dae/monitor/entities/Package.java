@@ -2,10 +2,8 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,7 +11,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllPackages",
-                query = "SELECT p FROM Package p ORDER BY p.id" // JPQL
+                query = "SELECT p FROM Package p ORDER BY p.id"
         )
 })
 public class Package implements Serializable {
@@ -21,40 +19,22 @@ public class Package implements Serializable {
     private String packageId;
     @NotNull
     private String packageType;
-    @OneToMany(fetch = FetchType.EAGER) @NotNull
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Product> products;
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Volume> volumes;
+
+    @OneToOne(mappedBy = "pack", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Volume volume;
 
     public Package() {
-        this.products = new LinkedList<>();
-        this.volumes = new LinkedList<>();
+        products = new ArrayList<>();
     }
 
     public Package(String packageId, String packageType) {
-
         this.packageId = packageId;
         this.packageType = packageType;
-        this.products = new LinkedList<>();
-        this.volumes = new LinkedList<>();
+        this.products = new ArrayList<>();
     }
-
-    public List<Product> getProducts() {
-        return new LinkedList<>(products);
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public List<Volume> getVolumes() {
-        return new LinkedList<>(volumes);
-    }
-
-    public void setVolumes(List<Volume> volumes) {
-        this.volumes = volumes;
-    }
-
 
     public String getPackageId() {
         return packageId;
@@ -72,4 +52,23 @@ public class Package implements Serializable {
         this.packageType = packageType;
     }
 
+    public Volume getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Volume volume) {
+        this.volume = volume;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
+    }
 }

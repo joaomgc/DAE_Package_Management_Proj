@@ -1,15 +1,13 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.dtos;
 
-import jakarta.persistence.Id;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Package;
+import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Product;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PackageDTO implements Serializable {
-    @Id
     private String packageId;
     private String packageType;
     private List<ProductDTO> products;
@@ -17,10 +15,10 @@ public class PackageDTO implements Serializable {
     public PackageDTO() {
     }
 
-    public PackageDTO(String packageId, String packageType) {
+    public PackageDTO(String packageId, String packageType, List<ProductDTO> products) {
         this.packageId = packageId;
         this.packageType = packageType;
-        this.products = new ArrayList<>();
+        this.products = products;
     }
 
     public List<ProductDTO> getProducts() {
@@ -48,11 +46,13 @@ public class PackageDTO implements Serializable {
     }
 
     public static PackageDTO from(Package pck) {
-        //List<ProductDTO> productsDTOs = pck.getProducts().stream().map(ProductDTO::from).toList();
+        List<ProductDTO> productDTOs = pck.getProducts().stream()
+                .map(ProductDTO::from)
+                .collect(Collectors.toList());
         return new PackageDTO(
                 pck.getPackageId(),
-                pck.getPackageType()
-
+                pck.getPackageType(),
+                productDTOs
         );
     }
 
