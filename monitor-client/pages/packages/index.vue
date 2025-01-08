@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Packages</h1>
+    <button @click="redirectToCreate" class="btn" style="float: left;">Create Package</button>
     <table>
       <thead>
         <tr>
@@ -29,6 +30,8 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+
 export default {
   data() {
     return {
@@ -71,6 +74,10 @@ export default {
           console.error('Error adding product:', error);
         }
       }
+    },
+    redirectToCreate() {
+      const router = useRouter();
+      this.$router.push('/packages/create');
     }
   }
 };
@@ -90,6 +97,7 @@ th {
 }
 .btn {
   display: inline-block;
+  margin-bottom: 20px;
   padding: 10px 20px;
   font-size: 1em;
   color: #555;
@@ -100,6 +108,7 @@ th {
   cursor: pointer;
   transition: color 0.3s ease, border-bottom 0.3s ease, background-color 0.3s ease;
   padding-bottom: 5px;
+
 }
 .btn:hover {
   color: #000;
