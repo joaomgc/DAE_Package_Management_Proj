@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Volumes</h1>
+    <button @click="redirectToCreate" class="btn">Create Volume</button>
     <table>
       <thead>
         <tr>
@@ -27,6 +28,8 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+
 export default {
   data() {
     return {
@@ -59,6 +62,10 @@ export default {
       } catch (error) {
         console.error('Error associating package:', error);
       }
+    },
+    redirectToCreate() {
+      const router = useRouter();
+      this.$router.push('/volumes/create');
     }
   }
 };
@@ -75,5 +82,25 @@ th, td {
 }
 th {
   background-color: #f2f2f2;
+}
+.btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #555;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease, border-bottom 0.3s ease, background-color 0.3s ease;
+  padding-bottom: 5px;
+  float: left;
+}
+.btn:hover {
+  color: #000;
+  background-color: #e0e0e0;
+  border-bottom: 2px solid #000;
 }
 </style>

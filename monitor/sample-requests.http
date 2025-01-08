@@ -73,3 +73,13 @@ GET http://localhost:8080/monitor/api/volumes
 ### insert package in volume
 
 POST http://localhost:8080/monitor/api/volumes/1/packages/1
+
+
+### Create a new volume
+POST http://localhost:8080/monitor/api/volumes
+Content-Type: application/json
+
+{
+  "id": 87,
+  "volumeName": "New Volume TESTE"
+}
