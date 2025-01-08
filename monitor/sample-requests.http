@@ -69,3 +69,7 @@ POST http://localhost:8080/monitor/api/packages/1/products/23311
 ### get all volumes
 
 GET http://localhost:8080/monitor/api/volumes
+
+### insert package in volume
+
+POST http://localhost:8080/monitor/api/volumes/1/packages/1

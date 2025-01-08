@@ -64,6 +64,17 @@ public class VolumeService {
         return Response.noContent().build();
     }
 
+    @POST
+    @Path("/{volumeId}/packages/{packageId}")
+    public Response addPackageToVolume(@PathParam("volumeId") Long volumeId, @PathParam("packageId") String packageId) {
+        Volume volume = volumeBean.find(volumeId);
+        if (volume == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        volumeBean.addPackage(volumeId, packageId);
+        return Response.ok().build();
+    }
+
     private VolumeDTO toDTO(Volume volume) {
         return new VolumeDTO(volume.getId(), volume.getVolumeName(), volume.getPack() != null ? volume.getPack().getPackageId() : null);
     }

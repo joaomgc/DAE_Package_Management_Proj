@@ -32,6 +32,15 @@ public class VolumeBean {
         entityManager.merge(volume);
     }
 
+    public void addPackage(Long id, String packageId) {
+        Volume volume = find(id);
+        Package pack = entityManager.find(Package.class, packageId);
+        if (volume != null && pack != null) {
+            volume.setPack(pack);
+            entityManager.merge(volume);
+        }
+    }
+
     public void delete(Long id) {
         Volume volume = find(id);
         if (volume != null) {
