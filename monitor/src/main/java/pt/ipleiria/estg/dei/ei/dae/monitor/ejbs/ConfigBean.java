@@ -22,6 +22,8 @@ public class ConfigBean {
     private VolumeBean volumeBean;
     @EJB
     private SensorBean sensorBean;
+    @EJB
+    private UserBean userBean;
 
     @PostConstruct
     public void populateDB() {
@@ -99,6 +101,11 @@ public class ConfigBean {
             packageBean.create("18", "Event Package");
             packageBean.create("19", "Personal Package");
             packageBean.create("20", "Exclusive Package");
+
+
+            userBean.create("admin", "123", "admin@mail.pt");
+            userBean.create("ricardo", "123", "riczao@mail.pt");
+
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error populating database", e);

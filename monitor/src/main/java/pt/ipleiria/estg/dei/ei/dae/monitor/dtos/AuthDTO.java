@@ -19,19 +19,19 @@ public class AuthDTO implements Serializable {
         this.password = password;
     }
 
-    public String getUsername() {
+    public @NotBlank String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(@NotBlank String username) {
         this.username = username;
     }
 
-    public String getPassword() {
+    public @NotBlank String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NotBlank String password) {
         this.password = password;
     }
 }
