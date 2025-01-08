@@ -9,14 +9,16 @@ public class VolumeDTO implements Serializable {
     private Long id;
     private String volumeName;
     private String packageId;
+    private String sensorId;
 
     public VolumeDTO() {
     }
 
-    public VolumeDTO(Long id, String volumeName, String packageId) {
+    public VolumeDTO(Long id, String volumeName, String packageId, String sensorId) {
         this.id = id;
         this.volumeName = volumeName;
         this.packageId = packageId;
+        this.sensorId = sensorId;
     }
 
     public Long getId() {
@@ -25,6 +27,14 @@ public class VolumeDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
     }
 
     public String getVolumeName() {
@@ -47,7 +57,8 @@ public class VolumeDTO implements Serializable {
         return new VolumeDTO(
                 volume.getId(),
                 volume.getVolumeName(),
-                volume.getPack().getPackageId()
+                volume.getPack().getPackageId(),
+                volume.getSensor() != null ? volume.getSensor().getId() : null
         );
     }
 

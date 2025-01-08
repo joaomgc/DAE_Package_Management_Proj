@@ -19,6 +19,9 @@ public class Volume implements Serializable {
     @NotNull
     private String volumeName;
 
+    @OneToOne(mappedBy = "volume")
+    private SensorSimulator sensor;
+
     @OneToOne
     @JoinColumn(name = "package_id")
     private Package pack;
@@ -26,10 +29,11 @@ public class Volume implements Serializable {
     public Volume() {
     }
 
-    public Volume(Long id, String volumeName, Package pack) {
+    public Volume(Long id, String volumeName, Package pack, SensorSimulator sensor) {
         this.id = id;
         this.volumeName = volumeName;
         this.pack = pack;
+        this.sensor = sensor;
     }
 
     public Long getId() {
@@ -46,6 +50,14 @@ public class Volume implements Serializable {
 
     public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;
+    }
+
+    public SensorSimulator getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(SensorSimulator sensor) {
+        this.sensor = sensor;
     }
 
     public Package getPack() {

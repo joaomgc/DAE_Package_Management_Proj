@@ -20,10 +20,20 @@ public class ConfigBean {
     private ProductBean productBean;
     @EJB
     private VolumeBean volumeBean;
+    @EJB
+    private SensorBean sensorBean;
 
     @PostConstruct
     public void populateDB() {
         try {
+
+            // Sensors
+
+            sensorBean.create("1", "temperatura");
+            sensorBean.create("2", "pressao");
+            sensorBean.create("3", "aceleracao");
+            sensorBean.create("4", "posicionamento");
+
             // Products
             productBean.create(1L, "Laptop", "Electronics");
             productBean.create(2L, "Smartphone", "Electronics");

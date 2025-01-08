@@ -75,7 +75,19 @@ public class VolumeService {
         return Response.ok().build();
     }
 
+    @POST
+    @Path("/{volumeId}/sensors/{sensorId}")
+    public Response associateSensorToVolume(@PathParam("volumeId") Long volumeId, @PathParam("sensorId") String sensorId) {
+        Volume volume = volumeBean.find(volumeId);
+        if (volume == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        volumeBean.associateSensor(volumeId, sensorId);
+
+        return Response.ok().build();
+    }
+
     private VolumeDTO toDTO(Volume volume) {
-        return new VolumeDTO(volume.getId(), volume.getVolumeName(), volume.getPack() != null ? volume.getPack().getPackageId() : null);
+        return new VolumeDTO(volume.getId(), volume.getVolumeName(), volume.getPack() != null ? volume.getPack().getPackageId() : null, volume.getSensor() != null ? volume.getSensor().getId() : null);
     }
 }

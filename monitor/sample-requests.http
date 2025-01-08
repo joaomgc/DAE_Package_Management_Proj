@@ -83,3 +83,11 @@ Content-Type: application/json
   "id": 87,
   "volumeName": "New Volume TESTE"
 }
+
+### get all sensors
+
+GET http://localhost:8080/monitor/api/sensors
+
+### associate sensor to volume
+
+POST http://localhost:8080/monitor/api/volumes/20/sensors/4
