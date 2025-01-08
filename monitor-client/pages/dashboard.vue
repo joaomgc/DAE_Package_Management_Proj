@@ -4,6 +4,7 @@
     <div class="links">
       <nuxt-link to="/packages" class="btn">Go to Packages</nuxt-link>
       <nuxt-link to="/products" class="btn">Go to Products</nuxt-link>
+      <nuxt-link to="/volumes" class="btn">Go to Volumes</nuxt-link>
     </div>
   </div>
 </template>

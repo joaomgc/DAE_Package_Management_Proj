@@ -65,3 +65,7 @@ DELETE http://localhost:8080/monitor/api/packages/pkgaatessssst
 ### Add product to package
 
 POST http://localhost:8080/monitor/api/packages/1/products/23311
+
+### get all volumes
+
+GET http://localhost:8080/monitor/api/volumes
