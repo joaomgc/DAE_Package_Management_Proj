@@ -3,6 +3,10 @@
     <nav>
       <nuxt-link to="/">Home</nuxt-link>
       <nuxt-link to="/dashboard">Dashboard</nuxt-link>
+      <div class="auth-section">
+        <nuxt-link v-if="!isLoggedIn" to="/auth">Login</nuxt-link>
+        <img v-else src="/user.png" alt="User Profile" class="user-icon" />
+      </div>
     </nav>
     <NuxtPage />
   </div>
@@ -26,9 +30,10 @@ export default {
 
 nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   background-color: #f4f4f4;
-  padding: 15px 0;
+  padding: 15px 20px;
   border-bottom: 1px solid #ddd;
 }
 
@@ -46,4 +51,23 @@ nav a:hover {
   color: #000;
   border-bottom: 2px solid #000;
 }
+
+.auth-section {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.auth-section .user-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.auth-section .user-icon:hover {
+  transform: scale(1.1);
+}
+
 </style>
