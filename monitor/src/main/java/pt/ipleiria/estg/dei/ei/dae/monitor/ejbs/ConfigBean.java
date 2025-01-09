@@ -24,6 +24,8 @@ public class ConfigBean {
     private SensorBean sensorBean;
     @EJB
     private UserBean userBean;
+    @EJB
+    private OrderBean orderBean;
 
     @PostConstruct
     public void populateDB() {
@@ -59,16 +61,18 @@ public class ConfigBean {
             productBean.create(20L, "Vacuum Cleaner", "Home Appliances");
 
 // Volumes
-            volumeBean.create(1L, "Standard Volume", null);
+            packageBean.create("0", "No Package");
+
+            volumeBean.create(1L, "Standard Volume", packageBean.find("0"));
             volumeBean.create(2L, "Express Volume", null);
             volumeBean.create(3L, "Bulk Volume", null);
             volumeBean.create(4L, "Light Volume", null);
             volumeBean.create(5L, "Heavy Volume", null);
             volumeBean.create(6L, "Fragile Volume", null);
             volumeBean.create(7L, "Perishable Volume", null);
-            volumeBean.create(8L, "Valuable Volume", null);
+            volumeBean.create(8L, "Valuable Volume", packageBean.find("0"));
             volumeBean.create(9L, "Overnight Volume", null);
-            volumeBean.create(10L, "Two-Day Volume", null);
+            volumeBean.create(10L, "Two-Day Volume", packageBean.find("0"));
             volumeBean.create(11L, "Economy Volume", null);
             volumeBean.create(12L, "Same-Day Volume", null);
             volumeBean.create(13L, "Standard Shipping Volume", null);
@@ -105,6 +109,12 @@ public class ConfigBean {
 
             userBean.create("admin", "123", "admin@mail.pt");
             userBean.create("ricardo", "123", "riczao@mail.pt");
+
+    // orders
+            orderBean.create(123L, "ricardo", "pendente");
+            orderBean.create(456L, "ricardo", "entregue");
+            orderBean.addVolume(123L, 10L);
+            orderBean.addVolume(123L, 8L);
 
 
         } catch (Exception e) {

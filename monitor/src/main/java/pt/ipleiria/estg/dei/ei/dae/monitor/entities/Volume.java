@@ -26,6 +26,10 @@ public class Volume implements Serializable {
     @JoinColumn(name = "package_id")
     private Package pack;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     public Volume() {
     }
 
@@ -66,5 +70,13 @@ public class Volume implements Serializable {
 
     public void setPack(Package pack) {
         this.pack = pack;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

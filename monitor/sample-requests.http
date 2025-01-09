@@ -6,6 +6,11 @@ Accept: application/json
 GET http://localhost:8080/monitor/api/packages/all
 Accept: application/json
 
+### Get All Orders
+GET http://localhost:8080/monitor/api/encomendas
+Accept: application/json
+
+
 ### Create a new package
 POST http://localhost:8080/monitor/api/packages/
 Content-Type: application/json
