@@ -63,14 +63,14 @@ public class ConfigBean {
 // Volumes
             packageBean.create("0", "No Package");
 
-            volumeBean.create(1L, "Standard Volume", packageBean.find("0"));
+            volumeBean.create(1L, "Standard Volume", packageBean.find("0"), 1L, 5);
             volumeBean.create(2L, "Express Volume", null);
             volumeBean.create(3L, "Bulk Volume", null);
             volumeBean.create(4L, "Light Volume", null);
             volumeBean.create(5L, "Heavy Volume", null);
             volumeBean.create(6L, "Fragile Volume", null);
             volumeBean.create(7L, "Perishable Volume", null);
-            volumeBean.create(8L, "Valuable Volume", packageBean.find("0"));
+            volumeBean.create(8L, "Valuable Volume", packageBean.find("0"), 3L, 4);
             volumeBean.create(9L, "Overnight Volume", null);
             volumeBean.create(10L, "Two-Day Volume", packageBean.find("0"));
             volumeBean.create(11L, "Economy Volume", null);
@@ -115,7 +115,11 @@ public class ConfigBean {
             orderBean.create(456L, "ricardo", "entregue");
             orderBean.addVolume(123L, 10L);
             orderBean.addVolume(123L, 8L);
-
+//
+//    // add products to volumes
+            volumeBean.addProduct(8L, 1L, 5);
+            volumeBean.addProduct(10L, 2L, 3);  // Volume 10 -> Product 2 (3 units)
+            volumeBean.addProduct(10L, 3L, 7);
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error populating database", e);

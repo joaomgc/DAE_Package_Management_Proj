@@ -24,6 +24,10 @@ public class ProductBean {
     }
 
     public Product find(Long productId) {
+        var product = entityManager.find(Product.class, productId);
+        if (product == null) {
+            throw new IllegalArgumentException("Product not found");
+        }
         return entityManager.find(Product.class, productId);
     }
 

@@ -1,10 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.ejbs;
 
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import pt.ipleiria.estg.dei.ei.dae.monitor.entities.SensorSimulator;
-import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Volume;
+import pt.ipleiria.estg.dei.ei.dae.monitor.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Package;
 
 
@@ -15,9 +15,21 @@ public class VolumeBean {
 
     @PersistenceContext
     private EntityManager entityManager;
+    @EJB
+    private ProductBean productBean;
 
     public void create(Long id, String volumeName, Package pack) {
         Volume volume = new Volume(id, volumeName, pack, null);
+        entityManager.persist(volume);
+    }
+
+    public void create(Long id, String volumeName, Package pack, Long productId, int quantity) {
+        Volume volume = new Volume(id, volumeName, pack, null);
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity must be a positive number");
+        }
+        Product product = productBean.find(productId);
+        volume.addVolumeProduct(product, quantity);
         entityManager.persist(volume);
     }
 
@@ -26,7 +38,11 @@ public class VolumeBean {
     }
 
     public Volume find(Long id) {
-        return entityManager.find(Volume.class, id);
+        var volume = entityManager.find(Volume.class, id);
+        if (volume == null) {
+            throw new IllegalArgumentException("Volume not found");
+        }
+        return volume;
     }
 
     public void update(Volume volume) {
@@ -40,6 +56,13 @@ public class VolumeBean {
             volume.setPack(pack);
             entityManager.merge(volume);
         }
+    }
+
+    public void addProduct(Long volumeId, Long productId, int quantidade) {
+        Volume volume = find(volumeId);
+        Product product = productBean.find(productId);
+        VolumeProduct vp = new VolumeProduct(volume, product, quantidade);
+        entityManager.persist(vp);
     }
 
     public void associateSensor(Long volumeId, String sensorId) {

@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.monitor.services;
+package pt.ipleiria.estg.dei.ei.dae.monitor.ws;
 
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
@@ -88,6 +88,7 @@ public class VolumeService {
     }
 
     private VolumeDTO toDTO(Volume volume) {
-        return new VolumeDTO(volume.getId(), volume.getVolumeName(), volume.getPack() != null ? volume.getPack().getPackageId() : null, volume.getSensor() != null ? volume.getSensor().getId() : null);
+        return new VolumeDTO(volume.getId(), volume.getVolumeName(), volume.getPack() != null ? volume.getPack().getPackageId() : null, volume.getSensor() != null ? volume.getSensor().getId() : null,
+                volume.getProductQuantityDTOs());
     }
 }

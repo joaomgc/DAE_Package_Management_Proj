@@ -2,7 +2,11 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.ProductQuantityDTO;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "volumes")
@@ -30,7 +34,11 @@ public class Volume implements Serializable {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @OneToMany(mappedBy = "volume", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<VolumeProduct> volumeProducts;
+
     public Volume() {
+        this.volumeProducts = new ArrayList<>();
     }
 
     public Volume(Long id, String volumeName, Package pack, SensorSimulator sensor) {
@@ -38,6 +46,31 @@ public class Volume implements Serializable {
         this.volumeName = volumeName;
         this.pack = pack;
         this.sensor = sensor;
+        this.volumeProducts = new ArrayList<>();
+    }
+
+    public List<VolumeProduct> getVolumeProducts() {
+        return volumeProducts;
+    }
+
+    public List<ProductQuantityDTO> getProductQuantityDTOs() {
+        return volumeProducts.stream()
+                .map(vp -> new ProductQuantityDTO(
+                        vp.getProduct().getProductId(),
+                        vp.getProduct().getProductName(),
+                        vp.getQuantidade()
+                ))
+                .toList();
+    }
+
+
+    public void addVolumeProduct(Product product, int quantidade) {
+        VolumeProduct volumeProduct = new VolumeProduct(this, product, quantidade);
+        volumeProducts.add(volumeProduct);
+    }
+
+    public void removeVolumeProduct(Product product) {
+        volumeProducts.removeIf(vp -> vp.getProduct().equals(product));
     }
 
     public Long getId() {
