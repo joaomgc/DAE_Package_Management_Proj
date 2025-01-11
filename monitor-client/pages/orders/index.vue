@@ -5,7 +5,7 @@
       <p>List of all orders</p>
     </header>
     <main>
-      <table>
+      <table v-if="filteredOrders.length > 0">
         <thead>
           <tr>
             <th>Order ID</th>
@@ -15,7 +15,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="order in orders" :key="order.encomendaId">
+          <tr v-for="order in filteredOrders" :key="order.encomendaId">
             <td>{{ order.encomendaId }}</td>
             <td>{{ order.customerId }}</td>
             <td>{{ order.estado }}</td>
@@ -29,26 +29,31 @@
           </tr>
         </tbody>
       </table>
+      <p v-else>No orders found for this user.</p>
     </main>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'OrdersPage',
-  data() {
-    return {
-      orders: []
-    };
-  },
-  created() {
-    fetch('http://localhost:8080/monitor/api/encomendas')
-      .then(response => response.json())
-      .then(data => {
-        this.orders = data;
-      });
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useAuthStore } from '~/store/auth-store';
+
+const authStore = useAuthStore();
+const orders = ref([]);
+
+onMounted(async () => {
+  const response = await fetch('http://localhost:8080/monitor/api/encomendas');
+  const data = await response.json();
+  orders.value = data;
+});
+
+const filteredOrders = computed(() => {
+  const user = authStore.user;
+  if (user) {
+    return orders.value.filter(order => order.customerId === user.username);
   }
-}
+  return [];
+});
 </script>
 
 <style scoped>

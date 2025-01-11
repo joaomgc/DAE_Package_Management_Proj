@@ -1,30 +1,36 @@
-<script setup>
+<script setup lang="ts">
+import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '~/store/auth-store'; // Import the store
 
 const router = useRouter();
+const authStore = useAuthStore();
 
-const config = useRuntimeConfig();
-const api = config.public.API_URL;
+const config = useRuntimeConfig(); // Access runtime config
+const api = config.public.API_URL; // API URL from config
+
 const loginFormData = reactive({
-    username: "",
-    password: ""
+    username: '',
+    password: '',
 });
-const errorMessage = ref("");
+
+const errorMessage = ref('');
 
 async function login() {
     try {
-        errorMessage.value = ""; // Clear any previous error message
+        errorMessage.value = ''; // Clear any previous error message
         const response = await $fetch(`${api}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Accept: 'application/json'
+                Accept: 'application/json',
             },
-            body: loginFormData
+            body: loginFormData,
         });
 
         if (response) {
-            router.push('/dashboard');
+            authStore.setAuthData(response, { username: loginFormData.username }); // Save token and user data
+            router.push('/dashboard'); // Redirect after login
         }
     } catch (e) {
         errorMessage.value = 'Invalid username or password';
@@ -33,9 +39,9 @@ async function login() {
 }
 
 function reset() {
-    loginFormData.username = "";
-    loginFormData.password = "";
-    errorMessage.value = ""; // Clear the error message on reset
+    loginFormData.username = '';
+    loginFormData.password = '';
+    errorMessage.value = ''; // Clear the error message on reset
 }
 </script>
 
@@ -46,15 +52,15 @@ function reset() {
             <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input id="username" v-model="loginFormData.username" type="text">
+                <input id="username" v-model="loginFormData.username" type="text" />
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input id="password" v-model="loginFormData.password" type="password">
+                <input id="password" v-model="loginFormData.password" type="password" />
             </div>
             <div class="button-group">
-                <button @click="login">LOGIN</button>
-                <button @click="reset">RESET</button>
+                <button type="submit">LOGIN</button>
+                <button type="button" @click="reset">RESET</button>
             </div>
         </form>
     </div>

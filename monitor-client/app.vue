@@ -3,20 +3,36 @@
     <nav>
       <nuxt-link to="/">Home</nuxt-link>
       <nuxt-link to="/dashboard">Dashboard</nuxt-link>
-      <nuxt-link to="/orders">Orders</nuxt-link>
+      <nuxt-link v-if="isLoggedIn" to="/orders">Orders</nuxt-link>
       <div class="auth-section">
         <nuxt-link v-if="!isLoggedIn" to="/auth">Login</nuxt-link>
-        <img v-else src="/user.png" alt="User Profile" class="user-icon" />
+        <div v-else class="user-info">
+          <img src="/user.png" alt="User Profile" class="user-icon" />
+          <span class="username">{{ user?.username }}</span>
+          <button @click="logout" class="logout-btn">Logout</button>
+        </div>
       </div>
     </nav>
     <NuxtPage />
   </div>
 </template>
 
-<script>
-export default {
-  name: 'App'
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '~/store/auth-store';
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const isLoggedIn = computed(() => authStore.isAuthenticated);
+const user = computed(() => authStore.user);
+
+function logout() {
+  authStore.logout();
+  router.push('/'); 
 }
+console.log(user.value);
 </script>
 
 <style>
@@ -59,6 +75,11 @@ nav a:hover {
   margin-left: auto;
 }
 
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
 .auth-section .user-icon {
   width: 40px;
   height: 40px;
@@ -71,4 +92,27 @@ nav a:hover {
   transform: scale(1.1);
 }
 
+.username {
+  margin-left: 10px;
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #555;
+}
+
+.logout-btn {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f44336;
+  color: white;
+  font-size: 1.1em;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #d32f2f;
+}
 </style>
