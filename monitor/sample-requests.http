@@ -96,9 +96,15 @@ GET http://localhost:8080/monitor/api/sensors
 ### associate sensor to volume
 
 POST http://localhost:8080/monitor/api/volumes/20/sensors/4
+
+
 ### REQUEST JWT TOKEN
 POST http://localhost:8080/monitor/api/auth/login
 Content-Type: application/json
 Accept: application/json
 
 { "username": "admin", "password": "123" }
+
+### get all encomendas
+
+GET http://localhost:8080/monitor/api/encomendas

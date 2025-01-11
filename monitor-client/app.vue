@@ -3,6 +3,7 @@
     <nav>
       <nuxt-link to="/">Home</nuxt-link>
       <nuxt-link to="/dashboard">Dashboard</nuxt-link>
+      <nuxt-link to="/orders">Orders</nuxt-link>
       <div class="auth-section">
         <nuxt-link v-if="!isLoggedIn" to="/auth">Login</nuxt-link>
         <img v-else src="/user.png" alt="User Profile" class="user-icon" />
