@@ -105,6 +105,25 @@ Accept: application/json
 
 { "username": "admin", "password": "123" }
 
-### get all encomendas
+### Get a order
+GET http://localhost:8080/monitor/api/encomendas/123
+Accept: application/json
 
-GET http://localhost:8080/monitor/api/encomendas
+
+### Set a sensor value
+POST http://localhost:8080/monitor/api/sensors
+Content-Type: application/json
+
+{
+  "id": 1,
+  "valor": 20.5
+}
+
+### Get last sensor value
+GET http://localhost:8080/monitor/api/sensors/1
+Accept: application/json
+
+
+### Get sensor history
+GET http://localhost:8080/monitor/api/sensor/1/history
+Accept: application/json

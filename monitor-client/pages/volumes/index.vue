@@ -1,3 +1,44 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const volumes = ref([]);
+const router = useRouter();
+
+const fetchVolumes = async () => {
+  try {
+    const response = await fetch('http://localhost:8080/monitor/api/volumes');
+    const data = await response.json();
+    volumes.value = data.map(volume => ({ ...volume, newPackageId: '' }));
+  } catch (error) {
+    console.error('Error fetching volumes:', error);
+  }
+};
+
+const associatePackage = async (volumeId, packageId) => {
+  try {
+    const response = await fetch(`http://localhost:8080/monitor/api/volumes/${volumeId}/packages/${packageId}`, {
+      method: 'POST',
+    });
+    if (response.ok) {
+      fetchVolumes(); // Refresh the data
+    } else {
+      console.error('Error associating package:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error associating package:', error);
+  }
+};
+
+const redirectToCreate = () => {
+  router.push('/volumes/create');
+};
+
+onMounted(() => {
+  fetchVolumes();
+});
+</script>
+
 <template>
   <div>
     <h1>Volumes</h1>
@@ -17,59 +58,18 @@
           <td>
             <span v-if="volume.packageId">{{ volume.packageId }}</span>
             <span v-else>
+              <form @submit.prevent="associatePackage(volume.id, volume.newPackageId)">
               <input v-model="volume.newPackageId" placeholder="Enter Package ID" />
               <button @click="associatePackage(volume.id, volume.newPackageId)">Associate</button>
+              </form>
             </span>
           </td>
+          <td> </td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
-
-<script>
-import { useRouter } from 'vue-router';
-
-export default {
-  data() {
-    return {
-      volumes: []
-    };
-  },
-  created() {
-    this.fetchVolumes();
-  },
-  methods: {
-    async fetchVolumes() {
-      try {
-        const response = await fetch('http://localhost:8080/monitor/api/volumes');
-        const data = await response.json();
-        this.volumes = data.map(volume => ({ ...volume, newPackageId: '' }));
-      } catch (error) {
-        console.error('Error fetching volumes:', error);
-      }
-    },
-    async associatePackage(volumeId, packageId) {
-      try {
-        const response = await fetch(`http://localhost:8080/monitor/api/volumes/${volumeId}/packages/${packageId}`, {
-          method: 'POST'
-        });
-        if (response.ok) {
-          this.fetchVolumes();
-        } else {
-          console.error('Error associating package:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error associating package:', error);
-      }
-    },
-    redirectToCreate() {
-      const router = useRouter();
-      this.$router.push('/volumes/create');
-    }
-  }
-};
-</script>
 
 <style scoped>
 table {

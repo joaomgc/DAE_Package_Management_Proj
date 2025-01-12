@@ -67,6 +67,14 @@ public class SensorSimulator {
         return valor;
     }
 
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public void gerarDados() {
         this.timestamp = LocalDateTime.now();
         switch (tipo) {

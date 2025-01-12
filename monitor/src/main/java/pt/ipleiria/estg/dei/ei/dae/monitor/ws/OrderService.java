@@ -33,4 +33,10 @@ public class OrderService {
         );
     }
 
+    @GET
+    @Path("/{encomendaId}") // EP03
+    public OrderDTO getOrder(@PathParam("encomendaId") Long encomendaId) {
+        return OrderDTO.from(orderBean.find(encomendaId));
+    }
+
 }

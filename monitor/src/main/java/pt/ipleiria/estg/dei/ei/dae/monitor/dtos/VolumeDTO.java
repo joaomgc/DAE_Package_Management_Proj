@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.dtos;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Volume;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ public class VolumeDTO implements Serializable {
         this.packageId = packageId;
         this.sensorId = sensorId;
         this.produtos = produtos;
+        // this.produtos = new ArrayList<>();
     }
 
     public Long getId() {
@@ -54,6 +56,14 @@ public class VolumeDTO implements Serializable {
 
     public void setPackageId(String packageId) {
         this.packageId = packageId;
+    }
+
+    public List<ProductQuantityDTO> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<ProductQuantityDTO> produtos) {
+        this.produtos = produtos;
     }
 
     public static VolumeDTO from(Volume volume) {

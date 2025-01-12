@@ -4,6 +4,9 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +26,8 @@ public class ConfigBean {
     @EJB
     private SensorBean sensorBean;
     @EJB
+    private SensorHistoryBean sensorHistoryBean;
+    @EJB
     private UserBean userBean;
     @EJB
     private OrderBean orderBean;
@@ -37,6 +42,14 @@ public class ConfigBean {
             sensorBean.create("2", "pressao");
             sensorBean.create("3", "aceleracao");
             sensorBean.create("4", "posicionamento");
+
+            // Sensor History
+
+            sensorHistoryBean.create(sensorBean.find("1"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 20.0);
+            sensorHistoryBean.create(sensorBean.find("1"), LocalDateTime.parse("2024-12-12 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 21.0);
+            sensorHistoryBean.create(sensorBean.find("2"), LocalDateTime.parse("2025-01-03 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 1000.0);
+            sensorHistoryBean.create(sensorBean.find("3"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 10.0);
+            sensorHistoryBean.create(sensorBean.find("4"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 10.0);
 
             // Products
             productBean.create(1L, "Laptop", "Electronics");
