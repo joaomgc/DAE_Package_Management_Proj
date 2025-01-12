@@ -15,8 +15,8 @@ public class SensorBean {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void create(String id, String tipo) {
-        SensorSimulator sensor = new SensorSimulator(id, tipo);
+    public void create(String id, String tipo, String status) {
+        SensorSimulator sensor = new SensorSimulator(id, tipo, status);
         entityManager.persist(sensor);
     }
 

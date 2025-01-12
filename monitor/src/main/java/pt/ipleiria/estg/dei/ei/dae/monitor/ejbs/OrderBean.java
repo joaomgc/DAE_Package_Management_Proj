@@ -41,6 +41,17 @@ public class OrderBean {
         em.persist(order);
     }
 
+    public void update(Order order) {
+        em.merge(order);
+    }
+
+    public void delete(Long id) {
+        Order order = find(id);
+        if (order != null) {
+            em.remove(order);
+        }
+    }
+
     public Order find(Long id) {
         var order = em.find(Order.class, id);
         if (order == null) {
@@ -59,6 +70,16 @@ public class OrderBean {
         order.add(volume);
         em.merge(order);
         em.merge(volume);
+    }
+
+    public void removeVolume(Long orderId) {
+        List<Volume> volumes = em.createQuery("SELECT v FROM Volume v WHERE v.order.id = :orderId", Volume.class)
+                .setParameter("orderId", orderId)
+                .getResultList();
+        for (Volume volume : volumes) {
+            volume.setOrder(null);
+            em.merge(volume);
+        }
     }
 
     public List<Order> findAll() {

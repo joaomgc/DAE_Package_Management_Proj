@@ -38,16 +38,18 @@ public class ConfigBean {
 
             // Sensors
 
-            sensorBean.create("1", "temperatura");
-            sensorBean.create("2", "pressao");
-            sensorBean.create("3", "aceleracao");
-            sensorBean.create("4", "posicionamento");
+            sensorBean.create("1", "temperatura", "Inactive");
+            sensorBean.create("2", "pressao", "Inactive");
+            sensorBean.create("3", "aceleracao", "Inactive");
+            sensorBean.create("4", "posicionamento", "Inactive");
+            sensorBean.create("5", "luminosidade", "Active");
 
             // Sensor History
 
             sensorHistoryBean.create(sensorBean.find("1"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 20.0);
             sensorHistoryBean.create(sensorBean.find("1"), LocalDateTime.parse("2024-12-12 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 21.0);
             sensorHistoryBean.create(sensorBean.find("2"), LocalDateTime.parse("2025-01-03 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 1000.0);
+            sensorHistoryBean.create(sensorBean.find("2"), LocalDateTime.parse("2025-01-05 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 1500.0);
             sensorHistoryBean.create(sensorBean.find("3"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 10.0);
             sensorHistoryBean.create(sensorBean.find("4"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 10.0);
 
@@ -128,6 +130,7 @@ public class ConfigBean {
             orderBean.create(456L, "ricardo", "entregue");
             orderBean.addVolume(123L, 10L);
             orderBean.addVolume(123L, 8L);
+            orderBean.addVolume(456L, 1L);
 //
 //    // add products to volumes
             volumeBean.addProduct(8L, 1L, 5);

@@ -14,6 +14,12 @@ public class SensorHistoryService {
     @EJB
     private SensorHistoryBean sensorHistoryBean;
 
+    @GET
+    @Path("/")
+    public Response getAllSensorHistory() {
+        return Response.ok(sensorHistoryBean.findAll()).build();
+    }
+
     // get the history of a specific sensor
     @GET
     @Path("/{id}/history") // EP07

@@ -85,4 +85,17 @@ public class SensorService {
 
         return Response.ok().build();
     }
+
+    @PATCH
+    @Path("/{id}/estado")
+    public Response changeStatus(@PathParam("id") String id, SensorDTO sensorDTO) {
+        SensorSimulator sensor = sensorBean.find(id);
+        if (sensor == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        sensor.setStatus(sensorDTO.getStatus());
+        sensorBean.update(sensor);
+        return Response.ok().build();
+    }
+
 }

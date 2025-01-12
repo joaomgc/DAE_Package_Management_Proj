@@ -24,12 +24,14 @@ public class SensorSimulator {
         // No-arg constructor
     }
 
-     public SensorSimulator(String id, String tipo) {
+
+    public SensorSimulator(String id, String tipo, String status) {
         this.id = id;
         this.tipo = tipo;
-        this.status = "Inactive";
+        this.status = status;
         this.random = new Random();
     }
+
 
     public String getId() {
         return id;

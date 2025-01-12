@@ -64,7 +64,6 @@ onMounted(() => {
               </form>
             </span>
           </td>
-          <td> </td>
         </tr>
       </tbody>
     </table>

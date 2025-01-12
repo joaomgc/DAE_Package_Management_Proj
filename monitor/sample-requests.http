@@ -127,3 +127,29 @@ Accept: application/json
 ### Get sensor history
 GET http://localhost:8080/monitor/api/sensor/1/history
 Accept: application/json
+
+### Get a specific volume
+GET http://localhost:8080/monitor/api/volumes/1
+Accept: application/json
+
+
+### Update an order's status
+PATCH http://localhost:8080/monitor/api/encomendas/123/estado
+Content-Type: application/json
+
+{
+  "estado": "Entregue"
+}
+
+
+### delete order by id
+DELETE http://localhost:8080/monitor/api/encomendas/123
+
+
+### Edit a sensor's status
+PATCH http://localhost:8080/monitor/api/sensors/5/estado
+Content-Type: application/json
+
+{
+  "status": "Active"
+}
