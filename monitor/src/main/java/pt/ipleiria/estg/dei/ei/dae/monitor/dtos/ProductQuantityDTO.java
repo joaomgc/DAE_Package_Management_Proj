@@ -3,23 +3,23 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.dtos;
 import java.io.Serializable;
 
 public class ProductQuantityDTO implements Serializable {
-    private Long productId;
+    private String productId;
     private String productName;
     private int quantidade;
 
     public ProductQuantityDTO() {}
 
-    public ProductQuantityDTO(Long productId, String productName, int quantidade) {
+    public ProductQuantityDTO(String productId, String productName, int quantidade) {
         this.productId = productId;
         this.productName = productName;
         this.quantidade = quantidade;
     }
 
-    public Long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 

@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 
 public class Product {
     @Id
-    private Long productId;
+    private String productId;
     private String productName;
     private String productType;
 
@@ -21,7 +21,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long productId, String productName, String productType) {
+    public Product(String productId, String productName, String productType) {
         this.productId = productId;
         this.productName = productName;
         this.productType = productType;
@@ -29,11 +29,11 @@ public class Product {
 
 
 
-    public Long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 

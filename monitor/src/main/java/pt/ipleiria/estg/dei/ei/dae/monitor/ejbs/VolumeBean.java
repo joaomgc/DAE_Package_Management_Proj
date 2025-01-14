@@ -23,7 +23,7 @@ public class VolumeBean {
         entityManager.persist(volume);
     }
 
-    public void create(Long id, String volumeName, Package pack, Long productId, int quantity) {
+    public void create(Long id, String volumeName, Package pack, String productId, int quantity) {
         Volume volume = new Volume(id, volumeName, pack, null);
         if (quantity < 0) {
             throw new IllegalArgumentException("Quantity must be a positive number");
@@ -58,7 +58,7 @@ public class VolumeBean {
         }
     }
 
-    public void addProduct(Long volumeId, Long productId, int quantidade) {
+    public void addProduct(Long volumeId, String productId, int quantidade) {
         Volume volume = find(volumeId);
         Product product = productBean.find(productId);
         VolumeProduct vp = new VolumeProduct(volume, product, quantidade);

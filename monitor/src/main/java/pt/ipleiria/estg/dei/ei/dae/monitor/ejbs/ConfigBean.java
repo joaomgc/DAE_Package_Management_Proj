@@ -54,38 +54,38 @@ public class ConfigBean {
             sensorHistoryBean.create(sensorBean.find("4"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 10.0);
 
             // Products
-            productBean.create(1L, "Laptop", "Electronics");
-            productBean.create(2L, "Smartphone", "Electronics");
-            productBean.create(3L, "Headphones", "Audio");
-            productBean.create(4L, "Tablet", "Electronics");
-            productBean.create(5L, "Running Shoes", "Footwear");
-            productBean.create(6L, "Backpack", "Accessories");
-            productBean.create(7L, "Jeans", "Apparel");
-            productBean.create(8L, "Jacket", "Apparel");
-            productBean.create(9L, "Bluetooth Speaker", "Audio");
-            productBean.create(10L, "Camera", "Cameras");
-            productBean.create(11L, "Action Camera", "Cameras");
-            productBean.create(12L, "Laptop Stand", "Accessories");
-            productBean.create(13L, "Wireless Mouse", "Accessories");
-            productBean.create(14L, "Smartwatch", "Wearables");
-            productBean.create(15L, "Fitness Tracker", "Wearables");
-            productBean.create(16L, "Smart Glasses", "Wearables");
-            productBean.create(17L, "Smart Light Bulb", "Smart Home");
-            productBean.create(18L, "Smart Plug", "Smart Home");
-            productBean.create(19L, "Air Purifier", "Home Appliances");
-            productBean.create(20L, "Vacuum Cleaner", "Home Appliances");
+            productBean.create("LAPTOP-ASUS", "Laptop", "Electronics");
+            productBean.create("IPHONE-14", "Smartphone", "Electronics");
+            productBean.create("JBL-2X6", "Headphones", "Audio");
+            productBean.create("SAMSUNG-X7", "Tablet", "Electronics");
+            productBean.create("NIKE-DC7", "Running Shoes", "Footwear");
+            productBean.create("EASTPAK-BL4CK", "Backpack", "Accessories");
+            productBean.create("LEVIS-466", "Jeans", "Apparel");
+            productBean.create("NORTH-FACE-555", "Jacket", "Apparel");
+            productBean.create("JBL-123", "Bluetooth Speaker", "Audio");
+            productBean.create("SONY-100MP", "Camera", "Cameras");
+            productBean.create("GO-PRO-456", "Action Camera", "Cameras");
+            productBean.create("ASUS-STAND-789", "Laptop Stand", "Accessories");
+            productBean.create("HP-MOUSE", "Wireless Mouse", "Accessories");
+            productBean.create("SAMSUNG-WATCH7", "Smartwatch", "Wearables");
+            productBean.create("RUN-LIKE-HELL", "Fitness Tracker", "Wearables");
+            productBean.create("META-GLASSES", "Smart Glasses", "Wearables");
+            productBean.create("SMART-BULB", "Smart Light Bulb", "Smart Home");
+            productBean.create("SMART-PLUG", "Smart Plug", "Smart Home");
+            productBean.create("BREATHE-AIR", "Air Purifier", "Home Appliances");
+            productBean.create("DYSON-500X", "Vacuum Cleaner", "Home Appliances");
 
 // Volumes
             packageBean.create("0", "No Package");
 
-            volumeBean.create(1L, "Standard Volume", packageBean.find("0"), 1L, 5);
+            volumeBean.create(1L, "Standard Volume", packageBean.find("0"), "LAPTOP-ASUS", 5);
             volumeBean.create(2L, "Express Volume", null);
             volumeBean.create(3L, "Bulk Volume", null);
             volumeBean.create(4L, "Light Volume", null);
             volumeBean.create(5L, "Heavy Volume", null);
             volumeBean.create(6L, "Fragile Volume", null);
             volumeBean.create(7L, "Perishable Volume", null);
-            volumeBean.create(8L, "Valuable Volume", packageBean.find("0"), 3L, 4);
+            volumeBean.create(8L, "Valuable Volume", packageBean.find("0"), "JBL-2X6", 4);
             volumeBean.create(9L, "Overnight Volume", null);
             volumeBean.create(10L, "Two-Day Volume", packageBean.find("0"));
             volumeBean.create(11L, "Economy Volume", null);
@@ -124,6 +124,7 @@ public class ConfigBean {
 
             userBean.create("admin", "123", "admin@mail.pt");
             userBean.create("ricardo", "123", "riczao@mail.pt");
+            userBean.create("mario", "123", "mario@mail.pt");
 
     // orders
             orderBean.create(123L, "ricardo", "pendente");
@@ -133,9 +134,9 @@ public class ConfigBean {
             orderBean.addVolume(456L, 1L);
 //
 //    // add products to volumes
-            volumeBean.addProduct(8L, 1L, 5);
-            volumeBean.addProduct(10L, 2L, 3);  // Volume 10 -> Product 2 (3 units)
-            volumeBean.addProduct(10L, 3L, 7);
+            volumeBean.addProduct(8L, "LAPTOP-ASUS", 5);
+            volumeBean.addProduct(10L, "IPHONE-14", 3);  // Volume 10 -> Product 2 (3 units)
+            volumeBean.addProduct(10L, "JBL-2X6", 7);
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error populating database", e);

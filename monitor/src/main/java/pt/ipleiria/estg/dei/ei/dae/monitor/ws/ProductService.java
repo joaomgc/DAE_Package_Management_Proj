@@ -18,14 +18,14 @@ public class ProductService {
     private ProductBean productBean;
 
     @GET
-    @Path("/all")
+    @Path("/")
     public List<ProductDTO> getAllProducts() {
         return ProductDTO.from(productBean.findAll());
     }
 
     @GET
     @Path("/{id}")
-    public Response getProduct(@PathParam("id") Long id) {
+    public Response getProduct(@PathParam("id") String id) {
         Product product = productBean.find(id);
         if (product == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -46,7 +46,7 @@ public class ProductService {
 
     @PUT
     @Path("/{id}")
-    public Response updateProduct(@PathParam("id") Long id, ProductDTO productDTO) {
+    public Response updateProduct(@PathParam("id") String id, ProductDTO productDTO) {
         Product product = productBean.find(id);
         if (product == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -59,7 +59,7 @@ public class ProductService {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteProduct(@PathParam("id") Long id) {
+    public Response deleteProduct(@PathParam("id") String id) {
         Product product = productBean.find(id);
         if (product == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

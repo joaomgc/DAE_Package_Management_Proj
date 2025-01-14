@@ -55,7 +55,9 @@ public class SensorService {
         }
         sensor.setTipo(sensorDTO.getTipo());
         sensorBean.update(sensor);
-        return Response.ok().build();
+
+        SensorSimulator updatedSensor = sensorBean.find(id);
+        return Response.ok(SensorDTO.from(updatedSensor)).build();
     }
 
     @DELETE
@@ -95,7 +97,9 @@ public class SensorService {
         }
         sensor.setStatus(sensorDTO.getStatus());
         sensorBean.update(sensor);
-        return Response.ok().build();
+
+        SensorSimulator updatedSensor = sensorBean.find(id);
+        return Response.ok(SensorDTO.from(updatedSensor)).build();
     }
 
 }

@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,9 @@ public class Order implements Serializable {
     private List<Volume> volumes;
 
     private String estado;
-    // todo: Adicionar package ????
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<OrderHistory> historicoEstados = new ArrayList<>();
 
     public Order() {}
     public Order(Long id, String customerId, String estado) {
@@ -32,13 +35,21 @@ public class Order implements Serializable {
         this.customerId = customerId;
         this.volumes = new ArrayList<>();
         this.estado = estado;
+        this.historicoEstados = new ArrayList<>();
+        this.historicoEstados.add(new OrderHistory(this, estado, LocalDateTime.now()));
     }
 
     public void add(Volume volume) {
         volumes.add(volume);
     }
 
-
+    public void updateEstado(String novoEstado) {
+        if (!this.estado.equals(novoEstado)) {
+            this.estado = novoEstado;
+            OrderHistory novoHistorico = new OrderHistory(this, novoEstado, LocalDateTime.now());
+            this.historicoEstados.add(novoHistorico);
+        }
+    }
     /**
      *
      * GETTERS & SETTERS
@@ -74,5 +85,9 @@ public class Order implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public List<OrderHistory> getHistoricoEstados() {
+        return historicoEstados;
     }
 }

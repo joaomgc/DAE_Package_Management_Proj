@@ -34,15 +34,6 @@ public class PackageBean {
         }
     }
 
-    public void addProduct(String packageId, Long productId) {
-        Package pck = find(packageId);
-        Product product = em.find(Product.class, productId);
-        if (pck != null && product != null) {
-            pck.addProduct(product);
-            em.merge(pck);
-        }
-    }
-
     public List<Package> findAll() {
         return em.createNamedQuery("getAllPackages", Package.class).getResultList();
     }

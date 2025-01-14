@@ -1,9 +1,19 @@
-### Get All Products
-GET http://localhost:8080/monitor/api/products/all
+### EP01. Sistema regista uma nova encomenda
+POST http://localhost:8080/monitor/api/encomendas/
+Content-Type: application/json
+
+{
+  "encomendaId": 2,
+  "customerId": "ricardo",
+  "estado": "pendente"
+}
+
+### EP05 – Obter dados sobre todos os produtos
+GET http://localhost:8080/monitor/api/products/
 Accept: application/json
 
 ### Get All Packages
-GET http://localhost:8080/monitor/api/packages/all
+GET http://localhost:8080/monitor/api/embalagens/
 Accept: application/json
 
 ### Get All Orders
@@ -67,9 +77,6 @@ Content-Type: application/json
 
 DELETE http://localhost:8080/monitor/api/packages/pkgaatessssst
 
-### Add product to package
-
-POST http://localhost:8080/monitor/api/packages/1/products/23311
 
 ### get all volumes
 
@@ -138,8 +145,12 @@ PATCH http://localhost:8080/monitor/api/encomendas/123/estado
 Content-Type: application/json
 
 {
-  "estado": "Entregue"
+  "estado": "entregue"
 }
+
+### EP11 - Histórico de atualizações de estado da encomenda
+GET http://localhost:8080/monitor/api/encomendas/123/historico
+Accept: application/json
 
 
 ### delete order by id
@@ -153,3 +164,7 @@ Content-Type: application/json
 {
   "status": "Active"
 }
+
+### EP05 - Obter dados sobre todos os produtos
+GET http://localhost:8080/monitor/api/produtos
+Accept: application/json

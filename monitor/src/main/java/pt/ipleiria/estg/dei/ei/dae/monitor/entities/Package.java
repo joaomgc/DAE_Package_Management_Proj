@@ -20,20 +20,15 @@ public class Package implements Serializable {
     @NotNull
     private String packageType;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Product> products;
-
-    @OneToOne(mappedBy = "pack", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Volume volume;
+    @OneToMany(mappedBy = "pack", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Volume> volume;
 
     public Package() {
-        products = new ArrayList<>();
     }
 
     public Package(String packageId, String packageType) {
         this.packageId = packageId;
         this.packageType = packageType;
-        this.products = new ArrayList<>();
     }
 
     public String getPackageId() {
@@ -52,23 +47,11 @@ public class Package implements Serializable {
         this.packageType = packageType;
     }
 
-    public Volume getVolume() {
+    public List<Volume> getVolumes() {
         return volume;
     }
 
-    public void setVolume(Volume volume) {
-        this.volume = volume;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void addProduct(Product product) {
-        products.add(product);
-    }
-
-    public void removeProduct(Product product) {
-        products.remove(product);
+    public void addVolume(Volume volume) {
+        this.volume.add(volume);
     }
 }

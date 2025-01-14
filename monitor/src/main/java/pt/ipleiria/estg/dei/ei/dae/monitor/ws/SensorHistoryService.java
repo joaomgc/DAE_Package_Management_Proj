@@ -25,6 +25,6 @@ public class SensorHistoryService {
     @Path("/{id}/history") // EP07
     public Response getSensorHistory(@PathParam("id") String id) {
         return Response.ok(sensorHistoryBean.findBySensorId(id)).build();
-        }
+    }
 
 }

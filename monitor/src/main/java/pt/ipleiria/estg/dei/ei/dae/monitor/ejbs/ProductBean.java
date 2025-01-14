@@ -14,7 +14,7 @@ public class ProductBean {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void create( Long productId, String productName, String productType) {
+    public void create( String productId, String productName, String productType) {
         var product = new Product(productId, productName, productType);
         entityManager.persist(product);
     }
@@ -23,19 +23,19 @@ public class ProductBean {
         return entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
     }
 
-    public Product find(Long productId) {
-        var product = entityManager.find(Product.class, productId);
+    public Product find(String productId) {
+        var product = entityManager.find(Product.class, productId.toUpperCase());
         if (product == null) {
             throw new IllegalArgumentException("Product not found");
         }
-        return entityManager.find(Product.class, productId);
+        return product;
     }
 
     public void update(Product product) {
         entityManager.merge(product);
     }
 
-    public void delete(Long id) {
+    public void delete(String id) {
         Product product = find(id);
         if (product != null) {
             entityManager.remove(product);

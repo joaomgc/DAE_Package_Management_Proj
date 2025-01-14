@@ -92,6 +92,9 @@ public class SensorSimulator {
             case "posicionamento":
                 this.valor = random.nextDouble() * 100; // Gera valores fictícios para simulação
                 break;
+            case "luminosidade":
+                this.valor = random.nextDouble() * 100;
+                break;
             default:
                 throw new IllegalArgumentException("Tipo de sensor desconhecido: " + tipo);
         }

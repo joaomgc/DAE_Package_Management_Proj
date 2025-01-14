@@ -5,10 +5,12 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.OrderDTO;
+import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.OrderHistoryDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.PackageDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.OrderBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.PackageBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Order;
+import pt.ipleiria.estg.dei.ei.dae.monitor.entities.OrderHistory;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Volume;
 
@@ -29,12 +31,17 @@ public class OrderService {
 
     @POST
     @Path("/") // EP01
-    public void create(OrderDTO orderDTO) {
+    public Response create(OrderDTO orderDTO) {
         orderBean.create(
                 orderDTO.getEncomendaId(),
                 orderDTO.getCustomerId(),
                 orderDTO.getEstado()
         );
+
+        Order newOrder = orderBean.find(orderDTO.getEncomendaId());
+        return Response.status(Response.Status.CREATED)
+                .entity(OrderDTO.from(newOrder))
+                .build();
     }
 
     @GET
@@ -52,10 +59,10 @@ public class OrderService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        order.setEstado(orderDTO.getEstado());
+        order.updateEstado(orderDTO.getEstado());
         orderBean.update(order);
 
-        return Response.ok().build();
+        return Response.ok().build(); // todo: talvez criar um DTO para mostrar o novo estado da encomenda ?? o_O
     }
 
     @DELETE
@@ -69,6 +76,13 @@ public class OrderService {
         orderBean.removeVolume(encomendaId);
         orderBean.delete(encomendaId);
         return Response.noContent().build();
+    }
+
+    @GET
+    @Path("{encomendaId}/historico") // EP11
+    public OrderHistoryDTO getOrderHistory(@PathParam("encomendaId") Long encomendaId) {
+        List<OrderHistory> historyList = orderBean.getOrderHistory(encomendaId);
+        return OrderHistoryDTO.from(encomendaId, historyList);
     }
 
 }

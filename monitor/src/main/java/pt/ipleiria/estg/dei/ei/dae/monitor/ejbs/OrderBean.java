@@ -5,10 +5,8 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Order;
+import pt.ipleiria.estg.dei.ei.dae.monitor.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Package;
-import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Product;
-import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Volume;
 
 import java.util.List;
 
@@ -80,6 +78,12 @@ public class OrderBean {
             volume.setOrder(null);
             em.merge(volume);
         }
+    }
+
+    public List<OrderHistory> getOrderHistory(Long orderId) {
+        return em.createNamedQuery("getOrderHistory", OrderHistory.class)
+                .setParameter("orderId", orderId)
+                .getResultList();
     }
 
     public List<Order> findAll() {

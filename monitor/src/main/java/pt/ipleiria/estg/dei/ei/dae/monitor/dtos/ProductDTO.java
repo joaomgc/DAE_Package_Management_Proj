@@ -8,24 +8,24 @@ import java.util.List;
 
 public class ProductDTO implements Serializable {
     @Id
-    private Long productId;
+    private String productId;
     private String productName;
     private String productType;
 
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String name, String type) {
+    public ProductDTO(String id, String name, String type) {
         this.productId = id;
         this.productName = name;
         this.productType = type;
     }
 
-    public Long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 

@@ -26,7 +26,7 @@ public class Volume implements Serializable {
     @OneToOne(mappedBy = "volume")
     private SensorSimulator sensor;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "package_id")
     private Package pack;
 
