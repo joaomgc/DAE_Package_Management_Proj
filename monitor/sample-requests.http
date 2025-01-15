@@ -1,3 +1,12 @@
+### REQUEST JWT TOKEN
+POST http://localhost:8080/monitor/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{ "username": "admin", "password": "123" }
+#########################
+###### ENCOMENDAS #######
+#########################
 ### EP01. Sistema regista uma nova encomenda
 POST http://localhost:8080/monitor/api/encomendas/
 Content-Type: application/json
@@ -8,27 +17,65 @@ Content-Type: application/json
   "estado": "pendente"
 }
 
-### EP05 – Obter dados sobre todos os produtos
-GET http://localhost:8080/monitor/api/products/
+### EP02
+
+### EP03. Sistema consulta dados de uma encomenda existente
+GET http://localhost:8080/monitor/api/encomendas/123
+Accept: application/json
+
+### EP08 - Obter Todas as Encomendas
+GET http://localhost:8080/monitor/api/encomendas
+Accept: application/json
+
+### EP10 – Atualizar Estado de uma Encomenda
+PATCH http://localhost:8080/monitor/api/encomendas/123/estado
+Content-Type: application/json
+
+{
+  "estado": "entregue"
+}
+
+### EP11 - Histórico de atualizações de estado da encomenda
+GET http://localhost:8080/monitor/api/encomendas/123/historico
+Accept: application/json
+
+### delete order by id
+DELETE http://localhost:8080/monitor/api/encomendas/123
+######################
+###### VOLUMES #######
+######################
+
+### EP09 – Ver Produtos de um Volume
+###
+
+### get all volumes
+GET http://localhost:8080/monitor/api/volumes
+
+### insert package in volume
+POST http://localhost:8080/monitor/api/volumes/1/packages/1
+
+### Create a new volume
+POST http://localhost:8080/monitor/api/volumes
+Content-Type: application/json
+
+{
+  "id": 87,
+  "volumeName": "New Volume TESTE"
+}
+
+### Get a specific volume
+GET http://localhost:8080/monitor/api/volumes/1
+Accept: application/json
+#######################
+###### PRODUTOS #######
+#######################
+### EP05 - Obter dados sobre todos os produtos
+GET http://localhost:8080/monitor/api/produtos
 Accept: application/json
 
 ### Get All Packages
 GET http://localhost:8080/monitor/api/embalagens/
 Accept: application/json
-
-### Get All Orders
-GET http://localhost:8080/monitor/api/encomendas
-Accept: application/json
-
-
-### Create a new package
-POST http://localhost:8080/monitor/api/packages/
-Content-Type: application/json
-
-{
-  "packageId": "pkgaatessssst",
-  "packageType": "Electronics"
-}
 
 ### Create a new product
 POST http://localhost:8080/monitor/api/products/
@@ -41,12 +88,10 @@ Content-Type: application/json
 }
 
 ### Get product by id
-
 GET http://localhost:8080/monitor/api/products/1
 Accept: application/json
 
 ### update product by id
-
 PUT http://localhost:8080/monitor/api/products/1
 Content-Type: application/json
 
@@ -55,69 +100,13 @@ Content-Type: application/json
   "productType": "Updated Product Type"
 }
 
-
 ### delete product by id
-
 DELETE http://localhost:8080/monitor/api/products/2
 
-GET http://localhost:8080/monitor/api/packages/{id}
-Accept: application/json
-
-### update package by id
-
-PUT http://localhost:8080/monitor/api/packages/1
-Content-Type: application/json
-
-{
-  "packageType": "Updated Package Type"
-}
-
-### delete package by id
-
-
-DELETE http://localhost:8080/monitor/api/packages/pkgaatessssst
-
-
-### get all volumes
-
-GET http://localhost:8080/monitor/api/volumes
-
-### insert package in volume
-
-POST http://localhost:8080/monitor/api/volumes/1/packages/1
-
-
-### Create a new volume
-POST http://localhost:8080/monitor/api/volumes
-Content-Type: application/json
-
-{
-  "id": 87,
-  "volumeName": "New Volume TESTE"
-}
-
-### get all sensors
-
-GET http://localhost:8080/monitor/api/sensors
-
-### associate sensor to volume
-
-POST http://localhost:8080/monitor/api/volumes/20/sensors/4
-
-
-### REQUEST JWT TOKEN
-POST http://localhost:8080/monitor/api/auth/login
-Content-Type: application/json
-Accept: application/json
-
-{ "username": "admin", "password": "123" }
-
-### Get a order
-GET http://localhost:8080/monitor/api/encomendas/123
-Accept: application/json
-
-
-### Set a sensor value
+#####################
+###### SENSOR #######
+#####################
+### EP04. Sensor envia o último valor lido para o sistema
 POST http://localhost:8080/monitor/api/sensors
 Content-Type: application/json
 
@@ -126,38 +115,18 @@ Content-Type: application/json
   "valor": 20.5
 }
 
-### Get last sensor value
+### EP06 - Obter o Último Valor Obtido por um Sensor
 GET http://localhost:8080/monitor/api/sensors/1
 Accept: application/json
 
-
-### Get sensor history
+### EP07 - Obter Histórico de Dados de um Sensor
 GET http://localhost:8080/monitor/api/sensor/1/history
 Accept: application/json
 
-### Get a specific volume
-GET http://localhost:8080/monitor/api/volumes/1
-Accept: application/json
+### EP12 – Apresentar todos os sensores
+GET http://localhost:8080/monitor/api/sensors
 
-
-### Update an order's status
-PATCH http://localhost:8080/monitor/api/encomendas/123/estado
-Content-Type: application/json
-
-{
-  "estado": "entregue"
-}
-
-### EP11 - Histórico de atualizações de estado da encomenda
-GET http://localhost:8080/monitor/api/encomendas/123/historico
-Accept: application/json
-
-
-### delete order by id
-DELETE http://localhost:8080/monitor/api/encomendas/123
-
-
-### Edit a sensor's status
+### EP14
 PATCH http://localhost:8080/monitor/api/sensors/5/estado
 Content-Type: application/json
 
@@ -165,6 +134,45 @@ Content-Type: application/json
   "status": "Active"
 }
 
-### EP05 - Obter dados sobre todos os produtos
-GET http://localhost:8080/monitor/api/produtos
+### associate sensor to volume
+POST http://localhost:8080/monitor/api/volumes/20/sensors/4
+
+######################
+###### PACKAGE #######
+######################
+
+### Create a new package
+POST http://localhost:8080/monitor/api/packages/
+Content-Type: application/json
+
+{
+  "packageId": "pkgaatessssst",
+  "packageType": "Electronics"
+}
+
+### get package by id
+GET http://localhost:8080/monitor/api/packages/{id}
 Accept: application/json
+
+### update package by id
+PUT http://localhost:8080/monitor/api/packages/1
+Content-Type: application/json
+
+{
+  "packageType": "Updated Package Type"
+}
+
+### delete package by id
+DELETE http://localhost:8080/monitor/api/packages/pkgaatessssst
+
+###
+
+
+
+
+
+
+
+
+
+
