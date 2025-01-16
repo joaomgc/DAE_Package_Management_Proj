@@ -17,22 +17,21 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '~/store/auth-store';
+<script setup>
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "~/store/auth-store";
 
 const authStore = useAuthStore();
 const router = useRouter();
 
-const isLoggedIn = computed(() => authStore.isAuthenticated);
+const isLoggedIn = computed(() => !!authStore.token);
 const user = computed(() => authStore.user);
 
 function logout() {
   authStore.logout();
-  router.push('/'); 
+  router.push("/");
 }
-console.log(user.value);
 </script>
 
 <style>

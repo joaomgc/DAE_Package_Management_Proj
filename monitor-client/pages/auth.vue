@@ -1,121 +1,58 @@
-<script setup lang="ts">
-import { ref, reactive } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '~/store/auth-store'; // Import the store
-
-const router = useRouter();
-const authStore = useAuthStore();
-
-const config = useRuntimeConfig(); // Access runtime config
-const api = config.public.API_URL; // API URL from config
+<script setup>
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "~/store/auth-store.js";
 
 const loginFormData = reactive({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
 });
 
-const errorMessage = ref('');
+const authStore = useAuthStore();
+const router = useRouter();
+
+const errorMessage = ref("");
 
 async function login() {
+    errorMessage.value = ""; // Reset the error message
     try {
-        errorMessage.value = ''; // Clear any previous error message
-        const response = await $fetch(`${api}/auth/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-            body: loginFormData,
-        });
-
-        if (response) {
-            authStore.setAuthData(response, { username: loginFormData.username }); // Save token and user data
-            router.push('/dashboard'); // Redirect after login
+        await authStore.login(loginFormData.username, loginFormData.password);
+        if (authStore.token) {
+            router.push("/dashboard"); // Redirect to dashboard on successful login
         }
-    } catch (e) {
-        errorMessage.value = 'Invalid username or password';
-        console.error('Login request failed:', e);
+    } catch (error) {
+        errorMessage.value = "Login failed. Please check your username and password.";
+        console.error("Login error:", error);
     }
-}
-
-function reset() {
-    loginFormData.username = '';
-    loginFormData.password = '';
-    errorMessage.value = ''; // Clear the error message on reset
 }
 </script>
 
 <template>
-    <div class="login-container">
-        <h1>Login</h1>
-        <form @submit.prevent="login">
-            <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-            <div class="form-group">
+    <form @submit.prevent="login">
+
+        <div>
+            <h1>Login</h1>
+            <div>
                 <label for="username">Username:</label>
-                <input id="username" v-model="loginFormData.username" type="text" />
+                <input id="username" v-model="loginFormData.username" />
             </div>
-            <div class="form-group">
+            <div>
                 <label for="password">Password:</label>
-                <input id="password" v-model="loginFormData.password" type="password" />
+                <input id="password" type="password" v-model="loginFormData.password" />
             </div>
-            <div class="button-group">
-                <button type="submit">LOGIN</button>
-                <button type="button" @click="reset">RESET</button>
+            <button type="submit" @click="login">LOGIN</button>
+
+            <div v-if="errorMessage" class="error-message">
+                {{ errorMessage }}
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </template>
 
-<style scoped>
-.login-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
+<style>
 .error-message {
     color: red;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-}
-
-.button-group {
-    display: flex;
-    justify-content: space-between;
-}
-
-.button-group button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.button-group button:hover {
-    background-color: #ddd;
+    margin-top: 10px;
+    font-weight: bold;
 }
 </style>

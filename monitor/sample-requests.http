@@ -172,14 +172,40 @@ Content-Type: application/json
 ### delete package by id
 DELETE http://localhost:8080/monitor/api/packages/pkgaatessssst
 
-###
+#####################
+###### CLIENT #######
+#####################
+
+### Login as an admin
+POST http://localhost:8080/monitor/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "admin",
+  "password": "123"
+}
+
+### Login as a client
+POST http://localhost:8080/monitor/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "ricardo",
+  "password": "123"
+}
+
+### Get all clients
+GET http://localhost:8080/monitor/api/clientes
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzA1NzM0MywiZXhwIjoxNzM3MDYwOTQzfQ.WT9F-owvarlaroekpLtqQsI7qBKRVEoFHLvkXGnMtxxhVVEVHLZP29yqvxy-6Sgw
 
 
-
-
-
-
-
+### Get all clients' orders
+GET http://localhost:8080/monitor/api/clientes/ricardo/encomendas
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJyaWNhcmRvIiwiaWF0IjoxNzM3MDU4ODE1LCJleHAiOjE3MzcwNjI0MTV9.PmEDXwuW1uN8G1DzTigCTvKyyGoDn8BYuxmNk11CTbD-fQ2J2-DI0hkzYeLB6M7N
 
 
 

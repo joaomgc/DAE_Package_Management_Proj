@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.ejbs;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.monitor.security.Hasher;
@@ -49,6 +50,11 @@ public class ClientBean {
     public void update(Client updatedClient) {
         Client client = find(updatedClient.getUsername());
 
+        if (client == null) {
+            System.err.println("ERROR_CLIENT_NOT_FOUND: " + updatedClient.getUsername());
+            return;
+        }
+
         em.lock(client, LockModeType.OPTIMISTIC);
 
         client.setName(updatedClient.getName());
@@ -75,5 +81,11 @@ public class ClientBean {
         if (user != null) {
             em.remove(user);
         }
+    }
+
+    public Client findWithOrders(String username) {
+        var client = this.find(username);
+        Hibernate.initialize(client.getOrders());
+        return client;
     }
 }

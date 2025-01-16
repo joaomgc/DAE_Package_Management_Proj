@@ -13,6 +13,7 @@ import java.util.List;
         )
 })
 public class Client extends User{
+
     @OneToMany(mappedBy = "client")
     List<Order> orders;
 

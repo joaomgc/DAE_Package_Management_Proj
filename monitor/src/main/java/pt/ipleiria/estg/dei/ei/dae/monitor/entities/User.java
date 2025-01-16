@@ -6,12 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllUsers",
-                query = "SELECT u FROM User u ORDER BY u.id" // JPQL
-        )
-})
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User {
     @Id
@@ -41,26 +35,27 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
+    public @NotNull String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NotNull String password) {
         this.password = password;
     }
 
-    public String getName() {
+    public @NotNull String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotNull String name) {
         this.name = name;
     }
 
-    public String getEmail() {
+    public @Email @NotNull String getEmail() {
         return email;
     }
-    public void setEmail(String email) {
+
+    public void setEmail(@Email @NotNull String email) {
         this.email = email;
     }
 }
