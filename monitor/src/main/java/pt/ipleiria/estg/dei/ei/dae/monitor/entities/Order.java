@@ -19,7 +19,9 @@ public class Order implements Serializable {
     @Id
     private Long id;
 
-    private String customerId;
+    @ManyToOne
+    @JoinColumn(name = "client_username")
+    private Client client;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Volume> volumes;
@@ -30,9 +32,9 @@ public class Order implements Serializable {
     private List<OrderHistory> historicoEstados = new ArrayList<>();
 
     public Order() {}
-    public Order(Long id, String customerId, String estado) {
+    public Order(Long id, Client client, String estado) {
         this.id = id;
-        this.customerId = customerId;
+        this.client = client;
         this.volumes = new ArrayList<>();
         this.estado = estado;
         this.historicoEstados = new ArrayList<>();
@@ -59,8 +61,8 @@ public class Order implements Serializable {
         return id;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public Client getClient() {
+        return client;
     }
 
     public List<Volume> getVolumes() {
@@ -75,8 +77,8 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public void setVolumes(List<Volume> volumes) {

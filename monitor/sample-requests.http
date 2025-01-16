@@ -18,6 +18,13 @@ Content-Type: application/json
 }
 
 ### EP02
+POST http://localhost:8080/monitor/api/volumes/2/produtos
+Content-Type: application/json
+
+{
+  "productId": "IPHONE-14",
+  "quantidade": 2
+}
 
 ### EP03. Sistema consulta dados de uma encomenda existente
 GET http://localhost:8080/monitor/api/encomendas/123

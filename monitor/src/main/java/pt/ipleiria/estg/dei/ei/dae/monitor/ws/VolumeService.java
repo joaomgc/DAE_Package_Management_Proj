@@ -4,8 +4,12 @@ import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.ProductDTO;
+import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.ProductQuantityDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.VolumeDTO;
+import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.ProductBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.VolumeBean;
+import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Volume;
 
 import java.util.List;
@@ -18,6 +22,8 @@ public class VolumeService {
 
     @EJB
     private VolumeBean volumeBean;
+    @EJB
+    private ProductBean productBean;
 
     @GET
     public List<VolumeDTO> getAllVolumes() {
@@ -66,11 +72,7 @@ public class VolumeService {
 
     @POST
     @Path("/{volumeId}/packages/{packageId}")
-    public Response addPackageToVolume(@PathParam("volumeId") Long volumeId, @PathParam("packageId") String packageId) {
-        Volume volume = volumeBean.find(volumeId);
-        if (volume == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+    public Response addPackageToVolume(@PathParam("volumeId") Long volumeId, @PathParam("packageId") Long packageId) {
         volumeBean.addPackage(volumeId, packageId);
         return Response.ok().build();
     }
@@ -79,13 +81,19 @@ public class VolumeService {
     @Path("/{volumeId}/sensors/{sensorId}")
     public Response associateSensorToVolume(@PathParam("volumeId") Long volumeId, @PathParam("sensorId") String sensorId) {
         Volume volume = volumeBean.find(volumeId);
-        if (volume == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
         volumeBean.associateSensor(volumeId, sensorId);
 
         return Response.ok().build();
     }
+
+    @POST
+    @Path("/{volumeId}/produtos")  // EP02.1 - add product to volume
+    public Response addProduct(@PathParam("volumeId") Long volumeId, ProductQuantityDTO dto) {
+        volumeBean.addProduct(volumeId, dto.getProductId(), dto.getQuantidade());
+        Volume volume = volumeBean.find(volumeId);
+        return Response.ok(VolumeDTO.from(volume)).build();
+    }
+
 
     private VolumeDTO toDTO(Volume volume) {
         return new VolumeDTO(volume.getId(), volume.getVolumeName(), volume.getPack() != null ? volume.getPack().getPackageId() : null, volume.getSensor() != null ? volume.getSensor().getId() : null,

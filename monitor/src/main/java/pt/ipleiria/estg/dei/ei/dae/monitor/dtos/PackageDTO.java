@@ -8,22 +8,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PackageDTO implements Serializable {
-    private String packageId;
+    private Long packageId;
     private String packageType;
 
     public PackageDTO() {
     }
 
-    public PackageDTO(String packageId, String packageType) {
+    public PackageDTO(Long packageId, String packageType) {
         this.packageId = packageId;
         this.packageType = packageType;
     }
 
-    public String getPackageId() {
+    public Long getPackageId() {
         return packageId;
     }
 
-    public void setPackageId(String packageId) {
+    public void setPackageId(Long packageId) {
         this.packageId = packageId;
     }
 

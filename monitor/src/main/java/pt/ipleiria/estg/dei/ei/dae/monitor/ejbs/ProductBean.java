@@ -15,7 +15,11 @@ public class ProductBean {
     private EntityManager entityManager;
 
     public void create( String productId, String productName, String productType) {
-        var product = new Product(productId, productName, productType);
+        String id = productId.toUpperCase();
+        if (exists(id)) {
+            throw new IllegalArgumentException("Id for product already exists");
+        }
+        var product = new Product(id, productName, productType);
         entityManager.persist(product);
     }
 
@@ -29,6 +33,11 @@ public class ProductBean {
             throw new IllegalArgumentException("Product not found");
         }
         return product;
+    }
+
+    public boolean exists(String productId) {
+        var product = entityManager.find(Product.class, productId.toUpperCase());
+        return product != null;
     }
 
     public void update(Product product) {

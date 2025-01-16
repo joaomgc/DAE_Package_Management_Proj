@@ -1,6 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.ejbs;
 
-import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
@@ -10,8 +9,6 @@ import pt.ipleiria.estg.dei.ei.dae.monitor.security.Hasher;
 //import pt.ipleiria.estg.dei.ei.dae.monitor.security.Hasher;
 
 import java.util.List;
-
-import static java.nio.file.Files.find;
 
 
 @Stateless
@@ -23,35 +20,7 @@ public class UserBean {
     private Hasher hasher;
 
 
-    public boolean exists(String username) {
-        Query query = em.createQuery(
-                "SELECT COUNT(u.username) FROM User u WHERE u.username = :username",
-                Long.class
-        );
-        query.setParameter("username", username);
-        return (Long)query.getSingleResult() > 0L;
-    }
 
-    public User create(String username, String password, String email) {
-
-        if (exists(username)) {
-            throw new EntityExistsException("User already exists");
-        }
-
-        User user = null;
-
-        try {
-            user = new User(username, hasher.hash(password), email);
-            System.out.println("User created: " + username);
-            em.persist(user);
-            em.flush();
-        }catch(EntityExistsException e){
-            System.err.println("ERROR_USER_ALREADY_EXISTS: " + username);
-
-        }
-
-        return user;
-    }
 
     public void update(User user) {
         User existingUser = em.find(User.class, user.getUsername());
@@ -67,7 +36,7 @@ public class UserBean {
             existingUser.setPassword(hasher.hash(user.getPassword()));
         }
 
-        existingUser.setEmail(user.getEmail());
+        existingUser.setName(user.getName());
         em.merge(existingUser);
     }
 

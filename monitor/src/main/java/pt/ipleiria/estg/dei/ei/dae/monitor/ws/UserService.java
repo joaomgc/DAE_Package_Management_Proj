@@ -67,7 +67,7 @@ public class UserService {
 
         try {
             User user = userBean.findOrFail(username);
-            user.setEmail(userDTO.getEmail());
+            user.setName(userDTO.getEmail());
             userBean.update(user);
             return Response.ok(UserDTO.from(user)).build();
         } catch (EntityNotFoundException e) {

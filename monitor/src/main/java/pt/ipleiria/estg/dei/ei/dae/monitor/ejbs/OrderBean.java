@@ -17,7 +17,7 @@ public class OrderBean {
     @EJB
     private VolumeBean volumeBean;
     @EJB
-    private UserBean userBean;
+    private ClientBean clientBean;
 
     public boolean exists(long orderId) {
         Query query = em.createQuery(
@@ -28,14 +28,12 @@ public class OrderBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(Long id, String customerId, String estado) {
+    public void create(Long id, String customerUsername, String estado) {
         if (exists(id)) {
             throw new RuntimeException("Order already exists");
         }
-        if (!userBean.exists(customerId)) {
-            throw new RuntimeException("Customer does not exist");
-        }
-        var order = new Order(id, customerId, estado);
+        Client client = clientBean.find(customerUsername);
+        var order = new Order(id, client, estado);
         em.persist(order);
     }
 

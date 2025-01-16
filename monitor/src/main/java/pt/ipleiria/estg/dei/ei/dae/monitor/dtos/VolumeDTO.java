@@ -3,21 +3,20 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.dtos;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Volume;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class VolumeDTO implements Serializable {
     private Long id;
     private String volumeName;
-    private String packageId;
+    private Long packageId;
     private String sensorId;
-    private List<ProductQuantityDTO> produtos;
+    private List<ProductNameQuantityDTO> produtos;
 
     public VolumeDTO() {
     }
 
-    public VolumeDTO(Long id, String volumeName, String packageId, String sensorId, List<ProductQuantityDTO> produtos) {
+    public VolumeDTO(Long id, String volumeName, Long packageId, String sensorId, List<ProductNameQuantityDTO> produtos) {
         this.id = id;
         this.volumeName = volumeName;
         this.packageId = packageId;
@@ -50,25 +49,25 @@ public class VolumeDTO implements Serializable {
         this.volumeName = volumeName;
     }
 
-    public String getPackageId() {
+    public Long getPackageId() {
         return packageId;
     }
 
-    public void setPackageId(String packageId) {
+    public void setPackageId(Long packageId) {
         this.packageId = packageId;
     }
 
-    public List<ProductQuantityDTO> getProdutos() {
+    public List<ProductNameQuantityDTO> getProdutos() {
         return produtos;
     }
 
-    public void setProdutos(List<ProductQuantityDTO> produtos) {
+    public void setProdutos(List<ProductNameQuantityDTO> produtos) {
         this.produtos = produtos;
     }
 
     public static VolumeDTO from(Volume volume) {
-        List<ProductQuantityDTO> produtosDTO = volume.getVolumeProducts().stream()
-                .map(vp -> new ProductQuantityDTO(
+        List<ProductNameQuantityDTO> produtosDTO = volume.getVolumeProducts().stream()
+                .map(vp -> new ProductNameQuantityDTO(
                         vp.getProduct().getProductId(),
                         vp.getProduct().getProductName(),
                         vp.getQuantidade()

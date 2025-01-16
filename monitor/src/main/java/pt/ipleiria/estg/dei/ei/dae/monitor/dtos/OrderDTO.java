@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 public class OrderDTO implements Serializable {
     private Long encomendaId;
     private List<VolumeDTO> volumes;
-    private String customerId;
+    private String clientUsername;
     private String estado; // todo: Criar uma classe para estado ??? o_O
 
     public OrderDTO() {}
-    public OrderDTO(Long encomendaId, String customerId, String estado, List<VolumeDTO> volumes) {
+    public OrderDTO(Long encomendaId, String clientUsername, String estado, List<VolumeDTO> volumes) {
         this.encomendaId = encomendaId;
-        this.customerId = customerId;
+        this.clientUsername = clientUsername;
         this.volumes = volumes;
         this.estado = estado;
     }
@@ -29,7 +29,7 @@ public class OrderDTO implements Serializable {
 
         return new OrderDTO(
                 order.getId(),
-                order.getCustomerId(),
+                order.getClient().getUsername(),
                 order.getEstado(),
                 volumeDTOs
         );
@@ -47,8 +47,8 @@ public class OrderDTO implements Serializable {
         return volumes;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public String getClientUsername() {
+        return clientUsername;
     }
     public String getEstado() {
         return estado;
@@ -62,9 +62,10 @@ public class OrderDTO implements Serializable {
         this.volumes = volumes;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setClientUsername(String clientUsername) {
+        this.clientUsername = clientUsername;
     }
+
     public void setEstado(String estado) {
         this.estado = estado;
     }

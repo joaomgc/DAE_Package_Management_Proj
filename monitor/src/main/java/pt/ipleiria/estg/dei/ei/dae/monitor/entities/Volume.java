@@ -2,7 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.ProductQuantityDTO;
+import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.ProductNameQuantityDTO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,9 +53,9 @@ public class Volume implements Serializable {
         return volumeProducts;
     }
 
-    public List<ProductQuantityDTO> getProductQuantityDTOs() {
+    public List<ProductNameQuantityDTO> getProductQuantityDTOs() {
         return volumeProducts.stream()
-                .map(vp -> new ProductQuantityDTO(
+                .map(vp -> new ProductNameQuantityDTO(
                         vp.getProduct().getProductId(),
                         vp.getProduct().getProductName(),
                         vp.getQuantidade()

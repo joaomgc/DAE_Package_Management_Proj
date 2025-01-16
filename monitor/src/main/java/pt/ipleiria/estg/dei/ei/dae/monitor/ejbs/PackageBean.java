@@ -14,20 +14,24 @@ public class PackageBean {
     @PersistenceContext
     private EntityManager em;
 
-    public void create(String packageId, String packageType) {
+    public void create(Long packageId, String packageType) {
         Package pck = new Package(packageId, packageType);
         em.persist(pck);
     }
 
-    public Package find(String packageId) {
-        return em.find(Package.class, packageId);
+    public Package find(Long packageId) {
+        Package pck = em.find(Package.class, packageId);
+        if (pck == null) {
+            throw new IllegalArgumentException("Package with id " + packageId + " not found");
+        }
+        return pck;
     }
 
     public void update(Package pck) {
         em.merge(pck);
     }
 
-    public void delete(String packageId) {
+    public void delete(Long packageId) {
         Package pck = find(packageId);
         if (pck != null) {
             em.remove(pck);

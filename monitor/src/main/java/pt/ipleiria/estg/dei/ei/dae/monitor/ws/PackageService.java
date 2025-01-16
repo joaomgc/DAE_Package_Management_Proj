@@ -36,7 +36,7 @@ public class PackageService {
 
     @PUT
     @Path("/{id}")
-    public Response updatePackage(@PathParam("id") String id, PackageDTO packageDTO) {
+    public Response updatePackage(@PathParam("id") Long id, PackageDTO packageDTO) {
         var pck = packageBean.find(id);
         pck.setPackageType(packageDTO.getPackageType());
         packageBean.update(pck);
@@ -46,13 +46,13 @@ public class PackageService {
 
     @DELETE
     @Path("/{id}")
-    public void deletePackage(@PathParam("id") String id) {
+    public void deletePackage(@PathParam("id") Long id) {
         packageBean.delete(id);
     }
 
     @GET
     @Path("/{id}")
-    public PackageDTO getPackage(@PathParam("id") String id) {
+    public PackageDTO getPackage(@PathParam("id") Long id) {
         return PackageDTO.from(packageBean.find(id));
     }
 

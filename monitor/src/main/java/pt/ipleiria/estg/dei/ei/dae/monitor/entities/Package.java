@@ -16,7 +16,7 @@ import java.util.List;
 })
 public class Package implements Serializable {
     @Id
-    private String packageId;
+    private Long packageId;
     @NotNull
     private String packageType;
 
@@ -26,16 +26,16 @@ public class Package implements Serializable {
     public Package() {
     }
 
-    public Package(String packageId, String packageType) {
+    public Package(Long packageId, String packageType) {
         this.packageId = packageId;
         this.packageType = packageType;
     }
 
-    public String getPackageId() {
+    public Long getPackageId() {
         return packageId;
     }
 
-    public void setPackageId(String packageId) {
+    public void setPackageId(Long packageId) {
         this.packageId = packageId;
     }
 

@@ -34,7 +34,7 @@ public class OrderService {
     public Response create(OrderDTO orderDTO) {
         orderBean.create(
                 orderDTO.getEncomendaId(),
-                orderDTO.getCustomerId(),
+                orderDTO.getClientUsername(),
                 orderDTO.getEstado()
         );
 

@@ -17,14 +17,18 @@ public class VolumeBean {
     private EntityManager entityManager;
     @EJB
     private ProductBean productBean;
+    @EJB
+    private PackageBean packageBean;
 
-    public void create(Long id, String volumeName, Package pack) {
-        Volume volume = new Volume(id, volumeName, pack, null);
+    public void create(Long id, String volumeName, Long packageId) {
+        Package pck = packageBean.find(packageId);
+        Volume volume = new Volume(id, volumeName, pck, null);
         entityManager.persist(volume);
     }
 
-    public void create(Long id, String volumeName, Package pack, String productId, int quantity) {
-        Volume volume = new Volume(id, volumeName, pack, null);
+    public void create(Long id, String volumeName, Long packageId, String productId, int quantity) {
+        Package pck = packageBean.find(packageId);
+        Volume volume = new Volume(id, volumeName, pck, null);
         if (quantity < 0) {
             throw new IllegalArgumentException("Quantity must be a positive number");
         }
@@ -49,18 +53,17 @@ public class VolumeBean {
         entityManager.merge(volume);
     }
 
-    public void addPackage(Long id, String packageId) {
+    public void addPackage(Long id, Long packageId) {
         Volume volume = find(id);
-        Package pack = entityManager.find(Package.class, packageId);
-        if (volume != null && pack != null) {
-            volume.setPack(pack);
-            entityManager.merge(volume);
-        }
+        Package pack = packageBean.find(packageId);
+        volume.setPack(pack);
+        entityManager.merge(volume);
     }
 
     public void addProduct(Long volumeId, String productId, int quantidade) {
         Volume volume = find(volumeId);
-        Product product = productBean.find(productId);
+        String prodId = productId.toUpperCase();
+        Product product = productBean.find(prodId);
         VolumeProduct vp = new VolumeProduct(volume, product, quantidade);
         entityManager.persist(vp);
     }

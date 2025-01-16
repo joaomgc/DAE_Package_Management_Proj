@@ -31,6 +31,10 @@ public class ConfigBean {
     private UserBean userBean;
     @EJB
     private OrderBean orderBean;
+    @EJB
+    private ClientBean clientBean;
+    @EJB
+    private AdministratorBean adminBean;
 
     @PostConstruct
     public void populateDB() {
@@ -75,56 +79,55 @@ public class ConfigBean {
             productBean.create("BREATHE-AIR", "Air Purifier", "Home Appliances");
             productBean.create("DYSON-500X", "Vacuum Cleaner", "Home Appliances");
 
-// Volumes
-            packageBean.create("0", "No Package");
-
-            volumeBean.create(1L, "Standard Volume", packageBean.find("0"), "LAPTOP-ASUS", 5);
-            volumeBean.create(2L, "Express Volume", null);
-            volumeBean.create(3L, "Bulk Volume", null);
-            volumeBean.create(4L, "Light Volume", null);
-            volumeBean.create(5L, "Heavy Volume", null);
-            volumeBean.create(6L, "Fragile Volume", null);
-            volumeBean.create(7L, "Perishable Volume", null);
-            volumeBean.create(8L, "Valuable Volume", packageBean.find("0"), "JBL-2X6", 4);
-            volumeBean.create(9L, "Overnight Volume", null);
-            volumeBean.create(10L, "Two-Day Volume", packageBean.find("0"));
-            volumeBean.create(11L, "Economy Volume", null);
-            volumeBean.create(12L, "Same-Day Volume", null);
-            volumeBean.create(13L, "Standard Shipping Volume", null);
-            volumeBean.create(14L, "Expedited Shipping Volume", null);
-            volumeBean.create(15L, "International Volume", null);
-            volumeBean.create(16L, "Domestic Volume", null);
-            volumeBean.create(17L, "Return Volume", null);
-            volumeBean.create(18L, "Replacement Volume", null);
-            volumeBean.create(19L, "Seasonal Volume", null);
-            volumeBean.create(20L, "Promotional Volume", null);
-
 // Packages
-            packageBean.create("1", "Basic Package");
-            packageBean.create("2", "Standard Package");
-            packageBean.create("3", "Premium Package");
-            packageBean.create("4", "Family Package");
-            packageBean.create("5", "Student Package");
-            packageBean.create("6", "Business Package");
-            packageBean.create("7", "Enterprise Package");
-            packageBean.create("8", "Travel Package");
-            packageBean.create("9", "Gift Package");
-            packageBean.create("10", "Subscription Package");
-            packageBean.create("11", "Starter Package");
-            packageBean.create("12", "Annual Package");
-            packageBean.create("13", "Monthly Package");
-            packageBean.create("14", "Weekly Package");
-            packageBean.create("15", "Daily Package");
-            packageBean.create("16", "Holiday Package");
-            packageBean.create("17", "Corporate Package");
-            packageBean.create("18", "Event Package");
-            packageBean.create("19", "Personal Package");
-            packageBean.create("20", "Exclusive Package");
+            packageBean.create(0L, "No Package");
+            packageBean.create(1L, "Basic Package");
+            packageBean.create(2L, "Standard Package");
+            packageBean.create(3L, "Premium Package");
+            packageBean.create(4L, "Family Package");
+            packageBean.create(5L, "Student Package");
+            packageBean.create(6L, "Business Package");
+            packageBean.create(7L, "Enterprise Package");
+            packageBean.create(8L, "Travel Package");
+            packageBean.create(9L, "Gift Package");
+            packageBean.create(10L, "Subscription Package");
+            packageBean.create(11L, "Starter Package");
+            packageBean.create(12L, "Annual Package");
+            packageBean.create(13L, "Monthly Package");
+            packageBean.create(14L, "Weekly Package");
+            packageBean.create(15L, "Daily Package");
+            packageBean.create(16L, "Holiday Package");
+            packageBean.create(17L, "Corporate Package");
+            packageBean.create(18L, "Event Package");
+            packageBean.create(19L, "Personal Package");
+            packageBean.create(20L, "Exclusive Package");
+
+    // VOLUMES
+            volumeBean.create(1L, "Standard Volume", 0L, "LAPTOP-ASUS", 5);
+            volumeBean.create(2L, "Express Volume", 0L);
+            volumeBean.create(3L, "Bulk Volume", 0L);
+            volumeBean.create(4L, "Light Volume", 0L);
+            volumeBean.create(5L, "Heavy Volume", 0L);
+            volumeBean.create(6L, "Fragile Volume", 0L);
+            volumeBean.create(7L, "Perishable Volume", 0L);
+            volumeBean.create(8L, "Valuable Volume", 0L, "JBL-2X6", 4);
+            volumeBean.create(9L, "Overnight Volume", 0L);
+            volumeBean.create(10L, "Two-Day Volume", 0L);
+            volumeBean.create(11L, "Economy Volume", 0L);
+            volumeBean.create(12L, "Same-Day Volume", 0L);
+            volumeBean.create(13L, "Standard Shipping Volume", 0L);
+            volumeBean.create(14L, "Expedited Shipping Volume", 0L);
+            volumeBean.create(15L, "International Volume", 0L);
+            volumeBean.create(16L, "Domestic Volume", 0L);
+            volumeBean.create(17L, "Return Volume", 0L);
+            volumeBean.create(18L, "Replacement Volume", 0L);
+            volumeBean.create(19L, "Seasonal Volume", 0L);
+            volumeBean.create(20L, "Promotional Volume", 0L);
 
 
-            userBean.create("admin", "123", "admin@mail.pt");
-            userBean.create("ricardo", "123", "riczao@mail.pt");
-            userBean.create("mario", "123", "mario@mail.pt");
+            adminBean.create("admin", "123", "Alberto","admin@mail.pt");
+            clientBean.create("ricardo", "123", "Ricardo Fazeres",  "riczao@mail.pt");
+            clientBean.create("mario", "123", "Mario Hilario","mario@mail.pt");
 
     // orders
             orderBean.create(123L, "ricardo", "pendente");

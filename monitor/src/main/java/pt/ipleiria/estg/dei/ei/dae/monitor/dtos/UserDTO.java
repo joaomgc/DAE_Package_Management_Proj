@@ -23,7 +23,7 @@ public class UserDTO {
         return new UserDTO(
                 user.getUsername(),
                 user.getPassword(),
-                user.getEmail()
+                user.getName()
         );
     }
 
