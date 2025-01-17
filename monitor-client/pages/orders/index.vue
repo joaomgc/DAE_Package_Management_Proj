@@ -8,8 +8,13 @@ const orders = ref([]);
 
 const filteredOrders = computed(() => {
   const user = authStore.user;
-  if (user) {
-    return orders.value.filter(order => order.customerId === user.username);
+  if (user && authStore.userClient) {
+    return orders.value.filter(order => {
+      console.log('ORDER.CLIENTUSERNAME: ', order.clientUsername);
+      return order.clientUsername === user.username;
+    });
+  } else if(authStore.userAdmin) {
+    return orders.value;
   }
   return [];
 });
@@ -17,20 +22,23 @@ const filteredOrders = computed(() => {
 async function fetchOrders() {
   try {
     let response = null;
-    
-    if (!authStore.userAdmin) {
+
+    if (authStore.userClient) {
       const username = authStore.getUsername;
-      
+
       const endpoint = `http://localhost:8080/monitor/api/clientes/${username}/encomendas`;
-      
+
       response = await fetch(endpoint, {
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
           'Accept': 'application/json'
         }
       });
-    } else {
+    } else if (authStore.userAdmin) {
       response = await fetch('http://localhost:8080/monitor/api/encomendas');
+    }
+    else {
+      return;
     }
 
     if (!response.ok) {
@@ -43,7 +51,7 @@ async function fetchOrders() {
   } catch (error) {
     console.error('Error fetching orders:', error);
   }
-  
+
 }
 
 
@@ -62,16 +70,15 @@ onMounted(async () => {
         <thead>
           <tr>
             <th>Order ID</th>
-            <th>Customer ID</th>
-            <th>Status</th>
+            <th>Username</th>
             <th>Volumes</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="order in filteredOrders" :key="order.encomendaId">
             <td>{{ order.encomendaId }}</td>
-            <td>{{ order.customerId }}</td>
-            <td>{{ order.estado }}</td>
+            <td>{{ order.clientUsername }}</td>
             <td>
               <ul>
                 <li v-for="volume in order.volumes" :key="volume.id">
@@ -79,6 +86,7 @@ onMounted(async () => {
                 </li>
               </ul>
             </td>
+            <td>{{ order.estado }}</td>
           </tr>
         </tbody>
       </table>

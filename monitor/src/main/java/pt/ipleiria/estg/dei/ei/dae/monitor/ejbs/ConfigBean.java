@@ -127,9 +127,16 @@ public class ConfigBean {
     // orders
             orderBean.create(123L, "ricardo", "pendente");
             orderBean.create(456L, "ricardo", "entregue");
+            orderBean.create(789L, "mario", "pendente");
+            orderBean.create(1234L, "mario", "entregue");
+            orderBean.create(3456L, "mario", "pendente");
             orderBean.addVolume(123L, 10L);
             orderBean.addVolume(123L, 8L);
             orderBean.addVolume(456L, 1L);
+            orderBean.addVolume(789L, 2L);
+            orderBean.addVolume(1234L, 3L);
+            orderBean.addVolume(3456L, 4L);
+            orderBean.addVolume(3456L, 5L);
 //
 //    // add products to volumes
             volumeBean.addProduct(8L, "LAPTOP-ASUS", 5);

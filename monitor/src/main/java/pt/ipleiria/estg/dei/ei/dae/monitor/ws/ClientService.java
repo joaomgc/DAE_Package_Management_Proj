@@ -67,7 +67,6 @@ public class ClientService {
         return Response.ok(ClientDTO.from(client)).build();
     }
 
-    // get all orders of a specific user
     @GET
     @Path("{username}/encomendas")
     @RolesAllowed({"Client"})

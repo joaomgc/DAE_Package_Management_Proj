@@ -1,3 +1,29 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const products = ref([]);
+const router = useRouter();
+
+const fetchProducts = async () => {
+  try {
+    const response = await fetch('http://localhost:8080/monitor/api/products');
+    const data = await response.json();
+    products.value = data;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+};
+
+const createProduct = () => {
+  router.push('/products/create');
+};
+
+onMounted(() => {
+  fetchProducts();
+});
+</script>
+
 <template>
   <div>
     <h1>Products</h1>
@@ -22,33 +48,6 @@
     </table>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      products: []
-    };
-  },
-  created() {
-    this.fetchProducts();
-  },
-  methods: {
-    async fetchProducts() {
-      try {
-        const response = await fetch('http://localhost:8080/monitor/api/products/all');
-        const data = await response.json();
-        this.products = data;
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    },
-    createProduct() {
-      this.$router.push('/products/create');
-    }
-  }
-};
-</script>
 
 <style scoped>
 table {

@@ -4,11 +4,13 @@ import { ref } from "vue";
 export const useAuthStore = defineStore("authStore", () => {
   const token = ref(null);
   const user = ref(null);
+  const errorMessage = ref(null);
 
   const config = useRuntimeConfig();
   const api = config.public.API_URL;
 
   async function login(username, password) {
+    errorMessage.value = ""; // Reset the error message
     try {
       const response = await $fetch(`${api}/auth/login`, {
         method: "POST",
@@ -18,15 +20,36 @@ export const useAuthStore = defineStore("authStore", () => {
         },
         body: { username, password },
       });
+  
       if (response) {
-        token.value = response;
+        token.value = response; // Assuming response contains the token
         await fetchUserInfo();
+        return true; // Login successful
       }
     } catch (e) {
-      errorMessage.value = 'Invalid username or password';
-      console.error('Login request failed:', e);
+      const status = e.response?.status;
+  
+      if (status === 500) {
+        errorMessage.value = "A server error occurred. Please try again later.";
+      } else if (status === 401) {
+        errorMessage.value = "Invalid password. Please try again.";
+      } else if (status === 400) {
+        errorMessage.value = "Please fill in all required fields.";
+      } else {
+        errorMessage.value = "An unknown error occurred. Please try again.";
+      }
+  
+      console.error("Login request failed:", {
+        status,
+        message: e.message,
+        response: e.response?._data || null,
+      });
+      return false; // Login failed
     }
   }
+  
+  
+  
 
   async function fetchUserInfo() {
     try {
@@ -38,7 +61,6 @@ export const useAuthStore = defineStore("authStore", () => {
         },
       });
       if (response) {
-        console.log("USER INFO IN RESPONSE:", response);
         user.value = response;
       }
     } catch (error) {
@@ -48,6 +70,10 @@ export const useAuthStore = defineStore("authStore", () => {
 
   const userAdmin = computed(() => {
     return user.value && user.value.role === 'A';
+  });
+  
+  const userClient = computed(() => {
+    return user.value && user.value.role === 'C';
   });
 
   const getUsername = computed(() => {
@@ -64,7 +90,9 @@ export const useAuthStore = defineStore("authStore", () => {
     user, 
     login, 
     userAdmin, 
+    userClient,
     getUsername,
-    logout 
+    logout,
+    errorMessage
   };
 });

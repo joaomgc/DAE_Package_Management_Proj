@@ -11,8 +11,7 @@
       <nuxt-link to="/packages" class="btn">Go to Packages</nuxt-link>
       <nuxt-link to="/products" class="btn">Go to Products</nuxt-link>
       <nuxt-link to="/volumes" class="btn">Go to Volumes</nuxt-link>
-      <nuxt-link to="/sensors" class="btn">Go to Sensors</nuxt-link>
-      <nuxt-link to="/sensor" class="btn">Go to Sensor History</nuxt-link>
+      <nuxt-link to="/sensor" class="btn">Go to Sensors</nuxt-link>
     </div>
   </div>
 </template>

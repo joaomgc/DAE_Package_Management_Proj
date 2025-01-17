@@ -1,34 +1,3 @@
-<template>
-  <div>
-    <h1>Packages</h1>
-    <button @click="redirectToCreate" class="btn" style="float: left;">Create Package</button>
-    <table>
-      <thead>
-        <tr>
-          <th>Package ID</th>
-          <th>Package Type</th>
-          <th>Products</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="pkg in packages" :key="pkg.packageId">
-          <td>{{ pkg.packageId }}</td>
-          <td>{{ pkg.packageType }}</td>
-          <td>
-            <ul>
-              <li v-for="product in pkg.products" :key="product.productId">{{ product.productName }}</li>
-            </ul>
-          </td>
-          <td>
-            <button @click="addProductToPackage(pkg.packageId)" class="btn">Add Product</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</template>
-
 <script>
 import { useRouter } from 'vue-router';
 
@@ -44,35 +13,11 @@ export default {
   methods: {
     async fetchPackages() {
       try {
-        const response = await fetch('http://localhost:8080/monitor/api/packages/all');
+        const response = await fetch('http://localhost:8080/monitor/api/embalagens');
         const data = await response.json();
         this.packages = data;
       } catch (error) {
         console.error('Error fetching packages:', error);
-      }
-    },
-    async addProductToPackage(packageId) {
-      const productId = prompt('Enter the Product ID to add:');
-      if (productId) {
-        console.log(`Adding product ${productId} to package ${packageId}`);
-        try {
-          const response = await fetch(`http://localhost:8080/monitor/api/packages/${packageId}/products/${productId}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          if (response.ok) {
-            alert('Product added successfully');
-            console.log('Response:', await response.text()); 
-            this.fetchPackages();
-          } else {
-            console.error('Error adding product:', response.statusText);
-            console.log('Response:', await response.text());
-          }
-        } catch (error) {
-          console.error('Error adding product:', error);
-        }
       }
     },
     redirectToCreate() {
@@ -82,6 +27,27 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div>
+    <h1>Packages</h1>
+    <button @click="redirectToCreate" class="btn" style="float: left;">Create Package</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Package ID</th>
+          <th>Package Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="pkg in packages" :key="pkg.packageId">
+          <td>{{ pkg.packageId }}</td>
+          <td>{{ pkg.packageType }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
 
 <style scoped>
 table {
@@ -108,7 +74,6 @@ th {
   cursor: pointer;
   transition: color 0.3s ease, border-bottom 0.3s ease, background-color 0.3s ease;
   padding-bottom: 5px;
-
 }
 .btn:hover {
   color: #000;

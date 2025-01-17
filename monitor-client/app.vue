@@ -1,9 +1,17 @@
 <template>
   <div id="app">
     <nav>
-      <nuxt-link to="/">Home</nuxt-link>
+      <nuxt-link v-if="!isLoggedIn" to="/">Home</nuxt-link>
       <nuxt-link v-if="authStore.userAdmin" to="/dashboard">Dashboard</nuxt-link>
-      <nuxt-link v-if="isLoggedIn" to="/orders">Orders</nuxt-link>
+      <nuxt-link to="/orders">Orders</nuxt-link>
+      <nuxt-link v-if="authStore.userAdmin" to="/clients">All Clients</nuxt-link>
+      <div v-if="authStore.userAdmin" class="dropdown">
+        <button class="dropdown-btn">History</button>
+        <div class="dropdown-content">
+          <nuxt-link to="/history/order">Order's History</nuxt-link>
+          <nuxt-link to="/history/sensor">Sensor's History</nuxt-link>
+        </div>
+      </div>
       <div class="auth-section">
         <nuxt-link v-if="!isLoggedIn" to="/auth">Login</nuxt-link>
         <div v-else class="user-info">
@@ -113,5 +121,52 @@ nav a:hover {
 
 .logout-btn:hover {
   background-color: #d32f2f;
+}
+
+/* Dropdown styling */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.dropdown-btn {
+  background-color: transparent;
+  color: #555;
+  font-size: 1.1em;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+.dropdown-btn:hover {
+  color: #000;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: #555;
+  text-decoration: none;
+  display: block;
+  padding: 10px 15px;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 </style>

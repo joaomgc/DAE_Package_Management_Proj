@@ -206,14 +206,12 @@ Accept: application/json
 ### Get all clients
 GET http://localhost:8080/monitor/api/clientes
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzA1NzM0MywiZXhwIjoxNzM3MDYwOTQzfQ.WT9F-owvarlaroekpLtqQsI7qBKRVEoFHLvkXGnMtxxhVVEVHLZP29yqvxy-6Sgw
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzE0MDA0MCwiZXhwIjoxNzM3MTQzNjQwfQ.oLrE9ItYiDMR8uGXvzjA0hKefQijF2PJaH7szWsuHRXy-OD8ZV4f8tkuRubD3hbj
 
 
 ### Get all clients' orders
 GET http://localhost:8080/monitor/api/clientes/ricardo/encomendas
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJyaWNhcmRvIiwiaWF0IjoxNzM3MDU4ODE1LCJleHAiOjE3MzcwNjI0MTV9.PmEDXwuW1uN8G1DzTigCTvKyyGoDn8BYuxmNk11CTbD-fQ2J2-DI0hkzYeLB6M7N
-
-
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzEzOTY0MiwiZXhwIjoxNzM3MTQzMjQyfQ.f5EUCDyxLtADI82pvMgz2AB_jUU_YSBZGSOaDmBbdWuRPOPVyRTjCrTqFm3NY6mv
 
 
