@@ -55,7 +55,7 @@ public class UserBean {
 
     public User findOrFail(String username) {
         var user = em.getReference(User.class, username);
-        System.out.println("Getting user data:" + user.getUsername() + user.getName() + user.getEmail());
+        System.out.println("Getting user data:" + user.getUsername() + user.getName() + user.getEmail() + user.getRole());
         Hibernate.initialize(user);
         return user;
     }

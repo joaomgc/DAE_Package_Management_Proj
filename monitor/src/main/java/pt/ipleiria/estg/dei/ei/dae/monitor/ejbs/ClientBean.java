@@ -37,6 +37,7 @@ public class ClientBean {
 
         try {
             client = new Client(username, hasher.hash(password), name, email);
+            client.setRole("C");
             System.out.println("Client created: " + username);
             em.persist(client);
             em.flush();

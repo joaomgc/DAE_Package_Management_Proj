@@ -17,6 +17,8 @@ public class User {
     @Email
     @NotNull
     private String email;
+    @NotNull
+    private String role;
 
     public User() {
     }
@@ -57,5 +59,13 @@ public class User {
 
     public void setEmail(@Email @NotNull String email) {
         this.email = email;
+    }
+
+    public @NotNull String getRole() {
+        return role;
+    }
+
+    public void setRole(@NotNull String role) {
+        this.role = role;
     }
 }

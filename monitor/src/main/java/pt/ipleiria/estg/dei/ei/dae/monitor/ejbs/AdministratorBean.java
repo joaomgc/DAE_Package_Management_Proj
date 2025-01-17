@@ -35,6 +35,7 @@ public class AdministratorBean {
 
         try{
             admin = new Administrator(username, hasher.hash(password), name, email);
+            admin.setRole("A");
             em.persist(admin);
             em.flush();
         } catch (PersistenceException e) {

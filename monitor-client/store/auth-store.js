@@ -47,14 +47,24 @@ export const useAuthStore = defineStore("authStore", () => {
   }
 
   const userAdmin = computed(() => {
-    console.log("User:" + user.value);
-    return user.value && user.value.dtype === 'Administrator';
+    return user.value && user.value.role === 'A';
   });
+
+  const getUsername = computed(() => {
+    return user.value ? user.value.username : '';
+  })
 
   function logout() {
     token.value = null;
     user.value = null;
   }
 
-  return { token, user, login, userAdmin, logout };
+  return { 
+    token, 
+    user, 
+    login, 
+    userAdmin, 
+    getUsername,
+    logout 
+  };
 });

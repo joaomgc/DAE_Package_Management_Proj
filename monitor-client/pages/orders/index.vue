@@ -1,8 +1,61 @@
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useAuthStore } from '~/store/auth-store';
+
+const authStore = useAuthStore();
+const orders = ref([]);
+
+
+const filteredOrders = computed(() => {
+  const user = authStore.user;
+  if (user) {
+    return orders.value.filter(order => order.customerId === user.username);
+  }
+  return [];
+});
+
+async function fetchOrders() {
+  try {
+    let response = null;
+    
+    if (!authStore.userAdmin) {
+      const username = authStore.getUsername;
+      
+      const endpoint = `http://localhost:8080/monitor/api/clientes/${username}/encomendas`;
+      
+      response = await fetch(endpoint, {
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Accept': 'application/json'
+        }
+      });
+    } else {
+      response = await fetch('http://localhost:8080/monitor/api/encomendas');
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+
+    const data = await response.json();
+    orders.value = data;
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+  }
+  
+}
+
+
+onMounted(async () => {
+  fetchOrders();
+});
+</script>
+
 <template>
   <div class="container">
     <header>
-      <h1>Orders</h1>
-      <p>List of all orders</p>
+      <p>{{ authStore.userAdmin ? 'List of all orders' : 'My Orders' }}</p>
     </header>
     <main>
       <table v-if="filteredOrders.length > 0">
@@ -29,32 +82,12 @@
           </tr>
         </tbody>
       </table>
-      <p v-else>No orders found for this user.</p>
+      <p v-else>No orders found.</p>
     </main>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useAuthStore } from '~/store/auth-store';
 
-const authStore = useAuthStore();
-const orders = ref([]);
-
-onMounted(async () => {
-  const response = await fetch('http://localhost:8080/monitor/api/encomendas');
-  const data = await response.json();
-  orders.value = data;
-});
-
-const filteredOrders = computed(() => {
-  const user = authStore.user;
-  if (user) {
-    return orders.value.filter(order => order.customerId === user.username);
-  }
-  return [];
-});
-</script>
 
 <style scoped>
 .container {
@@ -96,7 +129,8 @@ table {
   margin-top: 20px;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
