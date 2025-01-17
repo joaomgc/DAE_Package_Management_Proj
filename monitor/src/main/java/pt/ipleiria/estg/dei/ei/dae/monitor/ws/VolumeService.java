@@ -11,6 +11,8 @@ import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.ProductBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.VolumeBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Volume;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +35,7 @@ public class VolumeService {
 
     @GET
     @Path("/{id}")
-    public Response getVolume(@PathParam("id") Long id) {
+    public Response getVolume(@PathParam("id") Long id) throws MyEntityNotFoundException {
         Volume volume = volumeBean.find(id);
         if (volume == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -42,14 +44,14 @@ public class VolumeService {
     }
 
     @POST
-    public Response createVolume(VolumeDTO volumeDTO) {
+    public Response createVolume(VolumeDTO volumeDTO) throws MyEntityNotFoundException, MyEntityExistsException {
         volumeBean.create(volumeDTO.getId(), volumeDTO.getVolumeName(), null); // Assuming Package is handled elsewhere
         return Response.status(Response.Status.CREATED).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response updateVolume(@PathParam("id") Long id, VolumeDTO volumeDTO) {
+    public Response updateVolume(@PathParam("id") Long id, VolumeDTO volumeDTO) throws MyEntityNotFoundException{
         Volume volume = volumeBean.find(id);
         if (volume == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -61,7 +63,7 @@ public class VolumeService {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteVolume(@PathParam("id") Long id) {
+    public Response deleteVolume(@PathParam("id") Long id) throws MyEntityNotFoundException {
         Volume volume = volumeBean.find(id);
         if (volume == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -72,14 +74,16 @@ public class VolumeService {
 
     @POST
     @Path("/{volumeId}/packages/{packageId}")
-    public Response addPackageToVolume(@PathParam("volumeId") Long volumeId, @PathParam("packageId") Long packageId) {
+    public Response addPackageToVolume(@PathParam("volumeId") Long volumeId, @PathParam("packageId") Long packageId)
+            throws MyEntityNotFoundException{
         volumeBean.addPackage(volumeId, packageId);
         return Response.ok().build();
     }
 
     @POST
     @Path("/{volumeId}/sensors/{sensorId}")
-    public Response associateSensorToVolume(@PathParam("volumeId") Long volumeId, @PathParam("sensorId") String sensorId) {
+    public Response associateSensorToVolume(@PathParam("volumeId") Long volumeId, @PathParam("sensorId") String sensorId)
+            throws MyEntityNotFoundException{
         Volume volume = volumeBean.find(volumeId);
         volumeBean.associateSensor(volumeId, sensorId);
 
@@ -88,7 +92,7 @@ public class VolumeService {
 
     @POST
     @Path("/{volumeId}/produtos")  // EP02.1 - add product to volume
-    public Response addProduct(@PathParam("volumeId") Long volumeId, ProductQuantityDTO dto) {
+    public Response addProduct(@PathParam("volumeId") Long volumeId, ProductQuantityDTO dto) throws MyEntityNotFoundException{
         volumeBean.addProduct(volumeId, dto.getProductId(), dto.getQuantidade());
         Volume volume = volumeBean.find(volumeId);
         return Response.ok(VolumeDTO.from(volume)).build();

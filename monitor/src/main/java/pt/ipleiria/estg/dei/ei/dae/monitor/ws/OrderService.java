@@ -13,6 +13,8 @@ import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Order;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.OrderHistory;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Volume;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class OrderService {
 
     @POST
     @Path("/") // EP01
-    public Response create(OrderDTO orderDTO) {
+    public Response create(OrderDTO orderDTO) throws MyEntityNotFoundException, MyEntityExistsException {
         orderBean.create(
                 orderDTO.getEncomendaId(),
                 orderDTO.getClientUsername(),
@@ -46,14 +48,14 @@ public class OrderService {
 
     @GET
     @Path("/{encomendaId}") // EP03
-    public OrderDTO getOrder(@PathParam("encomendaId") Long encomendaId) {
+    public OrderDTO getOrder(@PathParam("encomendaId") Long encomendaId) throws MyEntityNotFoundException{
         return OrderDTO.from(orderBean.find(encomendaId));
     }
 
     // change an order state
     @PATCH
     @Path("/{encomendaId}/estado") // EP10
-    public Response changeOrderState(@PathParam("encomendaId") Long encomendaId, OrderDTO orderDTO) {
+    public Response changeOrderState(@PathParam("encomendaId") Long encomendaId, OrderDTO orderDTO) throws MyEntityNotFoundException {
         Order order = orderBean.find(encomendaId);
         if(order == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -67,7 +69,7 @@ public class OrderService {
 
     @DELETE
     @Path("/{encomendaId}") // EP13
-    public Response deleteOrder(@PathParam("encomendaId") Long encomendaId) {
+    public Response deleteOrder(@PathParam("encomendaId") Long encomendaId) throws MyEntityNotFoundException{
         Order order = orderBean.find(encomendaId);
         if (order == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

@@ -7,6 +7,8 @@ import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.ProductDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.ProductBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Product;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class ProductService {
 
     @GET
     @Path("/{id}")
-    public Response getProduct(@PathParam("id") String id) {
+    public Response getProduct(@PathParam("id") String id) throws MyEntityNotFoundException {
         Product product = productBean.find(id);
         if (product == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -35,7 +37,7 @@ public class ProductService {
 
     @POST
     @Path("/")
-    public Response createNewProduct(ProductDTO productDTO) {
+    public Response createNewProduct(ProductDTO productDTO) throws MyEntityExistsException {
         productBean.create(
                 productDTO.getProductId(),
                 productDTO.getProductName(),
@@ -46,7 +48,7 @@ public class ProductService {
 
     @PUT
     @Path("/{id}")
-    public Response updateProduct(@PathParam("id") String id, ProductDTO productDTO) {
+    public Response updateProduct(@PathParam("id") String id, ProductDTO productDTO) throws MyEntityNotFoundException {
         Product product = productBean.find(id);
         if (product == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -59,7 +61,7 @@ public class ProductService {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteProduct(@PathParam("id") String id) {
+    public Response deleteProduct(@PathParam("id") String id) throws MyEntityNotFoundException {
         Product product = productBean.find(id);
         if (product == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

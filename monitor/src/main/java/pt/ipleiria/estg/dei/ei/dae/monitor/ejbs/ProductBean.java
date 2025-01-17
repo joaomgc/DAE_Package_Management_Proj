@@ -3,8 +3,12 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.ejbs;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Product;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
 
@@ -14,23 +18,28 @@ public class ProductBean {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void create( String productId, String productName, String productType) {
+    public void create( String productId, String productName, String productType) throws MyEntityExistsException{
         String id = productId.toUpperCase();
         if (exists(id)) {
-            throw new IllegalArgumentException("Id for product already exists");
+            throw new MyEntityExistsException("Id for product already exists");
         }
-        var product = new Product(id, productName, productType);
-        entityManager.persist(product);
+        try {
+            var product = new Product(id, productName, productType);
+            entityManager.persist(product);
+            entityManager.flush();
+        } catch (ConstraintViolationException e){
+            throw new MyConstraintViolationException(e);
+        }
     }
 
     public List<Product> findAll() {
         return entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
     }
 
-    public Product find(String productId) {
+    public Product find(String productId) throws MyEntityNotFoundException {
         var product = entityManager.find(Product.class, productId.toUpperCase());
         if (product == null) {
-            throw new IllegalArgumentException("Product not found");
+            throw new MyEntityNotFoundException("Product with id "+productId+" not found");
         }
         return product;
     }
@@ -44,11 +53,10 @@ public class ProductBean {
         entityManager.merge(product);
     }
 
-    public void delete(String id) {
+    public void delete(String id) throws MyEntityNotFoundException {
         Product product = find(id);
-        if (product != null) {
-            entityManager.remove(product);
-        }
+        entityManager.remove(product);
+
     }
 
 }

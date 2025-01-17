@@ -8,6 +8,7 @@ import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.SensorDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.SensorBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.SensorHistoryBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.SensorSimulator;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +33,7 @@ public class SensorService {
 
     @GET
     @Path("/{id}") // EP06
-    public Response getSensor(@PathParam("id") String id) {
+    public Response getSensor(@PathParam("id") String id) throws MyEntityNotFoundException {
         SensorSimulator sensor = sensorBean.find(id);
         if (sensor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -48,7 +49,7 @@ public class SensorService {
 
     @PUT
     @Path("/{id}")
-    public Response updateSensor(@PathParam("id") String id, SensorDTO sensorDTO) {
+    public Response updateSensor(@PathParam("id") String id, SensorDTO sensorDTO) throws MyEntityNotFoundException {
         SensorSimulator sensor = sensorBean.find(id);
         if (sensor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -62,7 +63,7 @@ public class SensorService {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteSensor(@PathParam("id") String id) {
+    public Response deleteSensor(@PathParam("id") String id) throws MyEntityNotFoundException {
         SensorSimulator sensor = sensorBean.find(id);
         if (sensor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -74,7 +75,7 @@ public class SensorService {
     // endpoint for a sensor to send a reading
     @POST
     @Path("/") // EP04
-    public Response setValue(SensorDTO sensorDTO) {
+    public Response setValue(SensorDTO sensorDTO) throws MyEntityNotFoundException {
         SensorSimulator sensor = sensorBean.find(sensorDTO.getId());
         if (sensor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -90,7 +91,7 @@ public class SensorService {
 
     @PATCH
     @Path("/{id}/estado")
-    public Response changeStatus(@PathParam("id") String id, SensorDTO sensorDTO) {
+    public Response changeStatus(@PathParam("id") String id, SensorDTO sensorDTO) throws MyEntityNotFoundException {
         SensorSimulator sensor = sensorBean.find(id);
         if (sensor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

@@ -12,6 +12,9 @@ import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.ClientBean;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.core.MediaType;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.security.Authenticated;
 
 import java.util.List;
@@ -38,7 +41,7 @@ public class ClientService {
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createNewClient(ClientDTO clientDTO) {
+    public Response createNewClient(ClientDTO clientDTO) throws MyEntityExistsException, MyConstraintViolationException, MyEntityNotFoundException {
         clientBean.create(
                 clientDTO.getUsername(),
                 clientDTO.getPassword(),
@@ -53,7 +56,7 @@ public class ClientService {
     @Path("{username}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     @RolesAllowed({"Client"})
-    public Response getClient(@PathParam("username") String username) {
+    public Response getClient(@PathParam("username") String username) throws MyEntityNotFoundException {
         var principal = securityContext.getUserPrincipal();
 
         if (!principal.getName().equals(username)) {
@@ -68,7 +71,7 @@ public class ClientService {
     @GET
     @Path("{username}/encomendas")
     @RolesAllowed({"Client"})
-    public Response getClientOrders(@PathParam("username") String username) {
+    public Response getClientOrders(@PathParam("username") String username) throws MyEntityNotFoundException {
         Client client = clientBean.findWithOrders(username);
         return Response.ok(OrderDTO.from(client.getOrders())).build();
     }

@@ -3,8 +3,11 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.ejbs;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.SensorHistory;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.SensorSimulator;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,9 +18,15 @@ public class SensorHistoryBean {
     @PersistenceContext
     private EntityManager entityManager;
 
+
     public void create(SensorSimulator sensor, LocalDateTime timestamp, double valor) {
-        SensorHistory history = new SensorHistory(sensor, timestamp, valor);
-        entityManager.persist(history);
+        try {
+            SensorHistory history = new SensorHistory(sensor, timestamp, valor);
+            entityManager.persist(history);
+            entityManager.flush();
+        } catch (ConstraintViolationException e){
+            throw new MyConstraintViolationException(e);
+        }
     }
 
     public List<SensorHistory> findAll() {
@@ -35,11 +44,17 @@ public class SensorHistoryBean {
         entityManager.merge(history);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id) throws MyEntityNotFoundException {
+        SensorHistory history = find(id);
+        entityManager.remove(history);
+    }
+
+    public SensorHistory find(Long id) throws MyEntityNotFoundException {
         SensorHistory history = entityManager.find(SensorHistory.class, id);
-        if (history != null) {
-            entityManager.remove(history);
+        if (history == null) {
+            throw new MyEntityNotFoundException("History for sensor not found");
         }
+        return history;
     }
 
     public void deleteBySensorId(String sensorId) {

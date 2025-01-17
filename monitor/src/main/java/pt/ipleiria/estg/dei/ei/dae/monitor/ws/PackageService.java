@@ -7,6 +7,8 @@ import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.PackageDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.PackageBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Package;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class PackageService {
 
     @POST
     @Path("/")
-    public Response createNewPackage(PackageDTO packageDTO) {
+    public Response createNewPackage(PackageDTO packageDTO) throws MyEntityExistsException, MyEntityNotFoundException {
         packageBean.create(
                 packageDTO.getPackageId(),
                 packageDTO.getPackageType()
@@ -36,7 +38,7 @@ public class PackageService {
 
     @PUT
     @Path("/{id}")
-    public Response updatePackage(@PathParam("id") Long id, PackageDTO packageDTO) {
+    public Response updatePackage(@PathParam("id") Long id, PackageDTO packageDTO) throws MyEntityNotFoundException{
         var pck = packageBean.find(id);
         pck.setPackageType(packageDTO.getPackageType());
         packageBean.update(pck);
@@ -46,13 +48,13 @@ public class PackageService {
 
     @DELETE
     @Path("/{id}")
-    public void deletePackage(@PathParam("id") Long id) {
+    public void deletePackage(@PathParam("id") Long id) throws MyEntityNotFoundException {
         packageBean.delete(id);
     }
 
     @GET
     @Path("/{id}")
-    public PackageDTO getPackage(@PathParam("id") Long id) {
+    public PackageDTO getPackage(@PathParam("id") Long id) throws MyEntityNotFoundException {
         return PackageDTO.from(packageBean.find(id));
     }
 

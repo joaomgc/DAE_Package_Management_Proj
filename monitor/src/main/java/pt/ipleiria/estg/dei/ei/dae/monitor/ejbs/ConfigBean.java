@@ -4,10 +4,12 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +17,7 @@ import java.util.logging.Logger;
 @Singleton
 public class ConfigBean {
 
-    private static final Logger LOGGER = Logger.getLogger(ConfigBean.class.getName());
+    private static final Logger logger = Logger.getLogger(ConfigBean.class.getName());
 
     @EJB
     private PackageBean packageBean;
@@ -39,15 +41,12 @@ public class ConfigBean {
     @PostConstruct
     public void populateDB() {
         try {
-
             // Sensors
-
             sensorBean.create("1", "temperatura", "Inactive");
             sensorBean.create("2", "pressao", "Inactive");
             sensorBean.create("3", "aceleracao", "Inactive");
             sensorBean.create("4", "posicionamento", "Inactive");
             sensorBean.create("5", "luminosidade", "Active");
-
             // Sensor History
 
             sensorHistoryBean.create(sensorBean.find("1"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 20.0);
@@ -78,7 +77,6 @@ public class ConfigBean {
             productBean.create("SMART-PLUG", "Smart Plug", "Smart Home");
             productBean.create("BREATHE-AIR", "Air Purifier", "Home Appliances");
             productBean.create("DYSON-500X", "Vacuum Cleaner", "Home Appliances");
-
 // Packages
             packageBean.create(0L, "No Package");
             packageBean.create(1L, "Basic Package");
@@ -101,7 +99,6 @@ public class ConfigBean {
             packageBean.create(18L, "Event Package");
             packageBean.create(19L, "Personal Package");
             packageBean.create(20L, "Exclusive Package");
-
     // VOLUMES
             volumeBean.create(1L, "Standard Volume", 0L, "LAPTOP-ASUS", 5);
             volumeBean.create(2L, "Express Volume", 0L);
@@ -124,11 +121,9 @@ public class ConfigBean {
             volumeBean.create(19L, "Seasonal Volume", 0L);
             volumeBean.create(20L, "Promotional Volume", 0L);
 
-
-            adminBean.create("admin", "123", "Alberto","admin@mail.pt");
-            clientBean.create("ricardo", "123", "Ricardo Fazeres",  "riczao@mail.pt");
-            clientBean.create("mario", "123", "Mario Hilario","mario@mail.pt");
-
+            adminBean.create("admin", "123", "Alberto", "admin@mail.pt");
+            clientBean.create("ricardo", "123", "Ricardo Fazeres", "riczao@mail.pt");
+            clientBean.create("mario", "123", "Mario Hilario", "mario@mail.pt");
     // orders
             orderBean.create(123L, "ricardo", "pendente");
             orderBean.create(456L, "ricardo", "entregue");
@@ -141,8 +136,10 @@ public class ConfigBean {
             volumeBean.addProduct(10L, "IPHONE-14", 3);  // Volume 10 -> Product 2 (3 units)
             volumeBean.addProduct(10L, "JBL-2X6", 7);
 
+        } catch (MyEntityExistsException | MyEntityNotFoundException | MyConstraintViolationException e){
+            logger.severe("Error populating the database: " + e.getMessage());
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error populating database", e);
+            logger.log(Level.SEVERE, "Error populating database", e);
             throw e; // Rethrow the exception to ensure the deployment fails
         }
     }

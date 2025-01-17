@@ -5,8 +5,13 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.ws.rs.ForbiddenException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Package;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
 
@@ -28,39 +33,43 @@ public class OrderBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(Long id, String customerUsername, String estado) {
+    public void create(Long id, String customerUsername, String estado) throws MyEntityExistsException, MyEntityNotFoundException {
         if (exists(id)) {
-            throw new RuntimeException("Order already exists");
+            throw new MyEntityExistsException("Order with id "+ id +" already exists");
         }
         Client client = clientBean.find(customerUsername);
-        var order = new Order(id, client, estado);
-        em.persist(order);
+        try {
+            var order = new Order(id, client, estado);
+            em.persist(order);
+            em.flush();
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(e);
+        }
     }
 
     public void update(Order order) {
         em.merge(order);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id) throws MyEntityNotFoundException {
         Order order = find(id);
-        if (order != null) {
-            em.remove(order);
-        }
+        em.remove(order);
+
     }
 
-    public Order find(Long id) {
+    public Order find(Long id) throws MyEntityNotFoundException {
         var order = em.find(Order.class, id);
         if (order == null) {
-            throw new RuntimeException("Order not found");
+            throw new MyEntityNotFoundException("Order with id "+id+" not found");
         }
         return order;
     }
 
-    public void addVolume(Long orderId, Long volumeId) {
+    public void addVolume(Long orderId, Long volumeId) throws MyEntityNotFoundException{
         Order order = find(orderId);
         Volume volume = volumeBean.find(volumeId);
         if (volume.getOrder() != null && !volume.getOrder().equals(order)) {
-            throw new RuntimeException("Volume is already associated with other order");
+            throw new ForbiddenException("Volume is already associated with other order");
         }
         volume.setOrder(order);
         order.add(volume);

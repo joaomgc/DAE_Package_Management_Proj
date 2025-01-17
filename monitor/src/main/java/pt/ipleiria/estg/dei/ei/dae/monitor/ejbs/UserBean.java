@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.*;
 import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.User;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.security.Hasher;
 //import pt.ipleiria.estg.dei.ei.dae.monitor.security.Hasher;
 
@@ -19,16 +20,8 @@ public class UserBean {
     @Inject
     private Hasher hasher;
 
-
-
-
-    public void update(User user) {
-        User existingUser = em.find(User.class, user.getUsername());
-
-        if (existingUser == null) {
-            System.err.println("ERROR_USER_NOT_FOUND: " + user.getUsername());
-            return;
-        }
+    public void update(User user) throws MyEntityNotFoundException {
+        User existingUser = find(user.getUsername());
 
         em.lock(existingUser, LockModeType.OPTIMISTIC);
 
@@ -51,6 +44,13 @@ public class UserBean {
     /*public List<User> findAll() {
         return em.createNamedQuery("getAllUsers", User.class).getResultList();
     }*/
+    public User find(String username) throws MyEntityNotFoundException {
+        User user = em.find(User.class, username);
+        if (user == null) {
+            throw new MyEntityNotFoundException("User with username '"+username+"' not found");
+        }
+        return user;
+    }
 
 
     public User findOrFail(String username) {

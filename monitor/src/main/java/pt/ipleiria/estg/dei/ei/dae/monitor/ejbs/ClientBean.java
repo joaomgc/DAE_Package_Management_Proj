@@ -3,9 +3,13 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.ejbs;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
+import jakarta.validation.ConstraintViolationException;
 import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Client;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.User;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.security.Hasher;
 
 import java.util.List;
@@ -28,9 +32,10 @@ public class ClientBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public Client create(String username, String password, String name, String email) {
+    public Client create(String username, String password, String name, String email)
+            throws MyEntityExistsException, MyConstraintViolationException {
         if (exists(username)) {
-            throw new EntityExistsException("Client already exists");
+            throw new MyEntityExistsException("Client with username'"+ username +"' already exists");
         }
 
         Client client = null;
@@ -41,20 +46,15 @@ public class ClientBean {
             System.out.println("Client created: " + username);
             em.persist(client);
             em.flush();
-        }catch(EntityExistsException e){
-            System.err.println("ERROR_USER_ALREADY_EXISTS: " + username);
+        }catch(ConstraintViolationException e){
+            throw new MyConstraintViolationException(e);
         }
 
         return client;
     }
 
-    public void update(Client updatedClient) {
+    public void update(Client updatedClient) throws MyEntityNotFoundException {
         Client client = find(updatedClient.getUsername());
-
-        if (client == null) {
-            System.err.println("ERROR_CLIENT_NOT_FOUND: " + updatedClient.getUsername());
-            return;
-        }
 
         em.lock(client, LockModeType.OPTIMISTIC);
 
@@ -65,10 +65,10 @@ public class ClientBean {
         em.merge(client);
     }
 
-    public Client find(String username) {
+    public Client find(String username) throws MyEntityNotFoundException{
         Client client = em.find(Client.class, username);
         if (client == null) {
-            throw new EntityNotFoundException("Client not found");
+            throw new MyEntityNotFoundException("Client with username '"+ username +"' not found");
         }
         return client;
     }
@@ -77,15 +77,13 @@ public class ClientBean {
         return em.createNamedQuery("getAllClients", Client.class).getResultList();
     }
 
-    public void delete(String username) {
-        var user = em.find(User.class, username);
-        if (user != null) {
-            em.remove(user);
-        }
+    public void delete(String username) throws MyEntityNotFoundException{
+        var user = find(username);
+        em.remove(user);
     }
 
-    public Client findWithOrders(String username) {
-        var client = this.find(username);
+    public Client findWithOrders(String username) throws MyEntityNotFoundException {
+        var client = find(username);
         Hibernate.initialize(client.getOrders());
         return client;
     }

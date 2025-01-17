@@ -3,8 +3,11 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.ejbs;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
+import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Administrator;
-import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.security.Hasher;
 
 import java.util.List;
@@ -25,10 +28,11 @@ public class AdministratorBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(String username, String password, String name, String email) {
+    public void create(String username, String password, String name, String email)
+            throws MyEntityExistsException, MyConstraintViolationException {
 
         if(exists(username)) {
-            throw new EntityExistsException("Administrator with username '" + username + "' already exists");
+            throw new MyEntityExistsException("Administrator with username '" + username + "' already exists");
         }
 
         Administrator admin = null;
@@ -38,19 +42,14 @@ public class AdministratorBean {
             admin.setRole("A");
             em.persist(admin);
             em.flush();
-        } catch (PersistenceException e) {
-            throw new EntityExistsException("Administrator with username '" + username + "' already exists");
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(e);
         }
         System.out.println("Created administrator with username: " + username);
     }
 
-    public void update(String username, String password, String name, String email) {
-        var admin = em.find(Administrator.class, username);
-
-        if(admin == null) {
-            System.err.println("ERROR_ADMIN_NOT_FOUND: " + username);
-            return;
-        }
+    public void update(String username, String password, String name, String email) throws MyEntityNotFoundException {
+        var admin = find(username);
 
         em.lock(admin, LockModeType.OPTIMISTIC);
         admin.setPassword(hasher.hash(password));
@@ -58,10 +57,10 @@ public class AdministratorBean {
         admin.setEmail(email);
     }
 
-    public Administrator find(String username) {
+    public Administrator find(String username) throws MyEntityNotFoundException {
         Administrator admin = em.find(Administrator.class, username);
         if (admin == null) {
-            throw new EntityNotFoundException("Admin not found");
+            throw new MyEntityNotFoundException("Admin with username '"+ username +"' not found");
         }
         return admin;
     }
