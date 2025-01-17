@@ -1,10 +1,15 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 export const useAuthStore = defineStore("authStore", () => {
   const token = ref(null);
   const user = ref(null);
   const errorMessage = ref(null);
+
+  if (typeof window !== "undefined") {
+    token.value = localStorage.getItem("token");
+    user.value = JSON.parse(localStorage.getItem("user"));
+  }
 
   const config = useRuntimeConfig();
   const api = config.public.API_URL;
@@ -20,15 +25,18 @@ export const useAuthStore = defineStore("authStore", () => {
         },
         body: { username, password },
       });
-  
+
       if (response) {
         token.value = response; // Assuming response contains the token
+        if (typeof window !== "undefined") {
+          localStorage.setItem("token", token.value);
+        }
         await fetchUserInfo();
         return true; // Login successful
       }
     } catch (e) {
       const status = e.response?.status;
-  
+
       if (status === 500) {
         errorMessage.value = "A server error occurred. Please try again later.";
       } else if (status === 401) {
@@ -38,7 +46,7 @@ export const useAuthStore = defineStore("authStore", () => {
       } else {
         errorMessage.value = "An unknown error occurred. Please try again.";
       }
-  
+
       console.error("Login request failed:", {
         status,
         message: e.message,
@@ -47,9 +55,6 @@ export const useAuthStore = defineStore("authStore", () => {
       return false; // Login failed
     }
   }
-  
-  
-  
 
   async function fetchUserInfo() {
     try {
@@ -62,6 +67,9 @@ export const useAuthStore = defineStore("authStore", () => {
       });
       if (response) {
         user.value = response;
+        if (typeof window !== "undefined") {
+          localStorage.setItem("user", JSON.stringify(user.value));
+        }
       }
     } catch (error) {
       console.error("Failed to fetch user info:", error);
@@ -71,25 +79,29 @@ export const useAuthStore = defineStore("authStore", () => {
   const userAdmin = computed(() => {
     return user.value && user.value.role === 'A';
   });
-  
+
   const userClient = computed(() => {
     return user.value && user.value.role === 'C';
   });
 
   const getUsername = computed(() => {
     return user.value ? user.value.username : '';
-  })
+  });
 
   function logout() {
     token.value = null;
     user.value = null;
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
   }
 
-  return { 
-    token, 
-    user, 
-    login, 
-    userAdmin, 
+  return {
+    token,
+    user,
+    login,
+    userAdmin,
     userClient,
     getUsername,
     logout,
