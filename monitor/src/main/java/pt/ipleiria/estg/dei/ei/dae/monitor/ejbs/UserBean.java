@@ -48,13 +48,14 @@ public class UserBean {
         }
     }
 
-    public List<User> findAll() {
+    /*public List<User> findAll() {
         return em.createNamedQuery("getAllUsers", User.class).getResultList();
-    }
+    }*/
 
 
     public User findOrFail(String username) {
         var user = em.getReference(User.class, username);
+        System.out.println("Getting user data:" + user.getUsername() + user.getName() + user.getEmail());
         Hibernate.initialize(user);
         return user;
     }

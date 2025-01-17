@@ -2,7 +2,7 @@
   <div id="app">
     <nav>
       <nuxt-link to="/">Home</nuxt-link>
-      <nuxt-link to="/dashboard">Dashboard</nuxt-link>
+      <nuxt-link v-if="authStore.userAdmin" to="/dashboard">Dashboard</nuxt-link>
       <nuxt-link v-if="isLoggedIn" to="/orders">Orders</nuxt-link>
       <div class="auth-section">
         <nuxt-link v-if="!isLoggedIn" to="/auth">Login</nuxt-link>

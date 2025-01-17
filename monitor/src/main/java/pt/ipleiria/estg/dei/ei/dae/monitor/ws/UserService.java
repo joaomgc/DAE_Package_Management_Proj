@@ -27,11 +27,11 @@ public class UserService {
     @Context
     private SecurityContext securityContext;
 
-    @GET
+    /*@GET
     @Path("/")
     public List<UserDTO> getAllUsers() {
         return UserDTO.from(userBean.findAll());
-    }
+    }*/
 
     // METER POST '/'
 

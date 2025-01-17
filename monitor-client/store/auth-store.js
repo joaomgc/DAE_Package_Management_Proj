@@ -22,8 +22,9 @@ export const useAuthStore = defineStore("authStore", () => {
         token.value = response;
         await fetchUserInfo();
       }
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch (e) {
+      errorMessage.value = 'Invalid username or password';
+      console.error('Login request failed:', e);
     }
   }
 
@@ -37,6 +38,7 @@ export const useAuthStore = defineStore("authStore", () => {
         },
       });
       if (response) {
+        console.log("USER INFO IN RESPONSE:", response);
         user.value = response;
       }
     } catch (error) {
@@ -44,10 +46,15 @@ export const useAuthStore = defineStore("authStore", () => {
     }
   }
 
+  const userAdmin = computed(() => {
+    console.log("User:" + user.value);
+    return user.value && user.value.dtype === 'Administrator';
+  });
+
   function logout() {
     token.value = null;
     user.value = null;
   }
 
-  return { token, user, login, logout };
+  return { token, user, login, userAdmin, logout };
 });

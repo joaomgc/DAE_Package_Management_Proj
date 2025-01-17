@@ -4,6 +4,13 @@ Content-Type: application/json
 Accept: application/json
 
 { "username": "admin", "password": "123" }
+
+### Get user's data
+GET http://localhost:8080/monitor/api/auth/admin
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzEyMjk2MCwiZXhwIjoxNzM3MTI2NTYwfQ.8kr3Xlvr_q5usyY7HLahWTgy2rb4U54iqE_W4g7FyWk_A3yJbCKesvecHug9oupc
+
+
 #########################
 ###### ENCOMENDAS #######
 #########################
@@ -206,6 +213,7 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzA1N
 GET http://localhost:8080/monitor/api/clientes/ricardo/encomendas
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJyaWNhcmRvIiwiaWF0IjoxNzM3MDU4ODE1LCJleHAiOjE3MzcwNjI0MTV9.PmEDXwuW1uN8G1DzTigCTvKyyGoDn8BYuxmNk11CTbD-fQ2J2-DI0hkzYeLB6M7N
+
 
 
 
