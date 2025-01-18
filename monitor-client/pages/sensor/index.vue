@@ -31,6 +31,7 @@ export default {
       <table>
         <thead>
           <tr>
+            <th>ID</th>
             <th>Type</th>
             <th>Value</th>
             <th>Status</th>
@@ -39,6 +40,7 @@ export default {
         </thead>
         <tbody>
           <tr v-for="sensor in sensors" :key="sensor.id">
+            <td>{{ sensor.id }}</td>
             <td>{{ capitalize(sensor.tipo) }}</td>
             <td>{{ sensor.valor }}</td>
             <td>{{ sensor.status }}</td>
