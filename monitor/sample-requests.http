@@ -140,7 +140,7 @@ Accept: application/json
 ### EP12 – Apresentar todos os sensores
 GET http://localhost:8080/monitor/api/sensors
 
-### EP14
+### EP14 ---- A LOGICA DESTE ENDPOINT JÁ É FEITA NO ENDPOINT "associate sensor to volume" - APAGAR (?)
 PATCH http://localhost:8080/monitor/api/sensors/5/estado
 Content-Type: application/json
 
