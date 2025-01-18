@@ -33,7 +33,7 @@ export default {
           <tr>
             <th>ID</th>
             <th>Type</th>
-            <th>Value</th>
+            <th>Last value read</th>
             <th>Status</th>
             <th>Volume ID</th>
           </tr>
