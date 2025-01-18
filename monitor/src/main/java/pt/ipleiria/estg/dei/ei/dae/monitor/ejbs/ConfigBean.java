@@ -49,13 +49,16 @@ public class ConfigBean {
             tipoSensorBean.create("posicionamento");
             tipoSensorBean.create("luminosidade");
             // Sensors
-            sensorBean.create("TEMP-01", "temperatura", "Inactive");
-            sensorBean.create("PRESS-01", "pressao", "Inactive");
-            sensorBean.create("AC-01", "aceleracao", "Inactive");
-            sensorBean.create("POS-01", "posicionamento", "Inactive");
-            sensorBean.create("LUM-01", "luminosidade", "Inactive");
-            sensorBean.create("TEMP-02", "temperatura", "Inactive");
-            sensorBean.create("PRESS-02", "pressao", "Inactive");
+            sensorBean.create("TEMP-01", "temperatura", "Active");
+            sensorBean.create("PRESS-01", "pressao", "Active");
+            sensorBean.create("AC-01", "aceleracao", "Active");
+            sensorBean.create("POS-01", "posicionamento", "Active");
+            sensorBean.create("LUM-01", "luminosidade", "Active");
+            sensorBean.create("TEMP-02", "temperatura", "Active");
+            sensorBean.create("PRESS-02", "pressao", "Active");
+            sensorBean.create("AC-02", "aceleracao", "Active");
+            sensorBean.create("POS-02", "posicionamento", "Active");
+            sensorBean.create("LUM-02", "luminosidade", "Active");
 
             // Sensor History
 
@@ -89,59 +92,43 @@ public class ConfigBean {
             productBean.create("DYSON-500X", "Vacuum Cleaner", "Home Appliances");
 // Packages
             packageBean.create(0L, "No Package");
-            packageBean.create(1L, "Basic Package");
-            packageBean.create(2L, "Standard Package");
-            packageBean.create(3L, "Premium Package");
-            packageBean.create(4L, "Family Package");
-            packageBean.create(5L, "Student Package");
-            packageBean.create(6L, "Business Package");
-            packageBean.create(7L, "Enterprise Package");
-            packageBean.create(8L, "Travel Package");
-            packageBean.create(9L, "Gift Package");
-            packageBean.create(10L, "Subscription Package");
-            packageBean.create(11L, "Starter Package");
-            packageBean.create(12L, "Annual Package");
-            packageBean.create(13L, "Monthly Package");
-            packageBean.create(14L, "Weekly Package");
-            packageBean.create(15L, "Daily Package");
-            packageBean.create(16L, "Holiday Package");
-            packageBean.create(17L, "Corporate Package");
-            packageBean.create(18L, "Event Package");
-            packageBean.create(19L, "Personal Package");
-            packageBean.create(20L, "Exclusive Package");
+            packageBean.create(1L, "Ice Package");
+            packageBean.create(2L, "Plastic Package");
+            packageBean.create(3L, "Paper Package");
+            packageBean.create(4L, "Wood Package");
     // VOLUMES
             volumeBean.create(1L, "Standard Volume", 0L, "LAPTOP-ASUS", 5);
             volumeBean.associateSensor(1L, "TEMP-01");
-            volumeBean.create(2L, "Express Volume", 0L);
+            volumeBean.create(2L, "Express Volume", 1L);
             volumeBean.associateSensor(2L, "PRESS-01");
-            volumeBean.create(3L, "Bulk Volume", 0L);
-            volumeBean.create(4L, "Light Volume", 0L);
-            volumeBean.create(5L, "Heavy Volume", 0L);
+            volumeBean.create(3L, "Bulk Volume", 2L);
+            volumeBean.associateSensor(3L, "AC-01");
+            volumeBean.create(4L, "Light Volume", 3L);
+            volumeBean.associateSensor(4L, "POS-01");
+            volumeBean.create(5L, "Heavy Volume", 4L);
+            volumeBean.associateSensor(5L, "LUM-01");
             volumeBean.create(6L, "Fragile Volume", 0L);
+            volumeBean.associateSensor(6L, "TEMP-02");
             volumeBean.create(7L, "Perishable Volume", 0L);
-            volumeBean.create(8L, "Valuable Volume", 0L, "JBL-2X6", 4);
-            volumeBean.create(9L, "Overnight Volume", 0L);
-            volumeBean.create(10L, "Two-Day Volume", 0L);
-            volumeBean.create(11L, "Economy Volume", 0L);
-            volumeBean.create(12L, "Same-Day Volume", 0L);
-            volumeBean.create(13L, "Standard Shipping Volume", 0L);
-            volumeBean.create(14L, "Expedited Shipping Volume", 0L);
-            volumeBean.create(15L, "International Volume", 0L);
-            volumeBean.create(16L, "Domestic Volume", 0L);
-            volumeBean.create(17L, "Return Volume", 0L);
-            volumeBean.create(18L, "Replacement Volume", 0L);
-            volumeBean.create(19L, "Seasonal Volume", 0L);
-            volumeBean.create(20L, "Promotional Volume", 0L);
+            volumeBean.associateSensor(7L, "PRESS-02");
+            volumeBean.create(8L, "Valuable Volume", 1L, "JBL-2X6", 4);
+            volumeBean.associateSensor(8L, "AC-02");
+            volumeBean.create(9L, "Overnight Volume", 1L);
+            volumeBean.associateSensor(9L, "POS-02");
+            volumeBean.create(10L, "Two-Day Volume", 2L);
+            volumeBean.associateSensor(10L, "LUM-02");
 
             adminBean.create("admin", "123", "Alberto", "admin@mail.pt");
+            adminBean.create("admin2", "123", "Nuno", "admin2@mail.pt");
             clientBean.create("ricardo", "123", "Ricardo Fazeres", "riczao@mail.pt");
             clientBean.create("mario", "123", "Mario Hilario", "mario@mail.pt");
+            clientBean.create("jose", "123", "Jose Carlos", "jose@mail.pt");
     // orders
             orderBean.create(123L, "ricardo", "pendente");
             orderBean.create(456L, "ricardo", "entregue");
             orderBean.create(789L, "mario", "pendente");
             orderBean.create(1234L, "mario", "entregue");
-            orderBean.create(3456L, "mario", "pendente");
+            orderBean.create(3456L, "jose", "pendente");
             orderBean.addVolume(123L, 10L);
             orderBean.addVolume(123L, 8L);
             orderBean.addVolume(456L, 1L);
@@ -154,6 +141,7 @@ public class ConfigBean {
             volumeBean.addProduct(8L, "LAPTOP-ASUS", 5);
             volumeBean.addProduct(10L, "IPHONE-14", 3);  // Volume 10 -> Product 2 (3 units)
             volumeBean.addProduct(10L, "JBL-2X6", 7);
+            volumeBean.addProduct(1L, "META-GLASSES", 1);
 
         } catch (MyEntityExistsException | MyEntityNotFoundException | MyConstraintViolationException e){
             logger.severe("Error populating the database: " + e.getMessage());

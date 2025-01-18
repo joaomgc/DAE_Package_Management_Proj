@@ -82,7 +82,7 @@ public class OrderService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        order.updateEstado(orderDTO.getEstado());
+        order.updateEstado(orderDTO.getEstado().toLowerCase());
         orderBean.update(order);
 
         return Response.ok().build();
