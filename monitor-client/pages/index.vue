@@ -24,7 +24,6 @@ const redirectToLogin = () => {
   </div>
 </template>
 
-
 <style scoped>
 .index-container {
   max-width: 800px;
@@ -35,17 +34,20 @@ const redirectToLogin = () => {
 
 .main-content {
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .login-button {
-  background-color: #4CAF50;
+  background-color: #000000;
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 10px 20px; 
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 14px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 4px;
@@ -53,6 +55,6 @@ const redirectToLogin = () => {
 }
 
 .login-button:hover {
-  background-color: #45a049;
+  background-color: #616161;
 }
 </style>
