@@ -3,7 +3,7 @@ POST http://localhost:8080/monitor/api/auth/login
 Content-Type: application/json
 Accept: application/json
 
-{ "username": "mario", "password": "123" }
+{ "username": "admin", "password": "123" }
 
 ### Get user's data
 GET http://localhost:8080/monitor/api/auth/admin
@@ -43,7 +43,10 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJpbyIsImlhdCI6MTczNzIyN
 ### EP08 - Obter Todas as Encomendas
 GET http://localhost:8080/monitor/api/encomendas
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzIyNjc2NiwiZXhwIjoxNzM3MjMwMzY2fQ.fy-Pg_jXeKUURbkxLHXW1Bb5avz90VhUx2uaW45E76ogYDBQnUmJK4rI-pgWHg3B
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzIzNzM1NCwiZXhwIjoxNzM3MjQwOTUzfQ.OghzBH9As2WTpUSYIOq3o3udnKuaV6XVrCIDpTxOb0O2Uzw-fosy9cLpOdjkHw80
+
+
+
 
 
 

@@ -11,17 +11,19 @@ public class VolumeDTO implements Serializable {
     private String volumeName;
     private Long packageId;
     private String sensorId;
+    private double ultimoValorSensor;
     private List<ProductNameQuantityDTO> produtos;
 
     public VolumeDTO() {
     }
 
-    public VolumeDTO(Long id, String volumeName, Long packageId, String sensorId, List<ProductNameQuantityDTO> produtos) {
+    public VolumeDTO(Long id, String volumeName, Long packageId, String sensorId, List<ProductNameQuantityDTO> produtos, double valor) {
         this.id = id;
         this.volumeName = volumeName;
         this.packageId = packageId;
         this.sensorId = sensorId;
         this.produtos = produtos;
+        this.ultimoValorSensor = valor;
         // this.produtos = new ArrayList<>();
     }
 
@@ -65,6 +67,14 @@ public class VolumeDTO implements Serializable {
         this.produtos = produtos;
     }
 
+    public double getValor() {
+        return ultimoValorSensor;
+    }
+
+    public void setValor(double valor) {
+        this.ultimoValorSensor = valor;
+    }
+
     public static VolumeDTO from(Volume volume) {
         List<ProductNameQuantityDTO> produtosDTO = volume.getVolumeProducts().stream()
                 .map(vp -> new ProductNameQuantityDTO(
@@ -78,7 +88,8 @@ public class VolumeDTO implements Serializable {
                 volume.getVolumeName(),
                 volume.getPack().getPackageId(),
                 volume.getSensor() != null ? volume.getSensor().getId() : null,
-                produtosDTO
+                produtosDTO,
+                volume.getSensor() == null ? 0.0 : volume.getSensor().getValor()
         );
     }
 
