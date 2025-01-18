@@ -19,8 +19,8 @@ POST http://localhost:8080/monitor/api/encomendas/
 Content-Type: application/json
 
 {
-  "encomendaId": 2,
-  "customerId": "ricardo",
+  "encomendaId": 212,
+  "clientUsername": "ricardo",
   "estado": "pendente"
 }
 

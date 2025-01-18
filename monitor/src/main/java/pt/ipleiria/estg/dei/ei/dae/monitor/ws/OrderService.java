@@ -84,18 +84,16 @@ public class OrderService {
 
     @GET
     @Path("{encomendaId}/historico") // EP11
-    public  OrderHistoryDTO getOrderHistory(@PathParam("encomendaId") Long encomendaId) {
+    public  Response getOrderHistory(@PathParam("encomendaId") Long encomendaId) {
         List<OrderHistory> historyList = orderBean.getOrderHistory(encomendaId);
-        return OrderHistoryDTO.from(encomendaId, historyList);
+        return Response.ok(OrderHistoryDTO.from(historyList)).build();
     }
 
     @GET
     @Path("historico")
-    public List<OrderHistoryDTO> getAllOrderHistory() {
+    public Response getAllOrderHistory() {
         List<OrderHistory> historyList = orderBean.getAllOrderHistory();
-        return historyList.stream()
-                .map(history -> OrderHistoryDTO.from(history.getOrder().getId(), List.of(history)))
-                .toList();
+        return Response.ok(OrderHistoryDTO.from(historyList)).build();
     }
 
 }

@@ -162,4 +162,5 @@ public class ConfigBean {
             throw e; // Rethrow the exception to ensure the deployment fails
         }
     }
+
 }

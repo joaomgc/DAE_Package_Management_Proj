@@ -1,20 +1,23 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useAuthStore } from '~/store/auth-store';
+
+const authStore = useAuthStore();
 
 const orders = ref([]);
+const selectedOrder = ref('');
 
-const formatDate = (dateArray) => {
-  if (!Array.isArray(dateArray)) return dateArray;
-  const [year, month, day, hour, minute] = dateArray;
-  return new Date(year, month - 1, day, hour, minute)
-    .toLocaleString('pt', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-};
+const filteredOrders = computed(() => {
+  const user = authStore.user;
+  if (user && authStore.userAdmin) {
+    if (selectedOrder.value) {
+      return orders.value.filter(order => order.encomendaId === selectedOrder.value);
+    }
+    return orders.value;
+  }
+  return [];
+});
+
 
 const fetchOrders = async () => {
   try {
@@ -25,6 +28,7 @@ const fetchOrders = async () => {
     console.error('Failed to fetch orders:', error);
   }
 };
+
 
 onMounted(() => {
   fetchOrders();
@@ -39,6 +43,13 @@ onMounted(() => {
         <p>List of order history</p>
       </header>
       <main>
+        <p>Filter by order id</p>
+      <select v-if="authStore.userAdmin" v-model="selectedOrder">
+        <option value="">All Orders</option>
+        <option v-for="order in orders" :key="order.encomendaId" :value="order.encomendaId">
+          {{ order.encomendaId }}
+        </option>
+      </select>
         <table>
           <thead>
             <tr>
@@ -48,10 +59,10 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="order in orders" :key="order.encomendaId">
+            <tr v-for="order in filteredOrders" :key="order.encomendaId">
               <td>{{ order.encomendaId }}</td>
-              <td>{{ order.historicoEstados.estado }}</td>
-              <td>{{ formatDate(order.historicoEstados.timestamp) }}</td>
+              <td>{{ order.estado }}</td>
+              <td>{{ order.timestamp }}</td>
             </tr>
           </tbody>
         </table>
