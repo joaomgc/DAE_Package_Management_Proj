@@ -19,6 +19,21 @@ const createProduct = () => {
   router.push('/products/create');
 };
 
+const downloadCSV = () => {
+  const csvContent = "data:text/csv;charset=utf-8," 
+    + ["Product ID,Product Name,Product Type"]
+    .concat(products.value.map(p => `${p.productId},${p.productName},${p.productType}`))
+    .join("\n");
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "products.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 onMounted(() => {
   fetchProducts();
 });
@@ -29,6 +44,7 @@ onMounted(() => {
     <h1>Products</h1>
     <div class="btn-container">
       <button @click="createProduct" class="btn">Create Product</button>
+      <button @click="downloadCSV" class="btn">Download CSV</button>
     </div>
     <table>
       <thead>
