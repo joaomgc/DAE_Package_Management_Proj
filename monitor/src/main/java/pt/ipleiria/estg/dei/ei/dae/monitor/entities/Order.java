@@ -48,6 +48,7 @@ public class Order implements Serializable {
     public void updateEstado(String novoEstado) {
         if (!this.estado.equals(novoEstado)) {
             this.estado = novoEstado;
+
             OrderHistory novoHistorico = new OrderHistory(this, novoEstado, LocalDateTime.now());
             this.historicoEstados.add(novoHistorico);
         }

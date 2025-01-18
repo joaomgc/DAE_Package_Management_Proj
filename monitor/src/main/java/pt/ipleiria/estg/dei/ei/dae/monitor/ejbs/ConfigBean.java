@@ -49,20 +49,22 @@ public class ConfigBean {
             tipoSensorBean.create("posicionamento");
             tipoSensorBean.create("luminosidade");
             // Sensors
-            sensorBean.create("1", "temperatura", "Inactive");
-            sensorBean.create("2", "pressao", "Inactive");
-            sensorBean.create("3", "aceleracao", "Inactive");
-            sensorBean.create("4", "posicionamento", "Inactive");
-            sensorBean.create("5", "luminosidade", "Inactive");
+            sensorBean.create("TEMP-01", "temperatura", "Inactive");
+            sensorBean.create("PRESS-01", "pressao", "Inactive");
+            sensorBean.create("AC-01", "aceleracao", "Inactive");
+            sensorBean.create("POS-01", "posicionamento", "Inactive");
+            sensorBean.create("LUM-01", "luminosidade", "Inactive");
+            sensorBean.create("TEMP-02", "temperatura", "Inactive");
+            sensorBean.create("PRESS-02", "pressao", "Inactive");
 
             // Sensor History
 
-            sensorHistoryBean.create(sensorBean.find("1"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 20.0);
-            sensorHistoryBean.create(sensorBean.find("1"), LocalDateTime.parse("2024-12-12 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 21.0);
-            sensorHistoryBean.create(sensorBean.find("2"), LocalDateTime.parse("2025-01-03 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 1000.0);
-            sensorHistoryBean.create(sensorBean.find("2"), LocalDateTime.parse("2025-01-05 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 1500.0);
-            sensorHistoryBean.create(sensorBean.find("3"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 10.0);
-            sensorHistoryBean.create(sensorBean.find("4"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 10.0);
+            sensorHistoryBean.create(sensorBean.find("TEMP-01"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 20.0);
+            sensorHistoryBean.create(sensorBean.find("TEMP-01"), LocalDateTime.parse("2024-12-12 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 21.0);
+            sensorHistoryBean.create(sensorBean.find("PRESS-01"), LocalDateTime.parse("2025-01-03 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 1000.0);
+            sensorHistoryBean.create(sensorBean.find("PRESS-01"), LocalDateTime.parse("2025-01-05 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 1500.0);
+            sensorHistoryBean.create(sensorBean.find("AC-01"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 10.0);
+            sensorHistoryBean.create(sensorBean.find("POS-01"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 10.0);
 
             // Products
             productBean.create("LAPTOP-ASUS", "Laptop", "Electronics");
@@ -109,9 +111,9 @@ public class ConfigBean {
             packageBean.create(20L, "Exclusive Package");
     // VOLUMES
             volumeBean.create(1L, "Standard Volume", 0L, "LAPTOP-ASUS", 5);
-            volumeBean.associateSensor(1L, "1");
+            volumeBean.associateSensor(1L, "TEMP-01");
             volumeBean.create(2L, "Express Volume", 0L);
-            volumeBean.associateSensor(2L, "2");
+            volumeBean.associateSensor(2L, "PRESS-01");
             volumeBean.create(3L, "Bulk Volume", 0L);
             volumeBean.create(4L, "Light Volume", 0L);
             volumeBean.create(5L, "Heavy Volume", 0L);

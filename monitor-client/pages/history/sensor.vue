@@ -3,18 +3,6 @@ import { ref, onMounted } from 'vue';
 
 const sensors = ref([]);
 
-const formatDate = (dateArray) => {
-  if (!Array.isArray(dateArray)) return dateArray;
-  const [year, month, day, hour, minute] = dateArray;
-  return new Date(year, month - 1, day, hour, minute)
-    .toLocaleString('pt', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-};
 
 const fetchSensors = async () => {
   try {
@@ -42,20 +30,20 @@ onMounted(() => {
         <table>
           <thead>
             <tr>
-              <th>Id</th>
+              <!-- <th>Id</th> -->
+              <th>Sensor ID</th>
               <th>Time</th>
               <th>Value</th>
               <th>Type</th>
-              <th>Sensor ID</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="sensor in sensors" :key="sensor.id">
-              <td>{{ sensor.id }}</td>
-              <td>{{ formatDate(sensor.timestamp) }}</td>
+              <!-- <td>{{ sensor.id }}</td> -->
+              <td>{{ sensor.sensorId }}</td>
+              <td>{{ sensor.timestamp }}</td>
               <td>{{ sensor.valor }}</td>
-              <td>{{ sensor.sensor.tipo }}</td>
-              <td>{{ sensor.sensor.id }}</td>
+              <td>{{ sensor.tipo }}</td>
             </tr>
           </tbody>
         </table>

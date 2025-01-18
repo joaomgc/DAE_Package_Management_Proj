@@ -18,7 +18,7 @@ const formatDate = (dateArray) => {
 
 const fetchOrders = async () => {
   try {
-    const response = await fetch('http://localhost:8080/monitor/api/encomendas');
+    const response = await fetch('http://localhost:8080/monitor/api/encomendas/historico');
     const data = await response.json();
     orders.value = data;
   } catch (error) {
@@ -42,18 +42,16 @@ onMounted(() => {
         <table>
           <thead>
             <tr>
-              <th>Id</th>
-              <th>Name</th>
-              <th>Time</th>
+              <th>Order Id</th>
               <th>Status</th>
+              <th>Time</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="order in orders" :key="order.encomendaId">
               <td>{{ order.encomendaId }}</td>
-              <td>{{ order.clientUsername }}</td>
-              <td>{{ formatDate(order.timestamp) }}</td>
-              <td>{{ order.estado }}</td>
+              <td>{{ order.historicoEstados.estado }}</td>
+              <td>{{ formatDate(order.historicoEstados.timestamp) }}</td>
             </tr>
           </tbody>
         </table>

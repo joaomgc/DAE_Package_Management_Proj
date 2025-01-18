@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -25,6 +26,7 @@ public class OrderHistory {
     private String estado;
 
     @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 
     public OrderHistory() {}

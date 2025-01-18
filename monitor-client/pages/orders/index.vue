@@ -4,19 +4,48 @@ import { useAuthStore } from '~/store/auth-store';
 
 const authStore = useAuthStore();
 const orders = ref([]);
+const clients = ref([]);
+const selectedClient = ref('');
 
 const filteredOrders = computed(() => {
   const user = authStore.user;
   if (user && authStore.userClient) {
     return orders.value.filter(order => {
-      console.log('ORDER.CLIENTUSERNAME: ', order.clientUsername);
       return order.clientUsername === user.username;
     });
   } else if(authStore.userAdmin) {
+    if (selectedClient.value) {
+        return orders.value.filter(order => order.clientUsername === selectedClient.value);
+    }
     return orders.value;
   }
   return [];
 });
+
+async function fetchCLients() {
+    try {
+        let response = null;
+
+        const endpoint = `http://localhost:8080/monitor/api/clientes/`;
+
+        response = await fetch(endpoint, {
+            headers: {
+                'Authorization': `Bearer ${authStore.token}`,
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        clients.value = data;
+    } catch (error) {
+        console.error('Error fetching clients:', error);
+    }
+
+}
 
 async function fetchOrders() {
   try {
@@ -77,6 +106,7 @@ function downloadCSV() {
 
 onMounted(async () => {
   fetchOrders();
+  fetchCLients();
 });
 </script>
 
@@ -87,6 +117,13 @@ onMounted(async () => {
     </header>
     <main>
       <button @click="downloadCSV">Download CSV</button>
+      <p>Filter by client</p>
+      <select v-if="authStore.userAdmin" v-model="selectedClient">
+        <option value="">All Clients</option>
+        <option v-for="client in clients" :key="client.username" :value="client.username">
+          {{ client.username }}
+        </option>
+      </select>
       <table v-if="filteredOrders.length > 0">
         <thead>
           <tr>

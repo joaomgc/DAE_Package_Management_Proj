@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.ws;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -55,6 +56,7 @@ public class OrderService {
     // change an order state
     @PATCH
     @Path("/{encomendaId}/estado") // EP10
+    @RolesAllowed("{Administrator}")
     public Response changeOrderState(@PathParam("encomendaId") Long encomendaId, OrderDTO orderDTO) throws MyEntityNotFoundException {
         Order order = orderBean.find(encomendaId);
         if(order == null) {
@@ -82,9 +84,18 @@ public class OrderService {
 
     @GET
     @Path("{encomendaId}/historico") // EP11
-    public OrderHistoryDTO getOrderHistory(@PathParam("encomendaId") Long encomendaId) {
+    public  OrderHistoryDTO getOrderHistory(@PathParam("encomendaId") Long encomendaId) {
         List<OrderHistory> historyList = orderBean.getOrderHistory(encomendaId);
         return OrderHistoryDTO.from(encomendaId, historyList);
+    }
+
+    @GET
+    @Path("historico")
+    public List<OrderHistoryDTO> getAllOrderHistory() {
+        List<OrderHistory> historyList = orderBean.getAllOrderHistory();
+        return historyList.stream()
+                .map(history -> OrderHistoryDTO.from(history.getOrder().getId(), List.of(history)))
+                .toList();
     }
 
 }

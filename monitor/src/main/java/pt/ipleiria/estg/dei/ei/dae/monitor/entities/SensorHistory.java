@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "SensorHistory.findAll", query = "SELECT sh FROM SensorHistory sh ORDER BY sh.timestamp DESC")
+})
 public class SensorHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,6 +19,7 @@ public class SensorHistory {
 
     private LocalDateTime timestamp;
     private double valor;
+    private String tipo;
 
     public SensorHistory() {
     }
@@ -24,6 +28,7 @@ public class SensorHistory {
         this.sensor = sensor;
         this.timestamp = timestamp;
         this.valor = valor;
+        this.tipo = sensor.getTipo().getNome();
     }
 
     public Long getId() {
@@ -52,6 +57,14 @@ public class SensorHistory {
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String type) {
+        this.tipo = type;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class SensorHistoryBean {
     }
 
     public List<SensorHistory> findAll() {
-        return entityManager.createQuery("SELECT h FROM SensorHistory h", SensorHistory.class).getResultList();
+        return entityManager.createNamedQuery("SensorHistory.findAll", SensorHistory.class).getResultList();
     }
 
     public List<SensorHistory> findBySensorId(String sensorId) throws MyEntityNotFoundException {

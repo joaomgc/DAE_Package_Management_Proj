@@ -8,7 +8,6 @@ import jakarta.persistence.Query;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.ForbiddenException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.*;
-import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
@@ -90,6 +89,11 @@ public class OrderBean {
     public List<OrderHistory> getOrderHistory(Long orderId) {
         return em.createNamedQuery("getOrderHistory", OrderHistory.class)
                 .setParameter("orderId", orderId)
+                .getResultList();
+    }
+
+    public List<OrderHistory> getAllOrderHistory() {
+        return em.createQuery("SELECT h FROM OrderHistory h ORDER BY h.timestamp", OrderHistory.class)
                 .getResultList();
     }
 

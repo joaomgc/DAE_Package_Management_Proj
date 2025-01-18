@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.ws;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -19,6 +20,7 @@ public class SensorHistoryService {
 
     @GET
     @Path("/")
+    @RolesAllowed({"Administrator"})
     public Response getAllSensorHistory() {
         return Response.ok(SensorHistoryDTO.from(sensorHistoryBean.findAll())).build();
     }

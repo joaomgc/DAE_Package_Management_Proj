@@ -50,6 +50,11 @@ Content-Type: application/json
 }
 
 ### EP11 - Histórico de atualizações de estado da encomenda
+GET http://localhost:8080/monitor/api/encomendas/historico
+Accept: application/json
+
+
+### all orders history
 GET http://localhost:8080/monitor/api/encomendas/123/historico
 Accept: application/json
 

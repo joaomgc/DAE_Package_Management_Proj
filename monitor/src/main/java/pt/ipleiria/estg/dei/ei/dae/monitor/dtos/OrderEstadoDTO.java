@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Order;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.OrderHistory;
 
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 public class OrderEstadoDTO implements Serializable {
     private String estado;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String timestamp;
 
     public OrderEstadoDTO() {}
