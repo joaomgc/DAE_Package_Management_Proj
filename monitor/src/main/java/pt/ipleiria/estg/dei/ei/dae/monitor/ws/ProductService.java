@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.ws;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -9,24 +10,28 @@ import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.ProductBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.security.Authenticated;
 
 import java.util.List;
 
 @Path("/products")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
+@Authenticated
 public class ProductService {
     @EJB
     private ProductBean productBean;
 
     @GET
     @Path("/")
-    public List<ProductDTO> getAllProducts() {
-        return ProductDTO.from(productBean.findAll());
+    @RolesAllowed({"Administrator"})
+    public Response getAllProducts() {
+        return Response.ok(ProductDTO.from(productBean.findAll())).build();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrator"})
     public Response getProduct(@PathParam("id") String id) throws MyEntityNotFoundException {
         Product product = productBean.find(id);
         if (product == null) {
@@ -37,6 +42,7 @@ public class ProductService {
 
     @POST
     @Path("/")
+    @RolesAllowed({"Administrator"})
     public Response createNewProduct(ProductDTO productDTO) throws MyEntityExistsException {
         productBean.create(
                 productDTO.getProductId(),
@@ -48,6 +54,7 @@ public class ProductService {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({"Administrator"})
     public Response updateProduct(@PathParam("id") String id, ProductDTO productDTO) throws MyEntityNotFoundException {
         Product product = productBean.find(id);
         if (product == null) {
@@ -61,6 +68,7 @@ public class ProductService {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"Administrator"})
     public Response deleteProduct(@PathParam("id") String id) throws MyEntityNotFoundException {
         Product product = productBean.find(id);
         if (product == null) {

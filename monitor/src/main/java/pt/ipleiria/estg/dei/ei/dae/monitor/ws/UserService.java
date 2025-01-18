@@ -27,17 +27,9 @@ public class UserService {
     @Context
     private SecurityContext securityContext;
 
-    /*@GET
-    @Path("/")
-    public List<UserDTO> getAllUsers() {
-        return UserDTO.from(userBean.findAll());
-    }*/
-
-    // METER POST '/'
 
     @GET
     @Path("/{username}")
-    @RolesAllowed({"User"})
     public Response getUser(@PathParam("username") String username) {
         var principal = securityContext.getUserPrincipal();
 
@@ -50,27 +42,6 @@ public class UserService {
             return Response.ok(UserDTO.from(user)).build();
         } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
-            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
-        }
-    }
-
-    @POST
-    @Path("/{username}/update")
-    public Response updateUser(@PathParam("username") String username, UserDTO userDTO) {
-        var principal = securityContext.getUserPrincipal();
-
-        if (!principal.getName().equals(username)) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-
-        try {
-            User user = userBean.findOrFail(username);
-            user.setName(userDTO.getEmail());
-            userBean.update(user);
-            return Response.ok(UserDTO.from(user)).build();
-        } catch (EntityNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();

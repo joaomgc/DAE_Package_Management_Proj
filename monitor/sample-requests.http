@@ -3,7 +3,7 @@ POST http://localhost:8080/monitor/api/auth/login
 Content-Type: application/json
 Accept: application/json
 
-{ "username": "admin", "password": "123" }
+{ "username": "mario", "password": "123" }
 
 ### Get user's data
 GET http://localhost:8080/monitor/api/auth/admin
@@ -36,11 +36,15 @@ Content-Type: application/json
 ### EP03. Sistema consulta dados de uma encomenda existente
 GET http://localhost:8080/monitor/api/encomendas/123
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJpbyIsImlhdCI6MTczNzIyNjg1NSwiZXhwIjoxNzM3MjMwNDU1fQ.YB2j6c31l2dTJsVzCHs3H5akuUVf61ZSocDZON7_DzRM9M9xDz9StWHFOWJcaLqo
+
+
 
 ### EP08 - Obter Todas as Encomendas
 GET http://localhost:8080/monitor/api/encomendas
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzIyNTQ4NCwiZXhwIjoxNzM3MjI5MDg0fQ.ZgDfCEYqM4HpDYhJ36pXuP7h6dJPssDHBlwVqLxLBV4H_RvwJc_lWlgk8qCZ_MWD
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzIyNjc2NiwiZXhwIjoxNzM3MjMwMzY2fQ.fy-Pg_jXeKUURbkxLHXW1Bb5avz90VhUx2uaW45E76ogYDBQnUmJK4rI-pgWHg3B
+
 
 
 ### EP10 – Atualizar Estado de uma Encomenda

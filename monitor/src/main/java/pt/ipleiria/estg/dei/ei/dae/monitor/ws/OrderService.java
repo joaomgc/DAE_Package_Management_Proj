@@ -65,7 +65,7 @@ public class OrderService {
         var principal = securityContext.getUserPrincipal();
         var order = orderBean.find(encomendaId);
 
-        boolean isAdmin = administratorBean.exists(principal.getName());
+        boolean isAdmin = securityContext.isUserInRole("Administrator");
         if(!principal.getName().equals(order.getClient().getUsername()) && !isAdmin) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }

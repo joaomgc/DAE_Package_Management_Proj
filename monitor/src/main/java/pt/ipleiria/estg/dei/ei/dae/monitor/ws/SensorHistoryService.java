@@ -9,10 +9,12 @@ import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.SensorDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.SensorHistoryDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.SensorHistoryBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.security.Authenticated;
 
 @Path("/sensor")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Authenticated
 public class SensorHistoryService {
 
     @EJB
@@ -27,6 +29,7 @@ public class SensorHistoryService {
 
     @GET
     @Path("/{id}/history") // EP07
+    @RolesAllowed({"Administrator"})
     public Response getSensorHistory(@PathParam("id") String id) throws MyEntityNotFoundException {
         var history = sensorHistoryBean.findBySensorId(id);
         return Response.ok(SensorHistoryDTO.from(history)).build();

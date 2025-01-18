@@ -11,7 +11,7 @@ public class OrderDTO implements Serializable {
     private Long encomendaId;
     private List<VolumeDTO> volumes;
     private String clientUsername;
-    private String estado; // todo: Criar uma classe para estado ??? o_O
+    private String estado;
 
     public OrderDTO() {}
     public OrderDTO(Long encomendaId, String clientUsername, String estado, List<VolumeDTO> volumes) {

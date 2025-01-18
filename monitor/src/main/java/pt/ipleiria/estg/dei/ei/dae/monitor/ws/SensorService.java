@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.ws;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -10,6 +11,7 @@ import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.SensorHistoryBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.TipoSensorBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.SensorSimulator;
 import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
+import pt.ipleiria.estg.dei.ei.dae.monitor.security.Authenticated;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,13 +31,17 @@ public class SensorService {
     private TipoSensorBean tipoSensorBean;
 
     @GET
-    public List<SensorDTO> getAllSensors() {
+    @Authenticated
+    @RolesAllowed({"Administrator"})
+    public Response getAllSensors() {
         List<SensorSimulator> sensors = sensorBean.findAll();
-        return sensors.stream().map(SensorDTO::from).collect(Collectors.toList());
+        return Response.ok(SensorDTO.from(sensors)).build();
     }
 
     @GET
     @Path("/{id}") // EP06
+    @Authenticated
+    @RolesAllowed({"Administrator"})
     public Response getSensor(@PathParam("id") String id) throws MyEntityNotFoundException {
         SensorSimulator sensor = sensorBean.find(id);
         if (sensor == null) {
@@ -52,6 +58,8 @@ public class SensorService {
 
     @PUT
     @Path("/{id}")
+    @Authenticated
+    @RolesAllowed({"Administrator"})
     public Response updateSensor(@PathParam("id") String id, SensorDTO sensorDTO) throws MyEntityNotFoundException {
         SensorSimulator sensor = sensorBean.find(id);
         if (sensor == null) {
@@ -67,6 +75,8 @@ public class SensorService {
 
     @DELETE
     @Path("/{id}")
+    @Authenticated
+    @RolesAllowed({"Administrator"})
     public Response deleteSensor(@PathParam("id") String id) throws MyEntityNotFoundException {
         SensorSimulator sensor = sensorBean.find(id);
         if (sensor == null) {
@@ -95,6 +105,8 @@ public class SensorService {
 
     @PATCH
     @Path("/{id}/estado")
+    @Authenticated
+    @RolesAllowed({"Administrator"})
     public Response changeStatus(@PathParam("id") String id, SensorDTO sensorDTO) throws MyEntityNotFoundException {
         SensorSimulator sensor = sensorBean.find(id);
         if (sensor == null) {

@@ -22,7 +22,6 @@ import java.util.List;
 @Path("clientes")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
-@Authenticated
 public class ClientService {
 
     @EJB
@@ -34,8 +33,10 @@ public class ClientService {
 
     @GET
     @Path("/")
-    public List<ClientDTO> getAllClients() {
-        return ClientDTO.from(clientBean.findAll());
+    @RolesAllowed({"Administrator"})
+    @Authenticated
+    public Response getAllClients() {
+        return Response.ok(ClientDTO.from(clientBean.findAll())).build();
     }
 
     @POST
@@ -55,11 +56,12 @@ public class ClientService {
     @GET
     @Path("{username}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
-    @RolesAllowed({"Client"})
+    @Authenticated
+    @RolesAllowed({"Administrator","Client"})
     public Response getClient(@PathParam("username") String username) throws MyEntityNotFoundException {
         var principal = securityContext.getUserPrincipal();
-
-        if (!principal.getName().equals(username)) {
+        var isAdmin = securityContext.isUserInRole("Administrator");
+        if (!principal.getName().equals(username) && !isAdmin) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
@@ -69,8 +71,15 @@ public class ClientService {
 
     @GET
     @Path("{username}/encomendas")
-    @RolesAllowed({"Client"})
+    @Authenticated
+    @RolesAllowed({"Administrator", "Client"})
     public Response getClientOrders(@PathParam("username") String username) throws MyEntityNotFoundException {
+        var principal = securityContext.getUserPrincipal();
+        var isAdmin = securityContext.isUserInRole("Administrator");
+        if (!principal.getName().equals(username) && !isAdmin) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         Client client = clientBean.findWithOrders(username);
         return Response.ok(OrderDTO.from(client.getOrders())).build();
     }

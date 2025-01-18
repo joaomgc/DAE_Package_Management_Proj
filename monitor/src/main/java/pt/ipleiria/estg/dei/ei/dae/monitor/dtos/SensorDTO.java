@@ -2,9 +2,11 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.SensorSimulator;
+import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Volume;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SensorDTO implements Serializable {
     private String id;
@@ -84,6 +86,10 @@ public class SensorDTO implements Serializable {
                 sensor.getStatus(),
                 sensor.getVolume() != null ? sensor.getVolume().getId() : null
         );
+    }
+
+    public static List<SensorDTO> from(List<SensorSimulator> sensors){
+        return sensors.stream().map(SensorDTO::from).toList();
     }
 }
 
