@@ -1,3 +1,51 @@
+<script>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+export default {
+  setup() {
+    const errorMessage = ref("");
+    const router = useRouter();
+    const product = ref({
+      productId: '',
+      productName: '',
+      productType: ''
+    });
+
+    const submitForm = async () => {
+      try {
+        errorMessage.value = "";
+        const response = await fetch('http://localhost:8080/monitor/api/products', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(product.value)
+        });
+        if (response.ok) {
+          router.push('/products');
+        } else {
+          console.error('Error creating product:', response.statusText);
+        }
+
+        if (response.status === 409) {
+          errorMessage.value = "Product already exists";
+        }
+
+      } catch (error) {
+        console.error('Error creating product:', error);
+      }
+    };
+
+    return {
+      product,
+      submitForm,
+      errorMessage
+    };
+  }
+};
+</script>
+
 <template>
   <div>
     <h1>Create Product</h1>
@@ -15,49 +63,12 @@
         <input type="text" id="productType" v-model="product.productType" required />
       </div>
       <button type="submit" class="btn">Create Product</button>
+      <div v-if="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
     </form>
   </div>
 </template>
-
-<script>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-export default {
-  setup() {
-    const router = useRouter();
-    const product = ref({
-      productId: '',
-      productName: '',
-      productType: ''
-    });
-
-    const submitForm = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/monitor/api/products', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(product.value)
-        });
-        if (response.ok) {
-          router.push('/products');
-        } else {
-          console.error('Error creating product:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error creating product:', error);
-      }
-    };
-
-    return {
-      product,
-      submitForm
-    };
-  }
-};
-</script>
 
 <style scoped>
 .form-create {

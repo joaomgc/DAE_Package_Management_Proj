@@ -21,7 +21,15 @@ const filteredOrders = computed(() => {
 
 const fetchOrders = async () => {
   try {
-    const response = await fetch('http://localhost:8080/monitor/api/encomendas/historico');
+    const endpoint = 'http://localhost:8080/monitor/api/encomendas/historico';
+
+    const response = await fetch(endpoint, {
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Accept': 'application/json'
+        }
+      });
+    
     const data = await response.json();
     orders.value = data;
   } catch (error) {

@@ -11,6 +11,8 @@ const loginFormData = reactive({
 const authStore = useAuthStore();
 const router = useRouter();
 
+const user = computed(() => authStore.user);
+
 const errorMessage = ref("");
 const loading = ref(false);
 
@@ -28,7 +30,11 @@ async function login() {
   const success = await authStore.login(loginFormData.username, loginFormData.password);
   loading.value = false;
   if (success) {
-    router.push("/dashboard");
+    if(authStore.userAdmin) {
+      router.push("/dashboard");
+    } else {
+      router.push(`/orders/${authStore.user.username}`);
+    }
   } else {
     errorMessage.value = authStore.errorMessage;
   }

@@ -170,11 +170,11 @@ POST http://localhost:8080/monitor/api/volumes/20/sensors/4
 ######################
 
 ### Create a new package
-POST http://localhost:8080/monitor/api/packages/
+POST http://localhost:8080/monitor/api/embalagens
 Content-Type: application/json
 
 {
-  "packageId": "pkgaatessssst",
+  "packageId": 123,
   "packageType": "Electronics"
 }
 

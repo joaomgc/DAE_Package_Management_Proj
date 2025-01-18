@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import piniaModule from '@pinia/nuxt'
-import pinia from './plugins/pinia'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
@@ -14,7 +13,6 @@ export default defineNuxtConfig({
     },
 
   plugins: [
-    '~/plugins/pinia.js',
     '~/plugins/auth-init.js',
 ],
 

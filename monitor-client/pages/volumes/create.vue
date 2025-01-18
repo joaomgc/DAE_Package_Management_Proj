@@ -1,3 +1,42 @@
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '~/store/auth-store';
+
+const errorMessage = ref("");
+const router = useRouter();
+const authStore = useAuthStore();
+const volume = ref({
+  id: '',
+  volumeName: ''
+});
+
+const submitForm = async () => {
+  try {
+    errorMessage.value = "";
+    const response = await fetch('http://localhost:8080/monitor/api/volumes', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(volume.value)
+    });
+    if (response.ok) {
+      router.push('/volumes');
+    } else {
+      console.error('Error creating volume:', response.statusText);
+    }
+
+    if (response.status === 409) {
+      errorMessage.value = "Volume already exists";
+    }
+  } catch (error) {
+    console.error('Error creating volume:', error);
+  }
+};
+</script>
+
 <template>
   <div>
     <h1>Create Volume</h1>
@@ -11,48 +50,12 @@
         <input type="text" id="volumeName" v-model="volume.volumeName" required />
       </div>
       <button type="submit" class="btn">Create Volume</button>
+      <div v-if="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
     </form>
   </div>
 </template>
-
-<script>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-export default {
-  setup() {
-    const router = useRouter();
-    const volume = ref({
-      id: '',
-      volumeName: ''
-    });
-
-    const submitForm = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/monitor/api/volumes', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(volume.value)
-        });
-        if (response.ok) {
-          router.push('/volumes');
-        } else {
-          console.error('Error creating volume:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error creating volume:', error);
-      }
-    };
-
-    return {
-      volume,
-      submitForm
-    };
-  }
-};
-</script>
 
 <style scoped>
 .form-create {

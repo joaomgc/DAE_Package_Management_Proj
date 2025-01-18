@@ -27,12 +27,12 @@ export const useAuthStore = defineStore("authStore", () => {
       });
 
       if (response) {
-        token.value = response; // Assuming response contains the token
+        token.value = response;
         if (typeof window !== "undefined") {
           localStorage.setItem("token", token.value);
         }
         await fetchUserInfo();
-        return true; // Login successful
+        return true;
       }
     } catch (e) {
       const status = e.response?.status;

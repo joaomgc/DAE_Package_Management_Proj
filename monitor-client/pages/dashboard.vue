@@ -1,11 +1,11 @@
-<script>
-    export default {
-      name: 'DashboardPage',
-    }
+<script setup>
+import { useAuthStore } from '~/store/auth-store';
+
+const authStore = useAuthStore();
 </script>
-    
+
 <template>
-  <div class="dashboard-container">
+  <div v-if="authStore.userAdmin" class="dashboard-container">
     <h1>Dashboard</h1>
     <div class="links">
       <nuxt-link to="/packages" class="btn">Go to Packages</nuxt-link>

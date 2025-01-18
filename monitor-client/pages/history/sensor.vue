@@ -1,12 +1,22 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useAuthStore } from '~/store/auth-store';
 
 const sensors = ref([]);
+const authStore = useAuthStore();
 
 
 const fetchSensors = async () => {
   try {
-    const response = await fetch('http://localhost:8080/monitor/api/sensor');
+    let response = null;
+    const endpoint = `http://localhost:8080/monitor/api/sensor`;
+
+        response = await fetch(endpoint, {
+            headers: {
+                'Authorization': `Bearer ${authStore.token}`,
+                'Accept': 'application/json'
+            }
+        });
     const data = await response.json();
     sensors.value = data;
   } catch (error) {

@@ -15,11 +15,10 @@ const filteredClients = computed(() => {
 
 async function fetchCLients() {
     try {
-        let response = null;
 
         const endpoint = `http://localhost:8080/monitor/api/clientes/`;
 
-        response = await fetch(endpoint, {
+        const response = await fetch(endpoint, {
             headers: {
                 'Authorization': `Bearer ${authStore.token}`,
                 'Accept': 'application/json'

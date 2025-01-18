@@ -110,5 +110,6 @@ public class VolumeBean {
     public void delete(Long id) throws MyEntityNotFoundException{
         Volume volume = find(id);
         entityManager.remove(volume);
+        System.out.println("Volume with ID " + id + " has been removed.");
     }
 }

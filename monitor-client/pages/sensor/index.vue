@@ -1,24 +1,35 @@
-<script>
-export default {
-  name: 'SensorsHistory',
-  data() {
-    return {
-      sensors: []
-    };
-  },
-  created() {
-    fetch('http://localhost:8080/monitor/api/sensors')
-      .then(response => response.json())
-      .then(data => {
-        this.sensors = data.sort((a, b) => a.id - b.id);
-      });
-  },
-  methods: {
-    capitalize(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    }
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useAuthStore } from '~/store/auth-store';
+
+const authStore = useAuthStore();
+const sensors = ref([]);
+
+const fetchSensors = async () => {
+  try {
+    const endpoint = `http://localhost:8080/monitor/api/sensors`;
+
+    const response = await fetch(endpoint, {
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`,
+        'Accept': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+    sensors.value = data.sort((a, b) => a.id - b.id);
+  } catch (error) {
+    console.error('Error fetching sensors:', error);
   }
-}
+};
+
+const capitalize = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+onMounted(() => {
+  fetchSensors();
+});
 </script>
 
 <template>

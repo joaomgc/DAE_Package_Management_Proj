@@ -1,13 +1,23 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '~/store/auth-store';
 
 const volumes = ref([]);
 const router = useRouter();
+const authStore = useAuthStore();
 
 const fetchVolumes = async () => {
   try {
-    const response = await fetch('http://localhost:8080/monitor/api/volumes');
+    const endpoint = `http://localhost:8080/monitor/api/volumes`;
+
+    const response = await fetch(endpoint, {
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`,
+        'Accept': 'application/json'
+      }
+    });
+    
     const data = await response.json();
     volumes.value = data.map(volume => ({ ...volume, newPackageId: '' }));
   } catch (error) {
@@ -54,8 +64,8 @@ onMounted(() => {
 <template>
   <div>
     <h1>Volumes</h1>
-    <button @click="redirectToCreate" class="btn">Create Volume</button>
-    <button @click="downloadCSV" class="btn">Download CSV</button>
+    <button @click="redirectToCreate" class="btn" style="float: left">Create Volume</button>
+    <button @click="downloadCSV" class="btn" style="float: left">Download CSV</button>
     <table>
       <thead>
         <tr>
@@ -108,7 +118,6 @@ th {
   cursor: pointer;
   transition: color 0.3s ease, border-bottom 0.3s ease, background-color 0.3s ease;
   padding-bottom: 5px;
-  float: left;
   margin-right: 10px;
 }
 .btn:hover {

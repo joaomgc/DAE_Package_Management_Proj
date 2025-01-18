@@ -1,3 +1,43 @@
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '~/store/auth-store';
+
+const errorMessage = ref("");
+const router = useRouter();
+const authStore = useAuthStore();
+const newPackage = ref({
+  packageId: '',
+  packageType: ''
+});
+
+const submitForm = async () => {
+  try {
+    errorMessage.value = "";
+    const response = await fetch('http://localhost:8080/monitor/api/embalagens', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newPackage.value)
+    });
+    if (response.ok) {
+      router.push('/packages');
+    } else {
+      console.error('Error creating package:', response.statusText);
+    }
+
+    if (response.status === 409) {
+      errorMessage.value = "Package already exists";
+    }
+
+  } catch (error) {
+    console.error('Error creating package:', error);
+  }
+};
+</script>
+
 <template>
   <div>
     <h1>Create Package</h1>
@@ -11,48 +51,12 @@
         <input type="text" id="packageType" v-model="newPackage.packageType" required />
       </div>
       <button type="submit" class="btn">Create Package</button>
+      <div v-if="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
     </form>
   </div>
 </template>
-
-<script>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-export default {
-  setup() {
-    const router = useRouter();
-    const newPackage = ref({
-      packageId: '',
-      packageType: ''
-    });
-
-    const submitForm = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/monitor/api/packages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(newPackage.value)
-        });
-        if (response.ok) {
-          router.push('/packages');
-        } else {
-          console.error('Error creating package:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error creating package:', error);
-      }
-    };
-
-    return {
-      newPackage,
-      submitForm
-    };
-  }
-};
-</script>
 
 <style scoped>
 .form-create {

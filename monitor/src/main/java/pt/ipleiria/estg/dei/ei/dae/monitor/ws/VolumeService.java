@@ -2,6 +2,8 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.ws;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -29,6 +31,8 @@ public class VolumeService {
     private VolumeBean volumeBean;
     @EJB
     private ProductBean productBean;
+    @PersistenceContext
+    private EntityManager em;
 
     @GET
     @RolesAllowed({"Administrator"})
@@ -49,9 +53,10 @@ public class VolumeService {
     }
 
     @POST
+    @Path("/")
     @RolesAllowed({"Administrator"})
     public Response createVolume(VolumeDTO volumeDTO) throws MyEntityNotFoundException, MyEntityExistsException {
-        volumeBean.create(volumeDTO.getId(), volumeDTO.getVolumeName(), null); // Assuming Package is handled elsewhere
+        volumeBean.create(volumeDTO.getId(), volumeDTO.getVolumeName(), 0L);
         return Response.status(Response.Status.CREATED).build();
     }
 

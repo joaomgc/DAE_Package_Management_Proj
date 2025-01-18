@@ -1,10 +1,28 @@
+<script setup>
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '~/store/auth-store';
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const isLoggedIn = computed(() => !!authStore.token);
+const user = computed(() => authStore.user);
+
+function logout() {
+  authStore.logout();
+  router.push("/");
+}
+</script>
+
 <template>
   <div id="app">
     <nav>
       <nuxt-link v-if="!isLoggedIn" to="/">Home</nuxt-link>
       <nuxt-link v-if="authStore.userAdmin" to="/dashboard">Dashboard</nuxt-link>
-      <nuxt-link to="/orders">Orders</nuxt-link>
-      <nuxt-link v-if="authStore.userAdmin" to="/clients">All Clients</nuxt-link>
+      <nuxt-link v-if="authStore.userAdmin" to="/orders">Orders</nuxt-link>
+      <nuxt-link v-if="authStore.userClient" :to="`/orders/${user?.username}`">Orders</nuxt-link>
+      <nuxt-link v-if="authStore.userAdmin" to="/clients">Clients</nuxt-link>
       <div v-if="authStore.userAdmin" class="dropdown">
         <button class="dropdown-btn">History</button>
         <div class="dropdown-content">
@@ -25,22 +43,7 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '~/store/auth-store';
 
-const authStore = useAuthStore();
-const router = useRouter();
-
-const isLoggedIn = computed(() => !!authStore.token);
-const user = computed(() => authStore.user);
-
-function logout() {
-  authStore.logout();
-  router.push("/");
-}
-</script>
 
 <style>
 #app {
