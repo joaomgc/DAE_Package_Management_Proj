@@ -10,7 +10,7 @@ export default {
     fetch('http://localhost:8080/monitor/api/sensors')
       .then(response => response.json())
       .then(data => {
-        this.sensors = data;
+        this.sensors = data.sort((a, b) => a.id - b.id);
       });
   },
   methods: {

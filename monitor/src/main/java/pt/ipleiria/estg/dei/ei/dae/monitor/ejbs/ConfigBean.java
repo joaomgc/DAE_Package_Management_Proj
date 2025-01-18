@@ -53,7 +53,8 @@ public class ConfigBean {
             sensorBean.create("2", "pressao", "Inactive");
             sensorBean.create("3", "aceleracao", "Inactive");
             sensorBean.create("4", "posicionamento", "Inactive");
-            sensorBean.create("5", "luminosidade", "Active");
+            sensorBean.create("5", "luminosidade", "Inactive");
+
             // Sensor History
 
             sensorHistoryBean.create(sensorBean.find("1"), LocalDateTime.parse("2024-12-11 20:31", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), 20.0);
@@ -108,7 +109,9 @@ public class ConfigBean {
             packageBean.create(20L, "Exclusive Package");
     // VOLUMES
             volumeBean.create(1L, "Standard Volume", 0L, "LAPTOP-ASUS", 5);
+            volumeBean.associateSensor(1L, "1");
             volumeBean.create(2L, "Express Volume", 0L);
+            volumeBean.associateSensor(2L, "2");
             volumeBean.create(3L, "Bulk Volume", 0L);
             volumeBean.create(4L, "Light Volume", 0L);
             volumeBean.create(5L, "Heavy Volume", 0L);
