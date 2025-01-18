@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.ejbs;
 
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -17,6 +18,8 @@ public class SensorHistoryBean {
 
     @PersistenceContext
     private EntityManager entityManager;
+    @EJB
+    private SensorBean sensorBean;
 
 
     public void create(SensorSimulator sensor, LocalDateTime timestamp, double valor) {
@@ -33,7 +36,8 @@ public class SensorHistoryBean {
         return entityManager.createQuery("SELECT h FROM SensorHistory h", SensorHistory.class).getResultList();
     }
 
-    public List<SensorHistory> findBySensorId(String sensorId) {
+    public List<SensorHistory> findBySensorId(String sensorId) throws MyEntityNotFoundException {
+        sensorBean.find(sensorId); // se sensor nao existe, lança erro
         return entityManager.createQuery(
                         "SELECT h FROM SensorHistory h WHERE h.sensor.id = :sensorId", SensorHistory.class)
                 .setParameter("sensorId", sensorId)
@@ -57,7 +61,7 @@ public class SensorHistoryBean {
         return history;
     }
 
-    public void deleteBySensorId(String sensorId) {
+    public void deleteBySensorId(String sensorId) throws MyEntityNotFoundException {
         List<SensorHistory> histories = findBySensorId(sensorId);
         for (SensorHistory history : histories) {
             entityManager.remove(history);

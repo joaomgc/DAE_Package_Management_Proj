@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.SensorSimulator;
 
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 public class SensorDTO implements Serializable {
     private String id;
     private String tipo;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
     private double valor;
     private String status;
@@ -76,7 +78,7 @@ public class SensorDTO implements Serializable {
     public static SensorDTO from(SensorSimulator sensor) {
         return new SensorDTO(
                 sensor.getId(),
-                sensor.getTipo(),
+                sensor.getTipo().getNome(),
                 sensor.getTimestamp(),
                 sensor.getValor(),
                 sensor.getStatus(),

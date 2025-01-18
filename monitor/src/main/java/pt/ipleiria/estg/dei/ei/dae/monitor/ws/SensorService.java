@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.SensorDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.SensorBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.SensorHistoryBean;
+import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.TipoSensorBean;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.SensorSimulator;
 import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
@@ -24,6 +25,8 @@ public class SensorService {
 
     @EJB
     private SensorHistoryBean sensorHistoryBean;
+    @EJB
+    private TipoSensorBean tipoSensorBean;
 
     @GET
     public List<SensorDTO> getAllSensors() {
@@ -54,7 +57,8 @@ public class SensorService {
         if (sensor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        sensor.setTipo(sensorDTO.getTipo());
+        var tipo = tipoSensorBean.findByName(sensorDTO.getTipo());
+        sensor.setTipo(tipo);
         sensorBean.update(sensor);
 
         SensorSimulator updatedSensor = sensorBean.find(id);

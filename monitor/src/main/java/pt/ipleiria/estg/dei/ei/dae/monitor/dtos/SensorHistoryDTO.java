@@ -1,12 +1,17 @@
 package pt.ipleiria.estg.dei.ei.dae.monitor.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import pt.ipleiria.estg.dei.ei.dae.monitor.entities.SensorHistory;
+import pt.ipleiria.estg.dei.ei.dae.monitor.entities.Volume;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SensorHistoryDTO {
     private Long id;
     private String sensorId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
     private double valor;
 
@@ -60,6 +65,9 @@ public class SensorHistoryDTO {
                 sensorHistory.getValor());
     }
 
+    public static List<SensorHistoryDTO> from(List<SensorHistory> sensors){
+        return sensors.stream().map(SensorHistoryDTO::from).toList();
+    }
 
 }
 

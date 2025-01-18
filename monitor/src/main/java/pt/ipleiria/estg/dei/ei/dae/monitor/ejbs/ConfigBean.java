@@ -37,10 +37,17 @@ public class ConfigBean {
     private ClientBean clientBean;
     @EJB
     private AdministratorBean adminBean;
+    @EJB
+    private TipoSensorBean tipoSensorBean;
 
     @PostConstruct
     public void populateDB() {
         try {
+            tipoSensorBean.create("temperatura");
+            tipoSensorBean.create("pressao");
+            tipoSensorBean.create("aceleracao");
+            tipoSensorBean.create("posicionamento");
+            tipoSensorBean.create("luminosidade");
             // Sensors
             sensorBean.create("1", "temperatura", "Inactive");
             sensorBean.create("2", "pressao", "Inactive");

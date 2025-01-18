@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.monitor.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Random;
 
 @Entity
@@ -10,7 +11,10 @@ import java.util.Random;
 public class SensorSimulator {
     @Id
     private String id;
-    private String tipo;
+    @ManyToOne
+    @JoinColumn(name = "tipo_sensor_id", nullable = false)
+    private TipoSensor tipo;
+
     private LocalDateTime timestamp;
     private double valor;
     private Random random;
@@ -20,12 +24,9 @@ public class SensorSimulator {
     private Volume volume;
 
 
-    public SensorSimulator() {
-        // No-arg constructor
-    }
+    public SensorSimulator() {}
 
-
-    public SensorSimulator(String id, String tipo, String status) {
+    public SensorSimulator(String id, TipoSensor tipo, String status) {
         this.id = id;
         this.tipo = tipo;
         this.status = status;
@@ -37,11 +38,11 @@ public class SensorSimulator {
         return id;
     }
 
-    public String getTipo() {
+    public TipoSensor getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoSensor tipo) {
         this.tipo = tipo;
     }
 
@@ -79,7 +80,7 @@ public class SensorSimulator {
 
     public void gerarDados() {
         this.timestamp = LocalDateTime.now();
-        switch (tipo) {
+        switch (tipo.getNome().toLowerCase()) {
             case "temperatura":
                 this.valor = -10 + (40 - (-10)) * random.nextDouble(); // Gera valores entre -10 e 40 graus Celsius
                 break;
@@ -96,7 +97,8 @@ public class SensorSimulator {
                 this.valor = random.nextDouble() * 100;
                 break;
             default:
-                throw new IllegalArgumentException("Tipo de sensor desconhecido: " + tipo);
+                this.valor = 0.0;
+                System.out.println("Unknown sensor type: " + tipo.getNome());
         }
     }
 

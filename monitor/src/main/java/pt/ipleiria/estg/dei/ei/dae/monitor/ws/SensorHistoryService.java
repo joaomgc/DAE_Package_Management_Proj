@@ -4,7 +4,10 @@ import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.SensorDTO;
+import pt.ipleiria.estg.dei.ei.dae.monitor.dtos.SensorHistoryDTO;
 import pt.ipleiria.estg.dei.ei.dae.monitor.ejbs.SensorHistoryBean;
+import pt.ipleiria.estg.dei.ei.dae.monitor.exceptions.MyEntityNotFoundException;
 
 @Path("/sensor")
 @Produces(MediaType.APPLICATION_JSON)
@@ -17,14 +20,14 @@ public class SensorHistoryService {
     @GET
     @Path("/")
     public Response getAllSensorHistory() {
-        return Response.ok(sensorHistoryBean.findAll()).build();
+        return Response.ok(SensorHistoryDTO.from(sensorHistoryBean.findAll())).build();
     }
 
-    // get the history of a specific sensor
     @GET
     @Path("/{id}/history") // EP07
-    public Response getSensorHistory(@PathParam("id") String id) {
-        return Response.ok(sensorHistoryBean.findBySensorId(id)).build();
+    public Response getSensorHistory(@PathParam("id") String id) throws MyEntityNotFoundException {
+        var history = sensorHistoryBean.findBySensorId(id);
+        return Response.ok(SensorHistoryDTO.from(history)).build();
     }
 
 }
