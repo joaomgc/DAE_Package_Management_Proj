@@ -5,7 +5,6 @@ import { useAuthStore } from '~/store/auth-store';
 const authStore = useAuthStore();
 const orders = ref([]);
 
-
 const filteredOrders = computed(() => {
   const user = authStore.user;
   if (user && authStore.userClient) {
@@ -45,15 +44,36 @@ async function fetchOrders() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-
     const data = await response.json();
     orders.value = data;
   } catch (error) {
     console.error('Error fetching orders:', error);
   }
-
 }
 
+function downloadCSV() {
+  const headers = ['Order ID', 'Username', 'Volumes', 'Status'];
+  const rows = filteredOrders.value.map(order => [
+    order.encomendaId,
+    order.clientUsername,
+    order.volumes.map(volume => volume.volumeName).join(', '),
+    order.estado
+  ]);
+
+  let csvContent = 'data:text/csv;charset=utf-8,';
+  csvContent += headers.join(',') + '\n';
+  rows.forEach(row => {
+    csvContent += row.join(',') + '\n';
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', 'orders.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
 onMounted(async () => {
   fetchOrders();
@@ -66,6 +86,7 @@ onMounted(async () => {
       <p>{{ authStore.userAdmin ? 'List of all orders' : 'My Orders' }}</p>
     </header>
     <main>
+      <button @click="downloadCSV">Download CSV</button>
       <table v-if="filteredOrders.length > 0">
         <thead>
           <tr>
@@ -94,8 +115,6 @@ onMounted(async () => {
     </main>
   </div>
 </template>
-
-
 
 <style scoped>
 .container {
@@ -129,6 +148,21 @@ header p {
 main {
   text-align: center;
   flex-grow: 1;
+}
+
+button {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
 }
 
 table {

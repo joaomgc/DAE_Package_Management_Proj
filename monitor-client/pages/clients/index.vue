@@ -38,6 +38,24 @@ async function fetchCLients() {
 
 }
 
+function downloadCSV() {
+    const headers = ['Username', 'Name', 'Email'];
+    const rows = filteredClients.value.map(client => [client.username, client.name, client.email]);
+
+    let csvContent = 'data:text/csv;charset=utf-8,';
+    csvContent += headers.join(',') + '\n';
+    rows.forEach(row => {
+        csvContent += row.join(',') + '\n';
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'clients.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 
 onMounted(async () => {
     fetchCLients();
@@ -66,12 +84,11 @@ onMounted(async () => {
                     </tr>
                 </tbody>
             </table>
+            <button v-if="filteredClients.length > 0" @click="downloadCSV">Download CSV</button>
             <p v-else>No clients found.</p>
         </main>
     </div>
 </template>
-
-
 
 <style scoped>
 .container {
@@ -136,5 +153,19 @@ ul {
 
 li {
     margin: 5px 0;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
 }
 </style>

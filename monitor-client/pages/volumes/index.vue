@@ -34,6 +34,18 @@ const redirectToCreate = () => {
   router.push('/volumes/create');
 };
 
+const downloadCSV = () => {
+  const csvContent = "data:text/csv;charset=utf-8,"
+    + volumes.value.map(volume => `${volume.id},${volume.volumeName},${volume.packageId || ''}`).join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "volumes.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 onMounted(() => {
   fetchVolumes();
 });
@@ -43,6 +55,7 @@ onMounted(() => {
   <div>
     <h1>Volumes</h1>
     <button @click="redirectToCreate" class="btn">Create Volume</button>
+    <button @click="downloadCSV" class="btn">Download CSV</button>
     <table>
       <thead>
         <tr>
@@ -96,6 +109,7 @@ th {
   transition: color 0.3s ease, border-bottom 0.3s ease, background-color 0.3s ease;
   padding-bottom: 5px;
   float: left;
+  margin-right: 10px;
 }
 .btn:hover {
   color: #000;
