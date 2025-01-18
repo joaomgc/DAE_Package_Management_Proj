@@ -40,6 +40,8 @@ Accept: application/json
 ### EP08 - Obter Todas as Encomendas
 GET http://localhost:8080/monitor/api/encomendas
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNzIyNTQ4NCwiZXhwIjoxNzM3MjI5MDg0fQ.ZgDfCEYqM4HpDYhJ36pXuP7h6dJPssDHBlwVqLxLBV4H_RvwJc_lWlgk8qCZ_MWD
+
 
 ### EP10 – Atualizar Estado de uma Encomenda
 PATCH http://localhost:8080/monitor/api/encomendas/123/estado
