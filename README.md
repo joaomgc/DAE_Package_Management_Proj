@@ -34,8 +34,3 @@ src/
 - **RESTful APIs**
 - **PostgreSQL**
 
-## Setup and Installation
-
-### Clone the Repository:
-
-git clone https://github.com/joaomgc/ProjetoDAE.git
